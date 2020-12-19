@@ -1,0 +1,11 @@
+#title {
+    text-align: center;
+}
+
+#cell {
+    width: 100px;
+}
+
+.checkboxes {
+    display: inline;
+}
