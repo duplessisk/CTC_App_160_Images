@@ -1,0 +1,37 @@
+#title {
+    text-align: center;
+}
+
+.flexbox-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox-container {
+    width : 30%;
+    height : 0%;
+    margin: 10px;
+    border: 0px solid;
+    border-color:black
+    : inline-block;
+}
+
+.checkbox-container-item-1 {
+    border: 0px solid;
+    margin-top: 5%;
+    margin-left: 40%;
+}
+
+.checkbox-container-item-2 {
+    border: 0px solid;
+    margin-top: 3%; 
+    margin-left: 40%;
+}
+
+#cell {
+    /* margin: 10px;
+    padding: 5px; */
+    max-width:90%;
+    height:auto;
+}
