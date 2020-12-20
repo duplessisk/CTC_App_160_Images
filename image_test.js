@@ -54,6 +54,7 @@ document.querySelector('.submitbutton').addEventListener('click', function() {
     formFinished = checkFormFinished(formFinished);
     noDoubleChecks = checkDoubleChecks(noDoubleChecks);
     if (formFinished && noDoubleChecks) {
+        document.location.href="results.html";
         var totalScore = 3;
         // check for checked no-check-boxes
         for (var i = 0; i < responses.length/2; i++) {
@@ -61,7 +62,6 @@ document.querySelector('.submitbutton').addEventListener('click', function() {
                 totalScore--;
             }
         }
-        alert("num correct: " + totalScore);
     } else if (!formFinished) {
         alert("Please submit a response for all images");
     } else {
