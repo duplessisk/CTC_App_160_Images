@@ -1,17 +1,11 @@
-// var elem1 = document.createElement('div');
-// document.body.appendChild(elem1);
-// elem1.classList.add("flexbox-container-new-row")
-// elem1.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' class='yescheckboxes' id='1'> <label for='yes'>yes</label></div><input type='checkbox' class = 'nocheckboxes' id='1'> <label for='yes'>no</label></div><div class= 'checkbox-container'><img src='images/cell.jpg' id='cell'></div></div>";
 
-var elem1 = document.createElement('div');
-document.body.appendChild(elem1);
-elem1.classList.add("flexbox-container-new-row")
-elem1.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' class='yescheckboxes' id="+1+"> <label for='yes'>yes</label></div><input type='checkbox' class = 'nocheckboxes' id="+1+"> <label for='yes'>no</label></div><div class= 'checkbox-container'><img src='images/cell.jpg' id='cell'></div></div>";
-
-var elem2 = document.createElement('div');
-document.body.appendChild(elem2);
-elem2.classList.add("flexbox-container-new-row")
-elem2.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' class='yescheckboxes' id='2'> <label for='yes'>yes</label></div><input type='checkbox' class = 'nocheckboxes' id='2'> <label for='yes'>no</label></div><div class= 'checkbox-container'><img src='images/cell.jpg' id='cell'></div></div>";
+// create flexbox-container-new-row div html elements
+for (var i = 1; i < 3; i++) {
+    var newDiv = document.createElement('div');
+    document.body.appendChild(newDiv);
+    newDiv.classList.add("flexbox-container-new-row");
+    newDiv.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' class='yescheckboxes' id="+i+"> <label for='yes'>yes</label></div><input type='checkbox' class = 'nocheckboxes' id="+i+"> <label for='yes'>no</label></div><div class= 'checkbox-container'><img src='images/cell.jpg' id='cell'></div></div>";
+}
 
 var numYesCheckBoxes = document.querySelectorAll(".yescheckboxes").length;
 var numNoCheckBoxes = document.querySelectorAll(".nocheckboxes").length;
