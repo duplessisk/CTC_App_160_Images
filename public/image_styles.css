@@ -25,7 +25,7 @@
 .checkbox-container-item-2 {
     border: 1px solid;
     margin-top: 3%; 
-    margin-left: 4s0%;
+    margin-left: 40%;
 }
 
 #cell {
@@ -36,4 +36,12 @@
 .submitbutton {
     margin-top: 10%;
     margin-left: 50%;
+}
+
+.returnbutton {
+    margin-left: 50%;
+}
+
+#numCorrect {
+    margin-left : 46%;
 }

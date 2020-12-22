@@ -3,7 +3,7 @@ for (var i = 0; i < 3; i++) {
     var newDiv = document.createElement('div');
     document.body.appendChild(newDiv);
     newDiv.classList.add("flexbox-container-new-row");
-    newDiv.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' class='yescheckboxes' id="+i+"> <label for='yes'>yes</label></div><input type='checkbox' class = 'nocheckboxes' id="+i+"> <label for='yes'>no</label></div><div class= 'checkbox-container'><img src='images/yesImage.jpg' id='cell'></div></div>";
+    newDiv.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' class='yescheckboxes' id="+i+"> <label for='yes'>CTC</label></div><input type='checkbox' class = 'nocheckboxes' id="+i+"> <label for='yes'>non-CTC</label></div><div class= 'checkbox-container'><img src='/static/images/yesImage.jpg' id='cell'></div></div>";
 }
 
 // create button
@@ -17,6 +17,7 @@ var numYesCheckBoxes = document.querySelectorAll(".yescheckboxes").length;
 var numNoCheckBoxes = document.querySelectorAll(".nocheckboxes").length;
 
 var responses = new Array(6);
+var answers = [true,null,true,null,true,null];
 
 for (var i = 0; i < responses.length; i++) {
     responses[i] = null;
@@ -57,9 +58,12 @@ document.querySelector('.submitbutton').addEventListener('click', function() {
         var totalScore = 3;
         // check for checked no-check-boxes
         for (var i = 0; i < responses.length/2; i++) {
-            if (responses[(2*i)+1]) {
+            if (responses[2*i + 1] != answers[2*i + 1]) {
                 totalScore--;
             }
+            // if (responses[(2*i)+1]) {
+            //     totalScore--;
+            // }
         }
         localStorage.setItem("numCorrect",totalScore);
         window.document.location = "results.html";

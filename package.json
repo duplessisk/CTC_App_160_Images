@@ -1,0 +1,23 @@
+{
+  "name": "calculator",
+  "version": "1.0.0",
+  "description": "Express Server",
+  "main": "image_test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duplessisk/Calculator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/duplessisk/Calculator/issues"
+  },
+  "homepage": "https://github.com/duplessisk/Calculator#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
