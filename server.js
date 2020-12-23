@@ -13,9 +13,7 @@ app.get("/", function(request,response) {
     response.sendFile(path.join(__dirname, '/image_test.html'));
 });
 
-<<<<<<< HEAD
 app.listen(3000);
-=======
 app.listen(process.env.PORT || 3000);
 
 app.post("/", function(request,response) {
@@ -67,4 +65,3 @@ function calcNumCorrectResponses(responses,answers) {
     }
     return numCorrectResponses;
 }
->>>>>>> serverResponse
