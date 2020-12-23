@@ -1,7 +1,9 @@
+// import npm modules
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 
+// create express app
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -16,48 +18,39 @@ app.get("/", function(request,response) {
 app.listen(process.env.PORT || 3000);
 
 app.post("/", function(request,response) {
-    var answers = [true,false,false,true];
-    var responses = [];
-    responses[0] = String(request.body.yes0);
-    responses[1] = String(request.body.no0);
-    responses[2] = String(request.body.yes1);
-    responses[3] = String(request.body.no1);
-    var invalidSubmission = checkInvalidSubmissions(responses);
-    if (invalidSubmission) {
-        response.send("Invalid submission. Please go back and confirm that you selected a single option for every image.");
-    } else {
-        var numCorrectResponses = calcNumCorrectResponses(responses,answers);
-        response.render("results", {correctResponsesNum: numCorrectResponses});
-    }
+    var answerKey = [true,false,false,true];
+    var userResponses = [];
+    initUserResponses(request,userResponses);
+    parseUserResponses(userResponses);
+    response.render("results", {userScore: getUserScore(userResponses,answerKey)});
 });
 
-function checkInvalidSubmissions(responses) {
-    for (var i = 0; i < 2; i++) {
-        if (responses[2*i] != "undefined" && responses[2*i + 1] != "undefined") {
-            return true;
-        } else if (responses[2*i] == "undefined" && responses[2*i + 1] == "undefined") {
-            return true;
-        }
+function initUserResponses(request,userResponses) {
+    var names = [request.body.yes0,request.body.no0,request.body.yes1,request.body.no1];
+    for (var i = 0; i < names.length; i++) {
+        userResponses[i] = String(names[i]);
     }
-    return false;
 }
 
-function calcNumCorrectResponses(responses,answers) {
-    var numCorrectResponses = 2;
-    for (var i = 0; i < 4; i++) {
-        if (responses[i] == "undefined") {
-            responses[i] = false;
+// convert user responses to booleans that can be compared against the answer key
+function parseUserResponses(userResponses) {
+    for (var i = 0; i < userResponses.length; i++) {
+        if (userResponses[i] == "undefined") {
+            userResponses[i] = false;
         } else {
-            responses[i] = true;
+            userResponses[i] = true;
         }
     }
-    
-    //compare user responses to answer key
-    for (var i = 0; i < 4; i++) {
-        if (responses[2*i] != answers[2*i] || 
-            responses[2*i + 1] != answers[2*i + 1] ) {
-            numCorrectResponses--;
+}
+
+// gets the user's score based on their responses and the answer key
+function getUserScore(userResponses,answerKey) {
+    var userScore = userResponses.length/2;
+    for (var i = 0; i < userResponses.length/2; i++) {
+        if (userResponses[2*i] != answerKey[2*i] || 
+            userResponses[2*i + 1] != answerKey[2*i + 1] ) {
+            userScore--;
         }
     }
-    return numCorrectResponses;
+    return userScore;
 }
