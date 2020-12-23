@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/duplessisk/Calculator#readme",
   "dependencies": {
+    "ajax": "0.0.4",
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.5",
+    "ejs": "^3.1.5",
     "express": "^4.17.1"
   }
 }
