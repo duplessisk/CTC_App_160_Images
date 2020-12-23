@@ -13,7 +13,6 @@ app.get("/", function(request,response) {
     response.sendFile(path.join(__dirname, '/image_test.html'));
 });
 
-app.listen(3000);
 app.listen(process.env.PORT || 3000);
 
 app.post("/", function(request,response) {
@@ -23,8 +22,6 @@ app.post("/", function(request,response) {
     responses[1] = String(request.body.no0);
     responses[2] = String(request.body.yes1);
     responses[3] = String(request.body.no1);
-    // responses[4] = String(request.body.yes2);
-    // responses[5] = String(request.body.no2);
     var invalidSubmission = checkInvalidSubmissions(responses);
     if (invalidSubmission) {
         response.send("Invalid submission. Please go back and confirm that you selected a single option for every image.");
@@ -56,7 +53,6 @@ function calcNumCorrectResponses(responses,answers) {
     }
     
     //compare user responses to answer key
-
     for (var i = 0; i < 4; i++) {
         if (responses[2*i] != answers[2*i] || 
             responses[2*i + 1] != answers[2*i + 1] ) {
