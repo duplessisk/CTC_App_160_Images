@@ -1,107 +1,73 @@
 // create flexbox-container-new-row div html elements
-for (var i = 0; i < 3; i++) {
-    var newDiv = document.createElement('div');
-    // document.body.appendChild(newDiv);
-    document.querySelector("#form").appendChild(newDiv);
-    newDiv.classList.add("flexbox-container-new-row");
-    newDiv.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' name='yes"+i+"' class='yescheckboxes' id="+i+"> <label for='yes'>CTC</label></div><input type='checkbox' name='no"+i+"' class = 'nocheckboxes' id="+i+"> <label for='yes'>non-CTC</label></div><div class= 'checkbox-container'><img src='/static/images/yesImage.jpg' id='cell'></div></div>";
+// for (var i = 0; i < 3; i++) {
+//     var newDiv = document.createElement('div');
+//     document.querySelector("#form").appendChild(newDiv);
+//     newDiv.classList.add("flexbox-container-new-row");
+//     newDiv.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' name='yes"+i+"' class='yescheckboxes' id="+i+"> <label for='yes'>CTC</label></div><input type='checkbox' name='no"+i+"' class = 'nocheckboxes' id="+i+"> <label for='yes'>non-CTC</label></div><div class= 'checkbox-container'><img src='/static/images/yesImage.jpg' id='cell'></div></div>";
+// }
+
+var div1 = document.createElement('div');
+document.querySelector("#form").appendChild(div1);
+div1.classList.add("flexbox-container-new-row");
+div1.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' name='yes0' class='yescheckboxes' id='0'> <label for='yes'>CTC</label></div><input type='checkbox' name='no0' class = 'nocheckboxes' id='0'> <label for='yes'>not-CTC</label></div><div class= 'checkbox-container'><img src='/static/images/ctcCell.jpg' id='cell'></div></div>";
+
+var div2 = document.createElement('div');
+document.querySelector("#form").appendChild(div2);
+div2.classList.add("flexbox-container-new-row");
+div2.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' name='yes1' class='yescheckboxes' id='1'> <label for='yes'>CTC</label></div><input type='checkbox' name='no1' class = 'nocheckboxes' id='1'> <label for='yes'>not-CTC</label></div><div class= 'checkbox-container'><img src='/static/images/notCTCcell.jpg' id='cell'></div></div>";
+var responses = [false,false,false,false];
+var numYesCheckBoxes = document.querySelectorAll(".yescheckboxes").length;
+var numNoCheckBoxes = document.querySelectorAll(".nocheckboxes").length;
+
+// yes-check-boxes event listener
+for (var i = 0; i < numYesCheckBoxes; i++) {
+    document.querySelectorAll(".yescheckboxes")[i].addEventListener('change', function() {
+        if (this.checked) {
+            responses[2*this.id] = true;
+        } else {
+            responses[2*this.id] = false;
+        }
+    });
 }
 
-var newForm = document.createElement('form');
-document.body.appendChild(newForm);
-newForm.action = "/";
-newForm.method = "post";
-newForm.id = "form";
+// no-check-boxes event listener 
+for (var i = 0; i < numNoCheckBoxes; i++) {
+    document.querySelectorAll(".nocheckboxes")[i].addEventListener('change', function() {
+        if (this.checked) {
+            responses[2*this.id + 1] = true;
+        } else {
+            responses[2*this.id + 1] = false;
+        }
+    });
+}
 
-// create button
-var submitButton = document.createElement('button');
-var submitButtonText = document.createTextNode('Submit');
-submitButton.appendChild(submitButtonText);
-submitButton.classList.add("submitbutton");
-// document.body.appendChild(submitButton);
-document.querySelector("#form").appendChild(submitButton);
+// submit button event listener
+document.querySelector('#submitButtonID').addEventListener('click', function() {
+    if (formNotFinished() || doubleResponses()) {
+         alert("Invalid submission. Please confirm that you have selected exactly one image per photo");
+    } else {
+        document.querySelector("#form").submit();
+    }
+});
 
-// document.body.appendChild(submitButton);
+function formNotFinished() {
+    for (var i = 0; i < responses.length/2; i++) {
+        var yesResponse = responses[2*i];
+        var noResponse = responses[2*i + 1];
+        if (yesResponse == false && noResponse == false) {
+            return true;
+        } 
+    }
+    return false;
+}
 
-// var numYesCheckBoxes = document.querySelectorAll(".yescheckboxes").length;
-// var numNoCheckBoxes = document.querySelectorAll(".nocheckboxes").length;
-
-// var responses = new Array(6);
-// var answers = [true,null,true,null,true,null];
-
-// for (var i = 0; i < responses.length; i++) {
-//     responses[i] = null;
-//     console.log(responses[i]);
-// }
-
-// // yes-check-boxes event listener
-// for (var i = 0; i < numYesCheckBoxes; i++) {
-//     document.querySelectorAll(".yescheckboxes")[i].addEventListener('change', function() {
-//         if (this.checked) {
-//             responses[2*this.id] = true;
-//         } else {
-//             responses[2*this.id] = null;
-//         }
-//         console.log(responses);
-//     });
-// }
-
-// // no-check-boxes event listener 
-// for (var i = 0; i < numNoCheckBoxes; i++) {
-//     document.querySelectorAll(".nocheckboxes")[i].addEventListener('change', function() {
-//         if (this.checked) {
-//             responses[2*this.id + 1] = true;
-//         } else {
-//             responses[2*this.id + 1] = null;
-//         }
-//         console.log(responses);
-//     });
-// }
-
-// // submit button event listener
-// document.querySelector('.submitbutton').addEventListener('click', function() {
-//     var formFinished = true;
-//     var noDoubleChecks = true;
-//     formFinished = checkFormFinished(formFinished);
-//     noDoubleChecks = checkDoubleChecks(noDoubleChecks);
-//     if (formFinished && noDoubleChecks) {
-//         var totalScore = 3;
-//         // check for checked no-check-boxes
-//         for (var i = 0; i < responses.length/2; i++) {
-//             if (responses[2*i + 1] != answers[2*i + 1]) {
-//                 totalScore--;
-//             }
-//             // if (responses[(2*i)+1]) {
-//             //     totalScore--;
-//             // }
-//         }
-//         localStorage.setItem("numCorrect",totalScore);
-//         window.document.location = "results.html";
-//     } else if (!formFinished) {
-//         alert("Please submit a response for all images");
-//     } else {
-//         alert("Please submit one response per image");
-//     }
-// });
-
-// function checkFormFinished(formFinished) {
-//     for (var i = 0; i < responses.length/2; i++) {
-//         var yesResponse = responses[2*i];
-//         var noResponse = responses[2*i + 1];
-//         if (yesResponse == null && noResponse == null) {
-//             formFinished = false;
-//         } 
-//     }
-//     return formFinished;
-// }
-
-// function checkDoubleChecks(noDoubleChecks) {
-//     for (var i = 0; i < responses.length/2; i++) {
-//         var yesResponse = responses[2*i];
-//         var noResponse = responses[2*i + 1];
-//         if (yesResponse != null && noResponse != null) {
-//             noDoubleChecks = false;
-//         } 
-//     }
-//     return noDoubleChecks;
-// }
+function doubleResponses() {
+    for (var i = 0; i < responses.length/2; i++) {
+        var yesResponse = responses[2*i];
+        var noResponse = responses[2*i + 1];
+        if (yesResponse == true && noResponse == true) {
+            return true;
+        } 
+    }
+    return false;
+}
