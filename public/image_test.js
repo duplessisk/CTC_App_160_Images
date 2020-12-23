@@ -1,20 +1,15 @@
 // create flexbox-container-new-row div html elements
-// for (var i = 0; i < 3; i++) {
-//     var newDiv = document.createElement('div');
-//     document.querySelector("#form").appendChild(newDiv);
-//     newDiv.classList.add("flexbox-container-new-row");
-//     newDiv.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' name='yes"+i+"' class='yescheckboxes' id="+i+"> <label for='yes'>CTC</label></div><input type='checkbox' name='no"+i+"' class = 'nocheckboxes' id="+i+"> <label for='yes'>non-CTC</label></div><div class= 'checkbox-container'><img src='/static/images/yesImage.jpg' id='cell'></div></div>";
-// }
-
-// var div1 = document.createElement('div');
-// document.querySelector("#form").appendChild(div1);
-// div1.classList.add("flexbox-container-new-row");
-// div1.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' name='yes0' class='yescheckboxes' id='0'> <label for='yes'>CTC</label></div><input type='checkbox' name='no0' class = 'nocheckboxes' id='0'> <label for='yes'>not-CTC</label></div><div class= 'checkbox-container'><img src='/static/images/ctcCell.jpg' id='cell'></div></div>";
+for (var i = 0; i < 3; i++) {
+    var newDiv = document.createElement('div');
+    document.querySelector("#form").appendChild(newDiv);
+    newDiv.classList.add("flexbox-container-new-row");
+    newDiv.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' name='yes"+i+"' class='yescheckboxes' id="+i+"> <label for='yes'>CTC</label></div><input type='checkbox' name='no"+i+"' class = 'nocheckboxes' id="+i+"> <label for='yes'>non-CTC</label></div><div class= 'checkbox-container'><img src='/static/images/yesImage.JPG' id='cell'></div></div>";
+}
 
 var div1 = document.createElement('div');
 document.querySelector("#form").appendChild(div1);
 div1.classList.add("flexbox-container-new-row");
-div1.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' name='yes0' class='yescheckboxes' id='0'> <label for='yes'>CTC</label></div><input type='checkbox' name='no0' class = 'nocheckboxes' id='0'> <label for='yes'>not-CTC</label></div><div class= 'checkbox-container'><img src='/static/ctcCell.JPG' id='cell'></div></div>";
+div1.innerHTML = "<div class='flexbox-container-new-row'><div class='checkbox-container'><div><input type='checkbox' name='yes0' class='yescheckboxes' id='0'> <label for='yes'>CTC</label></div><input type='checkbox' name='no0' class = 'nocheckboxes' id='0'> <label for='yes'>not-CTC</label></div><div class= 'checkbox-container'><img src='/static/images/ctcCell.JPG' id='cell'></div></div>";
 
 var responses = [false,false,false,false];
 var numYesCheckBoxes = document.querySelectorAll(".yescheckboxes").length;
