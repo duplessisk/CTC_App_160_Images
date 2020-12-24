@@ -1,3 +1,6 @@
+var img1 = require('../../server.js');
+
+
 var div1 = document.createElement('div');
 document.querySelector("#form").appendChild(div1);
 div1.classList.add("flexbox-container-new-row");

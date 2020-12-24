@@ -1,6 +1,7 @@
 // import npm modules
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const bodyParser = require("body-parser");
 
 // create express app
@@ -12,8 +13,29 @@ app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function(request,response) {
+    const result = getAllFiles("public");
+    var img1 = result[0];
+    module.exports = img1;
+    console.log(img1);
     response.sendFile(path.join(__dirname, '/image_test.html'));
 });
+
+// gets all files 
+const getAllFiles = function(dirPath, arrayOfFiles) {
+    files = fs.readdirSync(dirPath)
+  
+    arrayOfFiles = arrayOfFiles || []
+  
+    files.forEach(function(file) {
+      if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+        arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
+      } else {
+        arrayOfFiles.push(path.join(__dirname, dirPath, "/", file))
+      }
+    })
+  
+    return arrayOfFiles
+  }
 
 app.listen(process.env.PORT || 3000);
 
@@ -54,3 +76,4 @@ function getUserScore(userResponses,answerKey) {
     }
     return userScore;
 }
+
