@@ -43,3 +43,6 @@ function formContainsInvalidEntries() {
     }
     return false;
 }
+
+var name = '/static/images/ctcCell.JPG';
+module.exports = name;

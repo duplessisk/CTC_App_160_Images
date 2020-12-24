@@ -12,15 +12,6 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get("/", function(request,response) {
-    const result = getAllFiles("public");
-    var img1 = result[0];
-    module.exports = img1;
-    console.log(img1);
-    response.sendFile(path.join(__dirname, '/image_test.html'));
-});
-
-// gets all files 
 const getAllFiles = function(dirPath, arrayOfFiles) {
     files = fs.readdirSync(dirPath)
   
@@ -35,7 +26,17 @@ const getAllFiles = function(dirPath, arrayOfFiles) {
     })
   
     return arrayOfFiles
-  }
+}
+
+app.get("/", function(request,response) {
+    const result = getAllFiles("public");
+    var firstImagePath = result[0];
+    trimmedFirstImagePath = path.relative(__dirname + "/public",firstImagePath);
+    finalFirstImagePath = "\\static\\" + trimmedFirstImagePath;
+    console.log("trimmed path: " + finalFirstImagePath);
+    response.render("test", {firstImagePath: finalFirstImagePath});
+    // response.sendFile(path.join(__dirname, '/image_test.html'));
+});
 
 app.listen(process.env.PORT || 3000);
 
