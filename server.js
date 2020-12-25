@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
+let cellInfo = require("./cell_info");
 
 // create express app
 const app = express();
@@ -12,30 +13,32 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-const getAllFiles = function(dirPath, arrayOfFiles) {
-    files = fs.readdirSync(dirPath)
+// const getAllFiles = function(dirPath, arrayOfFiles) {
+//     files = fs.readdirSync(dirPath)
   
-    arrayOfFiles = arrayOfFiles || []
+//     arrayOfFiles = arrayOfFiles || []
   
-    files.forEach(function(file) {
-      if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-        arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
-      } else {
-        arrayOfFiles.push(path.join(__dirname, dirPath, "/", file))
-      }
-    })
+//     files.forEach(function(file) {
+//       if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+//         arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
+//       } else {
+//         arrayOfFiles.push(path.join(__dirname, dirPath, "/", file))
+//       }
+//     })
   
-    return arrayOfFiles
-}
+//     return arrayOfFiles
+// }
 
 app.get("/", function(request,response) {
-    const result = getAllFiles("public");
-    var firstImagePath = result[0];
-    trimmedFirstImagePath = path.relative(__dirname + "/public",firstImagePath);
-    finalFirstImagePath = "\\static\\" + trimmedFirstImagePath;
-    console.log("trimmed path: " + finalFirstImagePath);
-    response.render("test", {firstImagePath: finalFirstImagePath});
+    // const result = getAllFiles("public");
+    // var firstImagePath = result[0];
+    // trimmedFirstImagePath = path.relative(__dirname + "/public",firstImagePath);
+    // finalFirstImagePath = "\\static\\" + trimmedFirstImagePath;
+    // console.log("trimmed path: " + finalFirstImagePath);
+    // response.render("test", {firstImagePath: finalFirstImagePath});
     // response.sendFile(path.join(__dirname, '/image_test.html'));
+    // response.render("test", {firstImagePath: cellInfo.img1Path, secondImagePath: cellInfo.image2secondImagePath});
+    response.render("test", {firstImagePath: cellInfo.img1Path, secondImagePath: cellInfo.img2Path});
 });
 
 app.listen(process.env.PORT || 3000);
