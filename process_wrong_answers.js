@@ -1,11 +1,18 @@
-const imagePaths = require("./cell_info");
+const fs = require("fs");
+const wrongImages = require("./server");
 
-var wAns = wrongAnswers.wrongAnswers;
-var incorrectImages = [];
-for (var i = 0; i < wAns.length; i++) {
-    if (wAns[i]) {
-        incorrectImages.push(wAns[i]);
+const answerKey = wrongImages.answerKey;
+console.log(answerKey);
+var userResponses = wrongImages.userResponses;
+var wrongAnswerObjects = []; // for JSON file
+
+for (var i = 0; i < answerKey.length/2; i++) {
+    if (answerKey[i] != userResponses[i] || answerKey[i+1] != answerKey[i+1]) {
+        //write image path to JSON file
+        var wrongObject = {
+            imagePath: '/static/cell_images/cell' + String(i) + '.JPG'
+        }
+        console.log(wrongObject.imagePath);
+        wrongAnswerObjects.push(wrongObject);
     }
 }
-
-module.exports.incorrectImages = incorrectImages;
