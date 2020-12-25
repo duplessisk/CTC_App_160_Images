@@ -1,1 +1,0 @@
-use react props to add images to html document (each prop should be a different image path)
