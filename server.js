@@ -30,22 +30,23 @@ app.post("/", function(request,response) {
 function processWrongAnswers(answerKey,userResponses) {
     var jsonString = "";
     for (var i = 0; i < answerKey.length/2; i++) {
-        if (answerKey[i] != userResponses[i] || answerKey[i+1] != userResponses[i+1]) {
+        console.log("i: " + i);
+        console.log("answerKey[i]: " + answerKey[i]);
+        console.log("userResponses[i]: " + userResponses[i] );
+        console.log("answerKey[i+1]: " + answerKey[i+1]);
+        console.log("userResponses[i+1]: " + userResponses[i+1]);
+        console.log();
+        if (answerKey[2*i] != userResponses[2*i] || answerKey[2*i + 1] != userResponses[2*i + 1]) {
             //write image path to JSON file
             var wrongObject = {
                 imagePath: '/static/cell_images/cell' + String(i) + '.JPG'
             }
-            console.log("imagePath: " + wrongObject.imagePath);
             jsonString += JSON.stringify(wrongObject);
         }
     }
-    console.log(jsonString);
     fs.writeFile('./public/incorrect_image_paths.json',jsonString, function(error) {
         if (error) {
-            console.log();
             console.log(error);
-        } else {
-            console.log("File was successfully written");
         }
     })
 }
@@ -67,19 +68,3 @@ function parseUserResponses(userResponses) {
         }
     }
 }
-
-// gets the user's score based on their responses and the answer key
-function getUserScore(userResponses,answerKey,wrongAnswers) {
-    var userScore = userResponses.length/2;
-    for (var i = 0; i < userResponses.length/2; i++) {
-        if (userResponses[2*i] != answerKey[2*i] || 
-            userResponses[2*i + 1] != answerKey[2*i + 1] ) {
-            wrongAnswers[i] = true;
-            userScore--;
-        } else {
-            wrongAnswers[i] = false;
-        }
-    }
-    return userScore;
-}
-

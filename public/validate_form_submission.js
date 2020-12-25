@@ -9,6 +9,7 @@ for (var i = 0; i < numYesCheckBoxes; i++) {
         } else {
             userResponses[2*this.id] = false;
         }
+        console.log(userResponses);
     });
 }
 
@@ -19,6 +20,7 @@ for (var i = 0; i < numYesCheckBoxes; i++) {
         } else {
             userResponses[2*this.id + 1] = false;
         }
+        console.log(userResponses);
     });
 }
 
