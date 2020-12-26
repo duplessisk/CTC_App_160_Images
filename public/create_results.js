@@ -32,13 +32,18 @@ function buildDoc(arr) {
     if (arr.length-1 != 0) {
         for (var i = 0; i < arr.length-1; i++) {
             var newImg = document.createElement('img');
+            newImg.id="newimg";
             var s = arr[i];
             var imageNum = Number(s.charAt(25)) + 1;
             s = s.substring(1);
             s = s.substring(0,s.length-1);
             newImg.src = s;
-            console.log(s);
-            document.body.append("you got image " + imageNum + " incorrect: ");
+            var p = document.createElement('p');
+            p.id = "pnew";
+            p.innerHTML = "You got image  "+ imageNum + " incorrect";
+            document.body.append(p);
+
+            // document.body.append("you got image " + imageNum + " incorrect: ");
             document.body.appendChild(newImg);
         }
     } else {

@@ -24,7 +24,9 @@
     "browserify": "^17.0.0",
     "browserify-fs": "^1.0.0",
     "ejs": "^3.1.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "line-reader": "^0.4.0",
+    "n-readlines": "^1.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
