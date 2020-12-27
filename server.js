@@ -14,29 +14,51 @@ app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function(request,response) {
+    console.log("I'm in get /");
     response.sendFile(path.join(__dirname + '/page1.html'));
 });
 
-app.listen(process.env.PORT || 3000);
-
 app.post("/", function(request,response) {
-    // var answerKey = [true,false,false,true];
+    console.log("I'm in post /");
     var answerKey = createAnswerKey();
     var userResponses = [];
     initUserResponses(request,userResponses);
     parseUserResponses(userResponses);
     writeMissedImagePaths(answerKey,userResponses);
+    response.redirect('/page2');
+    // response.sendFile(path.join(__dirname + '/results.html'));
+});
+
+app.get("/page2", function(request,response) {
+    console.log("I'm in get /page2");
+    response.sendFile(path.join(__dirname + '/page2.html'));
+});
+
+app.post("/page2", function(request,response) {
+    console.log("I'm in post /page2");
+    var answerKey = createAnswerKey();
+    var userResponses = [];
+    initUserResponses(request,userResponses);
+    parseUserResponses(userResponses);
+    writeMissedImagePaths(answerKey,userResponses);
+    response.redirect('/results');
+});
+
+app.get("/results", function(request,response) {
+    console.log("I'm in post /page2/results");-+
     response.sendFile(path.join(__dirname + '/results.html'));
 });
 
+app.listen(process.env.PORT || 3000);
+
 function createAnswerKey() {
-    var answerKey = answerKey.answerKey;
+    var ansKey = answerKey.answerKey;
     var answers = [];
-    for (var i = 0; i < answerKey.length; i++) {
-        if (answerKey[i] === "y") {
+    for (var i = 0; i < ansKey.length; i++) {
+        if (ansKey[i] === "y") {
             answers.push(true);
             answers.push(false);
-        } else if (answerKey[i] === "n") {
+        } else if (ansKey[i] === "n") {
             answers.push(false);
             answers.push(true);
         }
@@ -45,7 +67,8 @@ function createAnswerKey() {
 }
 
 function initUserResponses(request,userResponses) {
-    var names = [request.body.yes0,request.body.no0,request.body.yes1,request.body.no1];
+    // var names = [request.body.yes0,request.body.no0,request.body.yes1,request.body.no1];
+    var names = [request.body.yes0,request.body.no0];
     for (var i = 0; i < names.length; i++) {
         userResponses[i] = String(names[i]);
     }

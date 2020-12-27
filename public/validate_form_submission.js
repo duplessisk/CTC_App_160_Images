@@ -1,4 +1,4 @@
-var userResponses = [false,false,false,false];
+var userResponses = [false,false];
 var numYesCheckBoxes = document.querySelectorAll(".yescheckboxes").length;
 var numNoCheckBoxes = document.querySelectorAll(".nocheckboxes").length;
 
