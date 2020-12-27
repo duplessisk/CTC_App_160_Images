@@ -14,7 +14,7 @@ app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function(request,response) {
-    response.sendFile(path.join(__dirname + '/test.html'));
+    response.sendFile(path.join(__dirname + '/page1.html'));
 });
 
 app.listen(process.env.PORT || 3000);
