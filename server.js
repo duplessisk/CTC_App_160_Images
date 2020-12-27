@@ -5,6 +5,7 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const answerKeyPage1 = require("./answerKeyPage1");
 const answerKeyPage2 = require("./answerKeyPage2");
+const { json } = require("body-parser");
 
 // create express app
 const app = express();
@@ -21,8 +22,6 @@ app.get("/", function(request,response) {
 });
 
 app.post("/", function(request,response) {
-    console.log();
-    console.log("on page 1");
     var answerKey1 = createAnswerKey(answerKeyPage1);
     var userResponses = [];
     initUserResponses(request,userResponses);
@@ -36,8 +35,6 @@ app.get("/page2", function(request,response) {
 });
 
 app.post("/page2", function(request,response) {
-    console.log();
-    console.log("on page 2");
     var answerKey2 = createAnswerKey(answerKeyPage2);
     var userResponses = [];
     initUserResponses(request,userResponses);
@@ -69,8 +66,10 @@ function createAnswerKey(answerKey) {
 }
 
 function initUserResponses(request,userResponses) {
-    // var names = [request.body.yes0,request.body.no0,request.body.yes1,request.body.no1];
-    var names = [request.body.yes0,request.body.no0];
+    var names = [request.body.yes0,request.body.no0,
+                 request.body.yes1,request.body.no1,
+                 request.body.yes2,request.body.no2,
+                 request.body.yes3,request.body.no3];
     for (var i = 0; i < names.length; i++) {
         userResponses[i] = String(names[i]);
     }
@@ -89,17 +88,12 @@ function parseUserResponses(userResponses) {
 
 function getMissedImagePaths(answerKey,userResponses,start,end) { 
     for (var i = start; i <= end; i++) {
-        console.log("i: " + i);
-        console.log("answerKey: " + answerKey);
-        console.log("userResponses: " + userResponses);
-        console.log();
         if (answerKey[2*(i-start)] != userResponses[2*(i-start)] || answerKey[2*(i-start) + 1] != userResponses[2*(i-start) + 1]) {
             //write image path to JSON file
             var wrongObject = {
                 imagePath: '/static/cell_images/cell' + String(i) + '.JPG'
             }
             jsonString += JSON.stringify(wrongObject);
-            console.log(jsonString);
         }
     }
 }
