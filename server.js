@@ -3,7 +3,8 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
-const answerKey = require("./answerKey");
+const answerKeyPage1 = require("./answerKeyPage1");
+const answerKeyPage2 = require("./answerKeyPage2");
 
 // create express app
 const app = express();
@@ -13,45 +14,46 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
+var jsonString = "";
+
 app.get("/", function(request,response) {
-    console.log("I'm in get /");
     response.sendFile(path.join(__dirname + '/page1.html'));
 });
 
 app.post("/", function(request,response) {
-    console.log("I'm in post /");
-    var answerKey = createAnswerKey();
+    console.log();
+    console.log("on page 1");
+    var answerKey1 = createAnswerKey(answerKeyPage1);
     var userResponses = [];
     initUserResponses(request,userResponses);
     parseUserResponses(userResponses);
-    writeMissedImagePaths(answerKey,userResponses);
+    getMissedImagePaths(answerKey1, userResponses, 0, answerKey1.length/2 - 1);
     response.redirect('/page2');
-    // response.sendFile(path.join(__dirname + '/results.html'));
 });
 
 app.get("/page2", function(request,response) {
-    console.log("I'm in get /page2");
     response.sendFile(path.join(__dirname + '/page2.html'));
 });
 
 app.post("/page2", function(request,response) {
-    console.log("I'm in post /page2");
-    var answerKey = createAnswerKey();
+    console.log();
+    console.log("on page 2");
+    var answerKey2 = createAnswerKey(answerKeyPage2);
     var userResponses = [];
     initUserResponses(request,userResponses);
     parseUserResponses(userResponses);
-    writeMissedImagePaths(answerKey,userResponses);
+    getMissedImagePaths(answerKey2, userResponses, answerKey2.length/2, answerKey2.length - 1);
+    writeMissedImagePaths();
     response.redirect('/results');
 });
 
 app.get("/results", function(request,response) {
-    console.log("I'm in post /page2/results");-+
     response.sendFile(path.join(__dirname + '/results.html'));
 });
 
 app.listen(process.env.PORT || 3000);
 
-function createAnswerKey() {
+function createAnswerKey(answerKey) {
     var ansKey = answerKey.answerKey;
     var answers = [];
     for (var i = 0; i < ansKey.length; i++) {
@@ -85,17 +87,24 @@ function parseUserResponses(userResponses) {
     }
 }
 
-function writeMissedImagePaths(answerKey,userResponses) {
-    var jsonString = "";
-    for (var i = 0; i < answerKey.length/2; i++) {
-        if (answerKey[2*i] != userResponses[2*i] || answerKey[2*i + 1] != userResponses[2*i + 1]) {
+function getMissedImagePaths(answerKey,userResponses,start,end) { 
+    for (var i = start; i <= end; i++) {
+        console.log("i: " + i);
+        console.log("answerKey: " + answerKey);
+        console.log("userResponses: " + userResponses);
+        console.log();
+        if (answerKey[2*(i-start)] != userResponses[2*(i-start)] || answerKey[2*(i-start) + 1] != userResponses[2*(i-start) + 1]) {
             //write image path to JSON file
             var wrongObject = {
                 imagePath: '/static/cell_images/cell' + String(i) + '.JPG'
             }
             jsonString += JSON.stringify(wrongObject);
+            console.log(jsonString);
         }
     }
+}
+
+function writeMissedImagePaths() {
     fs.writeFile('./public/incorrect_image_paths.json',jsonString, function(error) {
         if (error) {
             console.log(error);
