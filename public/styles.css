@@ -15,7 +15,7 @@ body,html {
 }
 
 #headerDiv {
-    margin-bottom: 14%;
+    margin-bottom: 12.11%;
 }
 
 #headerDiv #headerImage {
@@ -24,6 +24,15 @@ body,html {
     position: fixed;
     box-shadow:0px 0px 0px #666;
     border-bottom: 1px solid rgba(180,180,180);
+    margin-bottom: 12%;
+}
+
+#directions {
+    width:777px;
+    height:100px;
+    border:1px;
+    background: black;
+    margin-left: 21.5%;
 }
 
 .flexbox-container-new-row {
@@ -86,6 +95,8 @@ body,html {
     background: RGB(180,91,56);
     color: white;
     font: bold 15px "Arial";
+    margin-left: 54.5%;
+    margin-bottom: 5%;
 }
 
 .returnbutton {
