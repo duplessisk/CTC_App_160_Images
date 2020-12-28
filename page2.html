@@ -3,12 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Results</title>
+    <title>Page 2</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body>
-    <form action="/page2" method="POST" id='form'></form>
+    <div id="headerDiv"> 
+        <img src="static/cell_answers/instructions.PNG" id="headerImage">;
+        <br>
+    </div>
+    <span class="cellType" id="cellType0"> CK/EpCAM </span>
+    <span id="slash">/</span>
+    <span class="cellType" id="cellType1"> Nucleus </span>
+    <span class="cellType" id="cellType2"> Nuclear Stain </span>
+    <span class="cellType" id="cellType3"> CK/EpCAM </span>
+    <span class="cellType" id="cellType4"> AF </span>
+    <span class="cellType" id="cellType5"> CD45 </span>
+
+    <form action="/" method="POST" id='form'></form>
     <button type="submit" id="submitButton">Submit</button>
     <script src="/static/create_test_2.js" charset="utf-8"></script>
     <script src="/static/validate_form_submission.js" charset="utf-8"></script>

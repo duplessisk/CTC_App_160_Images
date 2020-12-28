@@ -1,12 +1,29 @@
 body {
-    background-color: grey;
+    background-color: white;
     border-left: 0px solid white;
     padding: 10px;
     /* margin-left: 500px; */
 }
 
+body,html {
+    margin:0;
+    padding:0;
+}
+
 #title {
     text-align: center;
+}
+
+#headerDiv {
+    margin-bottom: 14%;
+}
+
+#headerDiv #headerImage {
+    height: 28%;
+    margin-left: 21.5%;
+    position: fixed;
+    box-shadow:0px 0px 0px #666;
+    border-bottom: 1px solid rgba(180,180,180);
 }
 
 .flexbox-container-new-row {
@@ -15,37 +32,25 @@ body {
     align-items: center;
 }
 
-#hr {
-    /* height: 10px; */
-    height: 0px;
-    margin-left: 42%;
-    background-color: #333; 
-    width:41%;
-}
-
 .checkbox {
-    width: 1.5em; 
-    height: 1.5em;
-    border: 10px solid #333;
-
+    width: 1.3em;
+    height: 1.3em;
 }
 
 .checkbox-container {
-    /* width : 30%;
-    height : 0%; */
     margin-left: -5%;
-    border: 0px solid;
-    border-color:black
+    background: rgba(100, 98, 98, 0.856);
 }
 
 .checkbox-label {
-    white-space: nowrap;
+    /* white-space: nowrap;
     display: inline; 
-    font-size: 1.8em;
+    font-size: 1.2em;
     font-weight: bold;
-    color: black;
-    font-family: "Times New Roman", Times, serif;
-    margin-left: 8px;
+    color: RGB(175,91,58); */
+    color: white;
+    font-family: "Arial";
+    margin-left: 8px; 
 }
 
 .checkbox-label input {
@@ -59,8 +64,8 @@ body {
 .cell-container {
     width : 30%;
     height : 0%;
-    margin: 10px;
-    margin-left: 3%;
+    margin: -1px;
+    margin-left: 1%;
     border: 0px solid;
     border-color:black
 }
@@ -71,19 +76,16 @@ body {
     display: inline-block;
     max-width:130%;
     height:auto;
-    border: 10px solid black;
+    border: 5px solid rgba(248, 245, 245, 0.829);
     /* border: px solid #555; */
 }
 
 #submitButton {
     margin-top: 1%;
-    margin-left: 50%;
-    background: black;
+    margin-left: 54.5%;
+    background: RGB(180,91,56);
     color: white;
-    border-style: outset;
-    border-color: #0066A2;
-    font: bold 15px arial, sans-serif;
-    text-shadow:none;
+    font: bold 15px "Arial";
 }
 
 .returnbutton {
@@ -91,11 +93,48 @@ body {
 }
 
 #pnew {
-    color:rgb(255, 255, 255);
+    color: white;
     margin-left: 43.5%;
     font-size: larger;
 }
 
 #newimg {
     margin-left: 26%;
+}
+
+.cellType {
+    font: bold 15px "Arial";
+    color:RGB(65,65,65);
+}
+
+#cellType0 {
+    margin-left: 37.4%;
+    color: RGB(0,176,80);
+    margin-right: -0.1%;
+}
+
+#slash{
+    font: bold 15px "Arial";
+    color: RGB(65,65,65);
+}
+
+#cellType1 {
+    color: RGB(144,59,132);
+    margin-left: -0.1%;
+}
+
+#cellType2 {
+    margin-left: 0.9%;
+}
+
+#cellType3 {
+    margin-left: 2.2%;
+}
+
+#cellType4 {
+    margin-left: 4.4%;
+}
+
+#cellType5 {
+    margin-left: 5.7%;
 }

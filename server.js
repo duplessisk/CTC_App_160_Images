@@ -69,7 +69,8 @@ function initUserResponses(request,userResponses) {
     var names = [request.body.yes0,request.body.no0,
                  request.body.yes1,request.body.no1,
                  request.body.yes2,request.body.no2,
-                 request.body.yes3,request.body.no3];
+                 request.body.yes3,request.body.no3,
+                 request.body.yes4,request.body.no4];
     for (var i = 0; i < names.length; i++) {
         userResponses[i] = String(names[i]);
     }
@@ -91,7 +92,8 @@ function getMissedImagePaths(answerKey,userResponses,start,end) {
         if (answerKey[2*(i-start)] != userResponses[2*(i-start)] || answerKey[2*(i-start) + 1] != userResponses[2*(i-start) + 1]) {
             //write image path to JSON file
             var wrongObject = {
-                imagePath: '/static/cell_images/cell' + String(i) + '.JPG'
+                // imagePath: '/static/cell_images/cell' + String(i) + '.JPG'
+                imagePath: '/static/cell_answers/cell' + String(i) + 'answer.JPG'
             }
             jsonString += JSON.stringify(wrongObject);
         }

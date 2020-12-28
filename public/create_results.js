@@ -34,7 +34,8 @@ function buildDoc(arr) {
             var newImg = document.createElement('img');
             newImg.id="newimg";
             var s = arr[i];
-            var imageNum = Number(s.charAt(25)) + 1;
+            console.log(s);
+            var imageNum = Number(s.charAt(26)) + 1;
             s = s.substring(1);
             s = s.substring(0,s.length-1);
             newImg.src = s;
