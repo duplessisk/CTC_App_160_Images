@@ -2,7 +2,6 @@ body {
     background-color: white;
     border-left: 0px solid white;
     padding: 10px;
-    /* margin-left: 500px; */
 }
 
 body,html {
@@ -14,8 +13,19 @@ body,html {
     text-align: center;
 }
 
+#wholepage {
+    height: 900px;
+    margin-top:auto;
+    margin-bottom:auto;
+    width: 900px;
+    margin-left:auto;
+    margin-right:auto;
+    min-width: 1300px;
+    min-height:1300px;
+}
+
 #headerDiv {
-    margin-bottom: 12.11%;
+    margin-bottom: 12.2%;
 }
 
 #headerDiv #headerImage {
@@ -23,16 +33,63 @@ body,html {
     margin-left: 21.5%;
     position: fixed;
     box-shadow:0px 0px 0px #666;
-    border-bottom: 1px solid rgba(180,180,180);
-    margin-bottom: 12%;
+    border-bottom: 2px solid rgb(3, 3, 3);
 }
 
 #directions {
     width:777px;
-    height:100px;
+    height:20px;
     border:1px;
-    background: black;
+    background: white;
     margin-left: 21.5%;
+    position : fixed;
+    padding-bottom: 1.5%;
+    border-bottom: 1.5%;
+}
+
+.cellType {
+    font: bold 14px "Arial";
+    position: absolute;
+    bottom: 3px;
+    left: 0;
+    color:RGB(65,65,65);
+}
+
+#cellType0 {
+    margin-left: 15.8%;
+    color: RGB(0,176,80);
+    margin-right: -0.1%;
+}
+
+#slash{
+    font: bold 15px "Arial";
+    margin-left: 25.6%;
+    color: RGB(65,65,65);
+}
+
+#cellType1 {
+    color: RGB(144,59,132);
+    margin-left: 26.5%;
+}
+
+#cellType2 {
+    margin-left: 35.2%;
+}
+
+#cellType3 {
+    margin-left: 50%;
+}
+
+#cellType4 {
+    margin-left: 69.5%;
+}
+
+#cellType5 {
+    margin-left: 84%;
+}
+
+#content {
+    margin-top: 5%;
 }
 
 .flexbox-container-new-row {
@@ -47,16 +104,12 @@ body,html {
 }
 
 .checkbox-container {
-    margin-left: -5%;
+    /* margin-left: -7.5%; */
+    margin-left: -10%;
     background: rgba(100, 98, 98, 0.856);
 }
 
 .checkbox-label {
-    /* white-space: nowrap;
-    display: inline; 
-    font-size: 1.2em;
-    font-weight: bold;
-    color: RGB(175,91,58); */
     color: white;
     font-family: "Arial";
     margin-left: 8px; 
@@ -71,7 +124,7 @@ body,html {
 }
 
 .cell-container {
-    width : 30%;
+    width : 37%;
     height : 0%;
     margin: -1px;
     margin-left: 1%;
@@ -80,13 +133,10 @@ body,html {
 }
 
 #cell {
-    /* width:  300px;
-    height: 100px; */
     display: inline-block;
     max-width:130%;
     height:auto;
     border: 5px solid rgba(248, 245, 245, 0.829);
-    /* border: px solid #555; */
 }
 
 #submitButton {
@@ -95,8 +145,7 @@ body,html {
     background: RGB(180,91,56);
     color: white;
     font: bold 15px "Arial";
-    margin-left: 54.5%;
-    margin-bottom: 5%;
+    margin-left: 51.5%;
 }
 
 .returnbutton {
@@ -111,41 +160,4 @@ body,html {
 
 #newimg {
     margin-left: 26%;
-}
-
-.cellType {
-    font: bold 15px "Arial";
-    color:RGB(65,65,65);
-}
-
-#cellType0 {
-    margin-left: 37.4%;
-    color: RGB(0,176,80);
-    margin-right: -0.1%;
-}
-
-#slash{
-    font: bold 15px "Arial";
-    color: RGB(65,65,65);
-}
-
-#cellType1 {
-    color: RGB(144,59,132);
-    margin-left: -0.1%;
-}
-
-#cellType2 {
-    margin-left: 0.9%;
-}
-
-#cellType3 {
-    margin-left: 2.2%;
-}
-
-#cellType4 {
-    margin-left: 4.4%;
-}
-
-#cellType5 {
-    margin-left: 5.7%;
 }
