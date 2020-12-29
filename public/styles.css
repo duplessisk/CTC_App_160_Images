@@ -13,27 +13,37 @@ body,html {
     text-align: center;
 }
 
-#wholepage {
-    height: 900px;
-    margin-top:auto;
-    margin-bottom:auto;
-    width: 900px;
-    margin-left:auto;
-    margin-right:auto;
-    min-width: 1300px;
-    min-height:1300px;
+#formDiv {
+    margin-top: 0%;
 }
 
-#headerDiv {
-    margin-bottom: 12.2%;
+#wrapper {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
-#headerDiv #headerImage {
-    height: 28%;
+#headerImage {
     margin-left: 21.5%;
-    position: fixed;
-    box-shadow:0px 0px 0px #666;
-    border-bottom: 2px solid rgb(3, 3, 3);
+    width: 60%;
+    max-width: 60%;
+    height: auto;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid black;
+}
+
+#two {
+    margin-top: 1%;
+    grid-template-rows: 100px 300px;
+    width: 60%;
+    position: sticky;
+    top: 27%;
+    height: 60%;
+    margin-left: 21.5%;
+    max-height: 32%;
 }
 
 #directions {
@@ -48,71 +58,38 @@ body,html {
 }
 
 .cellType {
-    font: bold 14px "Arial";
-    position: absolute;
-    bottom: 3px;
-    left: 0;
-    color:RGB(65,65,65);
-}
-
-#cellType0 {
-    margin-left: 15.8%;
-    color: RGB(0,176,80);
-    margin-right: -0.1%;
-}
-
-#slash{
-    font: bold 15px "Arial";
-    margin-left: 25.6%;
-    color: RGB(65,65,65);
-}
-
-#cellType1 {
-    color: RGB(144,59,132);
-    margin-left: 26.5%;
-}
-
-#cellType2 {
-    margin-left: 35.2%;
-}
-
-#cellType3 {
-    margin-left: 50%;
-}
-
-#cellType4 {
-    margin-left: 69.5%;
-}
-
-#cellType5 {
-    margin-left: 84%;
-}
+    margin-top: 2%;
+} 
 
 #content {
     margin-top: 5%;
 }
 
-.flexbox-container-new-row {
+.new-image-row {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.checkbox {
-    width: 1.3em;
-    height: 1.3em;
+.checkboxes-container {
+    margin-left: -8.7%;
+    max-width: 30%;
+    background: rgba(100, 98, 98, 0.856);
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+    padding-top: 0.5vw;
+    padding-bottom: 0.5vw;
 }
 
-.checkbox-container {
-    /* margin-left: -7.5%; */
-    margin-left: -10%;
-    background: rgba(100, 98, 98, 0.856);
+.checkbox {
+    width: 1vw;
+    height: 1vw;
 }
 
 .checkbox-label {
     color: white;
     font-family: "Arial";
-    margin-left: 8px; 
+    font-size: 1vw;
 }
 
 .checkbox-label input {
@@ -123,7 +100,7 @@ body,html {
     vertical-align: middle;
 }
 
-.cell-container {
+.cell-row-image-container {
     width : 37%;
     height : 0%;
     margin: -1px;
@@ -132,20 +109,54 @@ body,html {
     border-color:black
 }
 
-#cell {
+#cellImage {
     display: inline-block;
     max-width:130%;
+    min-width: 37%;
     height:auto;
     border: 5px solid rgba(248, 245, 245, 0.829);
 }
 
-#submitButton {
+.cellType {
+    font-size: 1vw;
+}
+
+#type1 {
+    margin-left: 15.8%;
+    color: RGB(0,176,80);
+}
+
+#type2 {
+    margin-left: 0%;
+}
+
+#type3 {
+    margin-left: -0.25%;
+    color: RGB(144,59,132);
+}
+
+#type4 {
+    margin-left: 2.9%;
+}
+
+#type5 {
+    margin-left: 7.5%;
+}
+
+#type6 {
+    margin-left: 10%;
+}
+
+#type7 {
+    margin-left: 13%;
+}
+
+.button {
     margin-top: 1%;
     margin-left: 54.5%;
     background: RGB(180,91,56);
     color: white;
     font: bold 15px "Arial";
-    margin-left: 51.5%;
 }
 
 .returnbutton {
@@ -153,7 +164,7 @@ body,html {
 }
 
 #pnew {
-    color: white;
+    color: black;
     margin-left: 43.5%;
     font-size: larger;
 }

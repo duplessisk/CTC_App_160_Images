@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 2</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div id="one">
+            <img src="static/cell_answers/instructions.PNG" id="headerImage">
+        </div>
+        <div id="two">
+            <span class="cellType" id="type1"> CK/EpCAM </span>
+            <span class="cellType" id="type2">/</span>
+            <span class="cellType" id="type3"> Nucleus </span> 
+            <span class="cellType" id="type4"> Nuclear Stain </span>
+            <span class="cellType" id="type5"> CK/EpCAM </span>
+            <span class="cellType" id="type6"> AF </span>
+            <span class="cellType" id="type7"> CD45 </span>  
+        </div>
+    </div>
+    <div id="formDiv">
+        <form action="/page_two" method="POST" id='form'></form>
+    </div>
+    <button type="submit" class="button">Submit</button>
+    <div id="content">
+        <script src="/static/create_page_two.js" charset="utf-8"></script>
+    </div>
+    <script src="/static/validate_form_submission.js" charset="utf-8"></script>
+</body>
+</html>

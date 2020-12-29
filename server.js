@@ -3,8 +3,8 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
-const answerKeyPage1 = require("./answerKeyPage1");
-const answerKeyPage2 = require("./answerKeyPage2");
+const answer_key_page_one = require("./answer_key_page_one");
+const answer_key_page_two = require("./answer_key_page_two");
 const { json } = require("body-parser");
 
 // create express app
@@ -18,28 +18,29 @@ app.use(bodyParser.urlencoded({extended: true}));
 var jsonString = "";
 
 app.get("/", function(request,response) {
-    response.sendFile(path.join(__dirname + '/page1.html'));
+    response.sendFile(path.join(__dirname + '/page_one.html'));
 });
 
 app.post("/", function(request,response) {
-    var answerKey1 = createAnswerKey(answerKeyPage1);
+    var answerKey1 = createAnswerKey(answer_key_page_one);
     var userResponses = [];
     initUserResponses(request,userResponses);
     parseUserResponses(userResponses);
     getMissedImagePaths(answerKey1, userResponses, 0, answerKey1.length/2 - 1);
-    response.redirect('/page2');
+    response.redirect('/page_two');
 });
 
-app.get("/page2", function(request,response) {
-    response.sendFile(path.join(__dirname + '/page2.html'));
+app.get("/page_two", function(request,response) {
+    response.sendFile(path.join(__dirname + '/page_two.html'));
 });
 
-app.post("/page2", function(request,response) {
-    var answerKey2 = createAnswerKey(answerKeyPage2);
+app.post("/page_two", function(request,response) {
+    var answerKey2 = createAnswerKey(answer_key_page_two);
     var userResponses = [];
     initUserResponses(request,userResponses);
     parseUserResponses(userResponses);
     getMissedImagePaths(answerKey2, userResponses, answerKey2.length/2, answerKey2.length - 1);
+    console.log("jsonString: " + jsonString);
     writeMissedImagePaths();
     response.redirect('/results');
 });

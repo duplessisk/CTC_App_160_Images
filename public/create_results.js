@@ -6,7 +6,6 @@ async function getBlock() {
       var arr = jsonObjectContents(jsonBlocks);
       buildDoc(arr);
     } catch (e) {
-      // handle error
       console.error(e);
     }
   }
@@ -41,10 +40,9 @@ function buildDoc(arr) {
             newImg.src = s;
             var p = document.createElement('p');
             p.id = "pnew";
-            p.innerHTML = "You got image  "+ imageNum + " incorrect";
+            p.innerHTML = "You got image  " + (imageNum + 1) + " incorrect";
             document.body.append(p);
 
-            // document.body.append("you got image " + imageNum + " incorrect: ");
             document.body.appendChild(newImg);
         }
     } else {

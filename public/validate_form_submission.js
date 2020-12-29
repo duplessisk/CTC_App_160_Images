@@ -25,7 +25,7 @@ for (var i = 0; i < numYesCheckBoxes; i++) {
 }
 
 // add event listner to submit button
-document.querySelector('#submitButton').addEventListener('click', function() {
+document.querySelector('.button').addEventListener('click', function() {
     if (formContainsInvalidEntries()) {
          alert("Invalid submission. Please confirm that you have selected exactly one image per photo");
     } else {
