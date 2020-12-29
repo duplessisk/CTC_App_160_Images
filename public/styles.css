@@ -170,5 +170,10 @@ body,html {
 }
 
 #newimg {
-    margin-left: 26%;
+    width: 60%;
+    margin-left: 20%;
+}
+
+.bottom-padding {
+    margin-top: 5%;
 }

@@ -5,7 +5,6 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const answer_key_page_one = require("./answer_key_page_one");
 const answer_key_page_two = require("./answer_key_page_two");
-const { json } = require("body-parser");
 
 // create express app
 const app = express();
@@ -25,7 +24,7 @@ app.post("/", function(request,response) {
     var answerKey1 = createAnswerKey(answer_key_page_one);
     var userResponses = [];
     initUserResponses(request,userResponses);
-    parseUserResponses(userResponses);
+    recordUserResponses(userResponses);
     getMissedImagePaths(answerKey1, userResponses, 0, answerKey1.length/2 - 1);
     response.redirect('/page_two');
 });
@@ -38,8 +37,11 @@ app.post("/page_two", function(request,response) {
     var answerKey2 = createAnswerKey(answer_key_page_two);
     var userResponses = [];
     initUserResponses(request,userResponses);
-    parseUserResponses(userResponses);
+    recordUserResponses(userResponses);
     getMissedImagePaths(answerKey2, userResponses, answerKey2.length/2, answerKey2.length - 1);
+    console.log("page2: ");
+    console.log("userResponses: " + userResponses);
+    console.log("answerKey: " + answerKey2);
     console.log("jsonString: " + jsonString);
     writeMissedImagePaths();
     response.redirect('/results');
@@ -78,7 +80,7 @@ function initUserResponses(request,userResponses) {
 }
 
 // convert user responses to booleans that can be compared against the answer key
-function parseUserResponses(userResponses) {
+function recordUserResponses(userResponses) {
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i] == "undefined") {
             userResponses[i] = false;

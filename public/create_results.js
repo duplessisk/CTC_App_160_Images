@@ -30,9 +30,11 @@ function jsonObjectContents(jsonBlocks) {
 function buildDoc(arr) {
     if (arr.length-1 != 0) {
         for (var i = 0; i < arr.length-1; i++) {
+            console.log("round: " + i);
             var newImg = document.createElement('img');
             newImg.id="newimg";
             var s = arr[i];
+            console.log("missed image path: " + s);
             console.log(s);
             var imageNum = Number(s.charAt(26)) + 1;
             s = s.substring(1);
@@ -40,10 +42,14 @@ function buildDoc(arr) {
             newImg.src = s;
             var p = document.createElement('p');
             p.id = "pnew";
-            p.innerHTML = "You got image  " + (imageNum + 1) + " incorrect";
+            p.innerHTML = "You got image  " + imageNum + " incorrect";
             document.body.append(p);
 
             document.body.appendChild(newImg);
+
+            var bottomPadding = document.createElement('div');
+            bottomPadding.className = "bottom-padding";
+            document.body.appendChild(bottomPadding);
         }
     } else {
         document.body.append("you got no images incorrect!");
