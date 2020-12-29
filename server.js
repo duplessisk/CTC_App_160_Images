@@ -95,7 +95,6 @@ function getMissedImagePaths(answerKey,userResponses,start,end) {
         if (answerKey[2*(i-start)] != userResponses[2*(i-start)] || answerKey[2*(i-start) + 1] != userResponses[2*(i-start) + 1]) {
             //write image path to JSON file
             var wrongObject = {
-                // imagePath: '/static/cell_images/cell' + String(i) + '.JPG'
                 imagePath: '/static/cell_answers/cell' + String(i) + 'answer.JPG'
             }
             jsonString += JSON.stringify(wrongObject);
