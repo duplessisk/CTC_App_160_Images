@@ -1,16 +1,16 @@
 async function getBlock() {
     let jsonBlocks;
     try {
-      var response = await fetch("/static/incorrect_image_paths.json");
-      jsonBlocks = await response.text();
-      var arr = jsonObjectContents(jsonBlocks);
-      buildDoc(arr);
+        var response = await fetch("/static/incorrect_image_paths.json");
+        jsonBlocks = await response.text();
+        var arr = jsonObjectContents(jsonBlocks);
+        buildDoc(arr);
     } catch (e) {
-      console.error(e);
+        console.error(e);
     }
-  }
+}
 
-  getBlock();
+getBlock();
 
 function jsonObjectContents(jsonBlocks) {
     var imagePathStrings = "";

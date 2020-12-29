@@ -4,10 +4,13 @@ for (var i = 0; i < 5; i++) {
     newDiv.innerHTML = 
         "<div class='new-image-row'> "+ 
             "<div class='checkboxes-container'>" + 
-                "<div>" + 
+                "<div class='checkbox-container'>" + 
                     "<input type='checkbox' name='yes"+i+"' class='checkbox yescheckboxes' id="+i+"> <label for='yes' class='checkbox-label'>CTC</label>" + 
                 "</div>" + 
+                "<div id='buffer'></div>" + 
+                "<div class='checkbox-container'>" + 
                     "<input type='checkbox' name='no"+i+"' class = 'checkbox nocheckboxes' id="+i+"> <label for='yes' class='checkbox-label'>Not-CTC</label>" + 
+                "</div>" +
                 "</div>" +
                 "<div class= 'cell-row-image-container'>" + 
                     "<img src='/static/cell_images/cell"+i+".JPG' alt='This image was originally intended to display a row of cell images' id='cellImage'>" + 

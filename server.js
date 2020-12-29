@@ -43,6 +43,7 @@ app.listen(process.env.PORT || 3000);
 
 function driveApp(answerKeyPage,request,firstCellImageNumber) {
     var answerKey = createAnswerKey(answerKeyPage);
+    checkAnswerKey(answerKey);
     var userResponses = [];
     var userResponses = initUserResponses(request);
     recordUserResponses(userResponses);
@@ -51,23 +52,26 @@ function driveApp(answerKeyPage,request,firstCellImageNumber) {
 
 function createAnswerKey(answerKey) {
     var ansKey = answerKey.answerKey;
-    var answers = [];
     for (var i = 0; i < ansKey.length; i++) {
         if (ansKey[i] === "y") {
             ansKey[i] = true;
         } else if (ansKey[i] === "n") {
             ansKey[i] = false;
-        } 
+        } else {
+            ansKey[i] = null;
+        }
     }
-    return answers;
+    return ansKey;
 }
 
 function checkAnswerKey(answerKey) {
-    for (var i = 0; i < answerKey.length; i++) {
-        try {
-
-        } catch {
-            
+    if (answerKey.length != 5) {
+        throw "invalid answer key";
+    } else {
+        for (var i = 0; i < answerKey.length; i++) {
+            if (answerKey[i] == null) {
+                throw "invalid answer key";
+            }
         }
     }
 }
