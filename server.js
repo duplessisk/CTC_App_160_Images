@@ -21,13 +21,11 @@ app.get("/", function(request,response) {
 });
 
 app.post("/", function(request,response) {
-    console.log("I'm on page 1");
     driveApp(answer_key_page_one,request,0);
     response.redirect('/page_two');
 });
 
 app.get("/page_two", function(request,response) {
-    console.log("I'm on page 2");
     response.sendFile(path.join(__dirname + '/page_two.html'));
 });
 
@@ -45,9 +43,9 @@ app.listen(process.env.PORT || 3000);
 
 function driveApp(answerKeyPage,request,firstCellImageNumber) {
     var answerKey = createAnswerKey(answerKeyPage);
-    checkAnswerKey(answerKey);
-    var userResponses = [];
+    // checkAnswerKey(answerKey);
     var userResponses = initUserResponses(request);
+    console.log(userResponses);
     recordUserResponses(userResponses);
     getMissedImagePaths(answerKey, userResponses, firstCellImageNumber);
 }
@@ -67,7 +65,6 @@ function createAnswerKey(answerKey) {
 }
 
 function checkAnswerKey(answerKey) {
-    console.log(answerKey);
     if (answerKey.length != 5) {
         throw "invalid answer key";
     } else {
@@ -80,24 +77,23 @@ function checkAnswerKey(answerKey) {
 }
 
 function initUserResponses(request) {
-    if (request.body.radio0 === 'yes0') {
-        console.log("hi");
-    }
-    return  [
-                request.body.yes0,
-                request.body.yes1,
-                request.body.yes2,
-                request.body.yes3,
-                request.body.yes4
-            ];
+    return [
+        request.body.radio0,
+        request.body.radio1,
+        request.body.radio2,
+        request.body.radio3,
+        request.body.radio4
+    ]
 }
 
 function recordUserResponses(userResponses) {
     for (var i = 0; i < userResponses.length; i++) {
-        if (userResponses[i] == "on") {
+        if (userResponses[i] == "yes") {
             userResponses[i] = true;
-        } else {
+        } else if (userResponses[i] == "no")  {
             userResponses[i] = false;
+        } else {
+            throw "invalid user response";
         }
     }
 }
