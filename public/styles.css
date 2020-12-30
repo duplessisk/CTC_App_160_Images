@@ -99,7 +99,7 @@ body,html {
     vertical-align: middle;
 }
 
-.checkbox-container {
+/* .checkbox-container {
     display: flex;
     align-items: center;
 }
@@ -142,7 +142,7 @@ body,html {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+} */
 
 .cell-row-image-container {
     width : 37%;
@@ -179,7 +179,7 @@ body,html {
 }
 
 #warningMessage {
-    margin-left: 42.5%;
+    margin-left: 43%;
     margin-bottom: 5%;
     font: italic 15px "Arial";
 }

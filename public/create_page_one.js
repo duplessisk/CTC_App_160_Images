@@ -5,11 +5,11 @@ for (var i = 0; i < 5; i++) {
         "<div class='new-image-row'> "+ 
             "<div class='checkboxes-container'>" + 
                 "<div class='checkbox-container'>" + 
-                    "<input type='checkbox' name='yes"+i+"' class='checkbox yescheckboxes' id="+i+"> <label for='yes' class='checkbox-label'>CTC</label>" + 
+                    "<input type='radio' name='radio"+i+"' value='yes"+i+"' class='checkbox yescheckboxes' id="+i+"> <label for='yes' class='checkbox-label'>CTC</label>" + 
                 "</div>" + 
                 "<div id='buffer'></div>" + 
                 "<div class='checkbox-container'>" + 
-                    "<input type='checkbox' name='no"+i+"' class = 'checkbox nocheckboxes' id="+i+"> <label for='yes' class='checkbox-label'>Not-CTC</label>" + 
+                    "<input type='radio' name='radio"+i+"' value='no"+i+"' class = 'checkbox nocheckboxes' id="+i+"> <label for='yes' class='checkbox-label'>Not-CTC</label>" + 
                 "</div>" +
                 "</div>" +
                 "<div class= 'cell-row-image-container'>" + 

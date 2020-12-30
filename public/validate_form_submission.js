@@ -6,8 +6,7 @@ for (var i = 0; i < numYesCheckBoxes; i++) {
     document.querySelectorAll(".yescheckboxes")[i].addEventListener('change', function() {
         if (this.checked) {
             userResponses[2*this.id] = true;
-        } else {
-            userResponses[2*this.id] = false;
+            userResponses[2*this.id + 1] = false;
         }
         console.log(userResponses);
     });
@@ -17,8 +16,7 @@ for (var i = 0; i < numYesCheckBoxes; i++) {
     document.querySelectorAll(".nocheckboxes")[i].addEventListener('change', function() {
         if (this.checked) {
             userResponses[2*this.id + 1] = true;
-        } else {
-            userResponses[2*this.id + 1] = false;
+            userResponses[2*this.id] = false;
         }
         console.log(userResponses);
     });

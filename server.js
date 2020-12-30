@@ -48,6 +48,7 @@ function driveApp(answerKeyPage,request,firstCellImageNumber) {
     checkAnswerKey(answerKey);
     var userResponses = [];
     var userResponses = initUserResponses(request);
+    console.log(userResponses);
     recordUserResponses(userResponses);
     getMissedImagePaths(answerKey, userResponses, firstCellImageNumber);
 }
