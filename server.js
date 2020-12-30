@@ -21,11 +21,13 @@ app.get("/", function(request,response) {
 });
 
 app.post("/", function(request,response) {
+    console.log("I'm on page 1");
     driveApp(answer_key_page_one,request,0);
     response.redirect('/page_two');
 });
 
 app.get("/page_two", function(request,response) {
+    console.log("I'm on page 2");
     response.sendFile(path.join(__dirname + '/page_two.html'));
 });
 
