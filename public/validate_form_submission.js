@@ -4,9 +4,10 @@ var numNoCheckBoxes = document.querySelectorAll(".nocheckboxes").length;
 
 for (var i = 0; i < numYesCheckBoxes; i++) {
     document.querySelectorAll(".yescheckboxes")[i].addEventListener('change', function() {
+        idNum = Number(this.id.charAt(12));
         if (this.checked) {
-            userResponses[2*this.id] = true;
-            userResponses[2*this.id + 1] = false;
+            userResponses[2*idNum] = true;
+            userResponses[2*idNum + 1] = false;
         }
         console.log(userResponses);
     });
@@ -14,9 +15,10 @@ for (var i = 0; i < numYesCheckBoxes; i++) {
 
 for (var i = 0; i < numYesCheckBoxes; i++) {
     document.querySelectorAll(".nocheckboxes")[i].addEventListener('change', function() {
+        idNum = Number(this.id.charAt(11));
         if (this.checked) {
-            userResponses[2*this.id + 1] = true;
-            userResponses[2*this.id] = false;
+            userResponses[2*idNum + 1] = true;
+            userResponses[2*idNum] = false;
         }
         console.log(userResponses);
     });
