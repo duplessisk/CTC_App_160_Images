@@ -48,7 +48,6 @@ function driveApp(answerKeyPage,request,firstCellImageNumber) {
     checkAnswerKey(answerKey);
     var userResponses = [];
     var userResponses = initUserResponses(request);
-    console.log(userResponses);
     recordUserResponses(userResponses);
     getMissedImagePaths(answerKey, userResponses, firstCellImageNumber);
 }
@@ -68,6 +67,7 @@ function createAnswerKey(answerKey) {
 }
 
 function checkAnswerKey(answerKey) {
+    console.log(answerKey);
     if (answerKey.length != 5) {
         throw "invalid answer key";
     } else {
@@ -80,6 +80,9 @@ function checkAnswerKey(answerKey) {
 }
 
 function initUserResponses(request) {
+    if (request.body.radio0 === 'yes0') {
+        console.log("hi");
+    }
     return  [
                 request.body.yes0,
                 request.body.yes1,

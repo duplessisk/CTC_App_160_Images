@@ -5,7 +5,7 @@ for (var i = 0; i < 5; i++) {
         "<div class='new-image-row'> "+ 
             "<div class='checkboxes-container'>" + 
                 "<div class='checkbox-container'>" + 
-                    "<input type='radio' name='radio"+i+"' value='yes"+i+"' class='checkbox yescheckboxes' id="+i+"> <label for='yes' class='checkbox-label'>CTC</label>" + 
+                    "<input type='radio' value='yes"+i+"' name='radio"+i+"' class='checkbox yescheckboxes' id="+i+"> <label for='yes' class='checkbox-label'>CTC</label>" + 
                 "</div>" + 
                 "<div id='buffer'></div>" + 
                 "<div class='checkbox-container'>" + 
