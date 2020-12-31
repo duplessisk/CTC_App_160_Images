@@ -32,6 +32,7 @@ app.get("/page_two", function(request,response) {
 });
 
 app.post("/page_two", function(request,response) {
+    
     jsonArrayPageTwo.length = 0;
     driveApp(answer_key_page_two,request,5);
     writeMissedImagePaths();
@@ -114,14 +115,9 @@ function setMissedImagePaths(answerKey,userResponses,firstCellImageNumber) {
             }
         }
     }
-    console.log("out of for loop jsonArrayPageOne: " + jsonArrayPageOne);
-    console.log("out of for loop jsonArrayPageTwo: " + jsonArrayPageTwo);
 }
 
 function writeMissedImagePaths() {
-    console.log();
-    console.log("jsonArrayPageOne: " + jsonArrayPageOne);
-    console.log("jsonArrayPageTwo: " + jsonArrayPageTwo);
     var jsonString = "";
     for (var i = 0; i < jsonArrayPageOne.length; i++) {
         jsonString += JSON.stringify(jsonArrayPageOne[i]);

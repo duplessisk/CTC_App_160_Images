@@ -3,7 +3,7 @@ var yesCheckBoxes = document.querySelectorAll('.yes_check_boxes');
 var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 
 var userResponses = [];
-
+console.log("hello");
 if (localStorage.getItem('pageAlreadyVisited') == null) {
     for (var i = 0; i < 10; i++) {
         userResponses[i] = false;
@@ -19,10 +19,16 @@ if (localStorage.getItem('pageAlreadyVisited') == null) {
     }
 }
 
+for (var i = 0; i < userResponses.length; i++) {
+    console.log("userResponses: " + userResponses);
+    if (userResponses[i]) {
+        allCheckBoxes[i].checked = true
+    } 
+}
+
 for (var i = 0; i < yesCheckBoxes.length; i++) {
     yesCheckBoxes[i].addEventListener('change', function() {
         idNum = Number(this.id.charAt(12));
-        console.log("idNum: " + idNum);
         if (this.checked) {
             userResponses[2*idNum] = true;
             userResponses[2*idNum + 1] = false;
@@ -42,17 +48,8 @@ for (var i = 0; i < noCheckBoxes.length; i++) {
     });
 }
 
-function checkBoxes() {
-    for (var i = 0; i < userResponses; i++) {
-        if (userResponses[i]) {
-            allCheckBoxes[i].checked = true
-        } 
-    }
-}
-
-document.querySelector('.button').addEventListener('click', function() {
+document.querySelector('#submitButton').addEventListener('click', function() {
     userResponsesLocal = "";
-    checkBoxes();
     localStorage.setItem('pageAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i]) {
@@ -63,5 +60,20 @@ document.querySelector('.button').addEventListener('click', function() {
     }
     console.log("final UserResponsesLocal: " + userResponsesLocal);
     localStorage.setItem('pageTwoSaved', userResponsesLocal);
-    // document.querySelector("#form").submit();
+    document.querySelector("#form").submit();
+});
+
+document.querySelector('#submitButton').addEventListener('click', function() {
+    userResponsesLocal = "";
+    localStorage.setItem('pageAlreadyVisited', 1);
+    for (var i = 0; i < userResponses.length; i++) {
+        if (userResponses[i]) {
+             userResponsesLocal += "t";
+        } else {
+            userResponsesLocal += "f";
+        }
+    }
+    console.log("final UserResponsesLocal: " + userResponsesLocal);
+    localStorage.setItem('pageTwoSaved', userResponsesLocal);
+    document.querySelector("#form").submit();
 });
