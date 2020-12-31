@@ -14,13 +14,15 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-var jsonString = "";
+var jsonArrayPageOne = [];
+var jsonArrayPageTwo = [];
 
 app.get("/", function(request,response) {
     response.sendFile(path.join(__dirname + '/page_one.html'));
 });
 
 app.post("/", function(request,response) {
+    jsonArrayPageOne.length = 0;
     driveApp(answer_key_page_one,request,0);
     response.redirect('/page_two');
 });
@@ -30,6 +32,7 @@ app.get("/page_two", function(request,response) {
 });
 
 app.post("/page_two", function(request,response) {
+    jsonArrayPageTwo.length = 0;
     driveApp(answer_key_page_two,request,5);
     writeMissedImagePaths();
     response.redirect('/results');
@@ -45,23 +48,23 @@ function driveApp(answerKeyPage,request,firstCellImageNumber) {
     var answerKey = createAnswerKey(answerKeyPage);
     // checkAnswerKey(answerKey);
     var userResponses = initUserResponses(request);
-    console.log(userResponses);
     recordUserResponses(userResponses);
-    getMissedImagePaths(answerKey, userResponses, firstCellImageNumber);
+    setMissedImagePaths(answerKey, userResponses, firstCellImageNumber);
 }
 
 function createAnswerKey(answerKey) {
     var ansKey = answerKey.answerKey;
+    var answerKey = [];
     for (var i = 0; i < ansKey.length; i++) {
         if (ansKey[i] === "y") {
-            ansKey[i] = true;
+            answerKey[i] = true;
         } else if (ansKey[i] === "n") {
-            ansKey[i] = false;
+            answerKey[i] = false;
         } else {
-            ansKey[i] = null;
+            answerKey[i] = null;
         }
     }
-    return ansKey;
+    return answerKey;
 }
 
 function checkAnswerKey(answerKey) {
@@ -98,18 +101,34 @@ function recordUserResponses(userResponses) {
     }
 }
 
-function getMissedImagePaths(answerKey,userResponses,firstCellImageNumber) { 
+function setMissedImagePaths(answerKey,userResponses,firstCellImageNumber) { 
     for (var i = 0; i < 5; i++) {
         if (answerKey[i] != userResponses[i]) {
-            var wrongObject = {
+            var wrongImageObject = {
                 imagePath: '/static/cell_answers/cell' + String(i + firstCellImageNumber) + 'answer.JPG'
+            }            
+            if (firstCellImageNumber == 0) {
+                jsonArrayPageOne.push(wrongImageObject);
+            } else if (firstCellImageNumber == 5) {
+                jsonArrayPageTwo.push(wrongImageObject);
             }
-            jsonString += JSON.stringify(wrongObject);
         }
     }
+    console.log("out of for loop jsonArrayPageOne: " + jsonArrayPageOne);
+    console.log("out of for loop jsonArrayPageTwo: " + jsonArrayPageTwo);
 }
 
 function writeMissedImagePaths() {
+    console.log();
+    console.log("jsonArrayPageOne: " + jsonArrayPageOne);
+    console.log("jsonArrayPageTwo: " + jsonArrayPageTwo);
+    var jsonString = "";
+    for (var i = 0; i < jsonArrayPageOne.length; i++) {
+        jsonString += JSON.stringify(jsonArrayPageOne[i]);
+    }
+    for (var i = 0; i < jsonArrayPageTwo.length; i++) {
+        jsonString += JSON.stringify(jsonArrayPageTwo[i]);
+    }
     fs.writeFile('./public/incorrect_image_paths.json',jsonString, function(error) {
         if (error) {
             console.log(error);
