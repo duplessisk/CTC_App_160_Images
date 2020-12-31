@@ -6,7 +6,7 @@ for (var i = 5; i < 10; i++) {
             "<div class='checkboxes-container'>" + 
                 "<div class='checkbox-container'>" + 
                     "<label for='myRadioIdYes"+(i-5)+"' class='radio'>" + 
-                        "<input type='radio' value='yes' name='radio"+(i-5)+"' class='radio__input yescheckboxes' id='myRadioIdYes"+(i-5)+"'>" + 
+                        "<input type='radio' value='yes' name='radio"+(i-5)+"' class='radio__input yes_check_boxes' id='myRadioIdYes"+(i-5)+"'>" + 
                         "<div class='radio__radio'></div>" + 
                         "CTC" + 
                     "</label>" +
@@ -14,7 +14,7 @@ for (var i = 5; i < 10; i++) {
                 "<div id='buffer'></div>" + 
                 "<div class='checkbox-container'>" + 
                 "<label for='myRadioIdNo"+(i-5)+"' class='radio'>" + 
-                    "<input type='radio' value='no' name='radio"+(i-5)+"' class='radio__input nocheckboxes' id='myRadioIdNo"+(i-5)+"'>" + 
+                    "<input type='radio' value='no' name='radio"+(i-5)+"' class='radio__input no_check_boxes' id='myRadioIdNo"+(i-5)+"'>" + 
                     "<div class='radio__radio'></div>" + 
                     "Not-CTC" + 
                 "</label>" +
