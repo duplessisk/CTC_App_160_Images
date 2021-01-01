@@ -89,14 +89,14 @@ function recordUserResponses(userResponses) {
         } else if (userResponses[i] == "no")  {
             userResponses[i] = false;
         } else {
-            throw "invalid user response";
+            userResponses[i] = null;
         }
     }
 }
 
 function setMissedImagePaths(answerKey,userResponses,firstCellImageNumber) { 
     for (var i = 0; i < 5; i++) {
-        if (answerKey[i] != userResponses[i]) {
+        if (answerKey[i] != userResponses[i] || userResponses[i] == null) {
             var wrongImageObject = {
                 imagePath: '/static/cell_answers/cell' + String(i + firstCellImageNumber) + 'answer.JPG'
             }            

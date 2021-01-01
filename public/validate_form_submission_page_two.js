@@ -3,25 +3,29 @@ var yesCheckBoxes = document.querySelectorAll('.yes_check_boxes');
 var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 
 var userResponses = [];
-console.log("hello");
+console.log("cached answers: " + localStorage.getItem('pageTwoSaved'));
+
 if (localStorage.getItem('pageTwoAlreadyVisited') == null) {
+    console.log("page not visited before");
     for (var i = 0; i < 10; i++) {
-        userResponses[i] = false;
+        userResponses[i] = "null";
     }
 } else {
     var userResponsesLocal = localStorage.getItem('pageTwoSaved');
     for (var i = 0; i < userResponsesLocal.length; i++) {
         if (String(userResponsesLocal.charAt(i)) == "t") {
             userResponses[i] = true;
-        } else {
+        } else if (String(userResponsesLocal.charAt(i)) == "f") {
             userResponses[i] = false;
+        } else {
+            userResponses[i] = "null";
         }
     }
 }
 
 for (var i = 0; i < userResponses.length; i++) {
     console.log("userResponses: " + userResponses);
-    if (userResponses[i]) {
+    if (userResponses[i] != "null" && userResponses[i]) {
         allCheckBoxes[i].checked = true
     } 
 }
@@ -48,47 +52,42 @@ for (var i = 0; i < noCheckBoxes.length; i++) {
     });
 }
 
-document.querySelector('#submitButton').addEventListener('click', function() {
-    userResponsesLocal = "";
-    localStorage.setItem('pageAlreadyVisited', 1);
-    for (var i = 0; i < userResponses.length; i++) {
-        if (userResponses[i]) {
-             userResponsesLocal += "t";
-        } else {
-            userResponsesLocal += "f";
-        }
-    }
-    console.log("final UserResponsesLocal: " + userResponsesLocal);
-    localStorage.setItem('pageTwoSaved', userResponsesLocal);
-});
-
-document.querySelector('#submitButton').addEventListener('click', function() {
-    console.log("in submit button");
-    userResponsesLocal = "";
-    localStorage.setItem('pageTwoAlreadyVisited', 1);
-    for (var i = 0; i < userResponses.length; i++) {
-        if (userResponses[i]) {
-             userResponsesLocal += "t";
-        } else {
-            userResponsesLocal += "f";
-        }
-    }
-    console.log("final UserResponsesLocal: " + userResponsesLocal);
-    localStorage.setItem('pageTwoSaved', userResponsesLocal);
-});
-
 document.querySelector('#previousButton').addEventListener('click', function() {
-    console.log("in previous button");
+    userResponsesLocal = "";
+    localStorage.setItem('pageTwoAlreadyVisited', 1);
+    for (var i = 0; i < userResponses.length; i++) {
+        if (userResponses[i] == "null") {
+            userResponsesLocal += "n";
+        } else if (userResponses[i] == true) {
+            userResponsesLocal += "t";
+        } else {
+            userResponsesLocal += "f";
+        }
+    }
+    if (userResponsesLocal.includes("n")) {
+        alert("You've left a question unanswered. You can navigate back " + 
+        "to this page later and answer the question, however, if you leave it blank on submission "
+        + "you will miss the question.");
+    }
+    localStorage.setItem('pageTwoSaved', userResponsesLocal);
+});
+
+document.querySelector('#submitButton').addEventListener('click', function() {
     userResponsesLocal = "";
     localStorage.setItem('pageTwoAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i]) {
              userResponsesLocal += "t";
-        } else {
+        } else if (!userResponses[i]) {
             userResponsesLocal += "f";
+        } else {
+            userResponsesLocal += "n";
         }
     }
-    console.log("final UserResponsesLocal: " + userResponsesLocal);
+    if (userResponsesLocal.includes("n")) {
+        alert("You've left a question unanswered. You can navigate back " + 
+        "to this page later and answer the question, however, if you leave it blank on submission "
+        + "you will miss the question.");    
+    }
     localStorage.setItem('pageTwoSaved', userResponsesLocal);
 });
-

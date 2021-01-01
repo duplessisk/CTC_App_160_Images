@@ -53,25 +53,15 @@ document.querySelector('#nextButton').addEventListener('click', function() {
     localStorage.setItem('pageOneAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i]) {
-             userResponsesLocal += "t";
-        } else {
+            userResponsesLocal += "t";
+        } else if (!userResponses[i]) {
             userResponsesLocal += "f";
+        } else {
+            alert("You can navigate back to this page in the future and finish answering any" + 
+            " questions that aren't filled out. Note that any questions left blank will be marked" + 
+            " as incorrect");
         }
     }
     console.log("final UserResponsesLocal: " + userResponsesLocal);
     localStorage.setItem('pageOneSaved', userResponsesLocal);
 });
-
-document.querySelector('#nextButton').addEventListener('click', function() {
-    userResponsesLocal = "";
-    localStorage.setItem('pageOneAlreadyVisited', 1);
-    for (var i = 0; i < userResponses.length; i++) {
-        if (userResponses[i]) {
-             userResponsesLocal += "t";
-        } else {
-            userResponsesLocal += "f";
-        }
-    }
-    localStorage.setItem('pageOneSaved', userResponsesLocal);
-});
-
