@@ -26,3 +26,23 @@ for (var i = 5; i < 10; i++) {
             "</div>" + 
         "</div>"
 }
+
+var submitButton = document.createElement('input');
+submitButton.type = "submit";
+submitButton.className = "button";
+submitButton.id = "previousButton";
+submitButton.name = "button";
+submitButton.value = "Previous";
+document.querySelector("#form").appendChild(submitButton);
+
+var bufferDiv = document.createElement('div');
+bufferDiv.id = "buffer";
+document.querySelector("#form").appendChild(bufferDiv);
+
+var submitButton = document.createElement('input');
+submitButton.type = "submit";
+submitButton.className = "button";
+submitButton.id = "submitButton";
+submitButton.name = "button";
+submitButton.value = "Submit";
+document.querySelector("#form").appendChild(submitButton);

@@ -21,7 +21,7 @@ app.get("/", function(request,response) {
     response.sendFile(path.join(__dirname + '/page_one.html'));
 });
 
-app.post("/", function(request,response) {
+app.post("/page_one", function(request,response) {
     jsonArrayPageOne.length = 0;
     driveApp(answer_key_page_one,request,0);
     response.redirect('/page_two');
@@ -32,11 +32,16 @@ app.get("/page_two", function(request,response) {
 });
 
 app.post("/page_two", function(request,response) {
-    
+    var buttonClicked = request.body.button;
+    console.log("buttonClicked name: " + buttonClicked);
     jsonArrayPageTwo.length = 0;
     driveApp(answer_key_page_two,request,5);
-    writeMissedImagePaths();
-    response.redirect('/results');
+    if (buttonClicked == "Previous") {
+        response.redirect('/');
+    } else if (buttonClicked == "Submit") {
+        writeMissedImagePaths();
+        response.redirect('/results');
+    }
 });
 
 app.get("/results", function(request,response) {
@@ -47,7 +52,6 @@ app.listen(process.env.PORT || 3000);
 
 function driveApp(answerKeyPage,request,firstCellImageNumber) {
     var answerKey = createAnswerKey(answerKeyPage);
-    // checkAnswerKey(answerKey);
     var userResponses = initUserResponses(request);
     recordUserResponses(userResponses);
     setMissedImagePaths(answerKey, userResponses, firstCellImageNumber);
@@ -66,18 +70,6 @@ function createAnswerKey(answerKey) {
         }
     }
     return answerKey;
-}
-
-function checkAnswerKey(answerKey) {
-    if (answerKey.length != 5) {
-        throw "invalid answer key";
-    } else {
-        for (var i = 0; i < answerKey.length; i++) {
-            if (answerKey[i] == null) {
-                throw "invalid answer key";
-            }
-        }
-    }
 }
 
 function initUserResponses(request) {

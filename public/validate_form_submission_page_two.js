@@ -60,10 +60,10 @@ document.querySelector('#submitButton').addEventListener('click', function() {
     }
     console.log("final UserResponsesLocal: " + userResponsesLocal);
     localStorage.setItem('pageTwoSaved', userResponsesLocal);
-    document.querySelector("#form").submit();
 });
 
 document.querySelector('#submitButton').addEventListener('click', function() {
+    console.log("in submit button");
     userResponsesLocal = "";
     localStorage.setItem('pageAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
@@ -75,5 +75,20 @@ document.querySelector('#submitButton').addEventListener('click', function() {
     }
     console.log("final UserResponsesLocal: " + userResponsesLocal);
     localStorage.setItem('pageTwoSaved', userResponsesLocal);
-    document.querySelector("#form").submit();
 });
+
+document.querySelector('#previousButton').addEventListener('click', function() {
+    console.log("in previous button");
+    userResponsesLocal = "";
+    localStorage.setItem('pageAlreadyVisited', 1);
+    for (var i = 0; i < userResponses.length; i++) {
+        if (userResponses[i]) {
+             userResponsesLocal += "t";
+        } else {
+            userResponsesLocal += "f";
+        }
+    }
+    console.log("final UserResponsesLocal: " + userResponsesLocal);
+    localStorage.setItem('pageTwoSaved', userResponsesLocal);
+});
+
