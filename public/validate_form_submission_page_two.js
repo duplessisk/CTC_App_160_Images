@@ -4,7 +4,7 @@ var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 
 var userResponses = [];
 console.log("hello");
-if (localStorage.getItem('pageAlreadyVisited') == null) {
+if (localStorage.getItem('pageTwoAlreadyVisited') == null) {
     for (var i = 0; i < 10; i++) {
         userResponses[i] = false;
     }
@@ -65,7 +65,7 @@ document.querySelector('#submitButton').addEventListener('click', function() {
 document.querySelector('#submitButton').addEventListener('click', function() {
     console.log("in submit button");
     userResponsesLocal = "";
-    localStorage.setItem('pageAlreadyVisited', 1);
+    localStorage.setItem('pageTwoAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i]) {
              userResponsesLocal += "t";
@@ -80,7 +80,7 @@ document.querySelector('#submitButton').addEventListener('click', function() {
 document.querySelector('#previousButton').addEventListener('click', function() {
     console.log("in previous button");
     userResponsesLocal = "";
-    localStorage.setItem('pageAlreadyVisited', 1);
+    localStorage.setItem('pageTwoAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i]) {
              userResponsesLocal += "t";

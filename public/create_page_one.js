@@ -6,7 +6,7 @@ for (var i = 0; i < 5; i++) {
             "<div class='checkboxes-container'>" + 
                 "<div class='checkbox-container'>" + 
                     "<label for='myRadioIdYes"+i+"' class='radio'>" + 
-                        "<input type='radio' value='yes' name='radio"+i+"' class='radio__input yescheckboxes' id='myRadioIdYes"+i+"'>" + 
+                        "<input type='radio' value='yes' name='radio"+i+"' class='radio__input yes_check_boxes' id='myRadioIdYes"+i+"'>" + 
                         "<div class='radio__radio'></div>" + 
                         "CTC" + 
                     "</label>" +
@@ -14,7 +14,7 @@ for (var i = 0; i < 5; i++) {
                 "<div id='buffer'></div>" + 
                 "<div class='checkbox-container'>" + 
                 "<label for='myRadioIdNo"+i+"' class='radio'>" + 
-                    "<input type='radio' value='no' name='radio"+i+"' class='radio__input nocheckboxes' id='myRadioIdNo"+i+"'>" + 
+                    "<input type='radio' value='no' name='radio"+i+"' class='radio__input no_check_boxes' id='myRadioIdNo"+i+"'>" + 
                     "<div class='radio__radio'></div>" + 
                     "Not-CTC" + 
                 "</label>" +
@@ -26,3 +26,11 @@ for (var i = 0; i < 5; i++) {
             "</div>" + 
         "</div>"
 }
+
+var nextButton = document.createElement('input');
+nextButton.type = "submit";
+nextButton.className = "button";
+nextButton.id = "nextButton";
+nextButton.name = "button";
+nextButton.value = "Next";
+document.querySelector("#form").appendChild(nextButton);

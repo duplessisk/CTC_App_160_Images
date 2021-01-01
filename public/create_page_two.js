@@ -27,17 +27,21 @@ for (var i = 5; i < 10; i++) {
         "</div>"
 }
 
-var submitButton = document.createElement('input');
-submitButton.type = "submit";
-submitButton.className = "button";
-submitButton.id = "previousButton";
-submitButton.name = "button";
-submitButton.value = "Previous";
-document.querySelector("#form").appendChild(submitButton);
+var previousButtonDiv = document.createElement('div');
+previousButtonDiv.id = "previousButtonDiv";
+document.querySelector("#form").appendChild(previousButtonDiv);
 
-var bufferDiv = document.createElement('div');
-bufferDiv.id = "buffer";
-document.querySelector("#form").appendChild(bufferDiv);
+var previousButton = document.createElement('input');
+previousButton.type = "submit";
+previousButton.className = "button";
+previousButton.id = "previousButton";
+previousButton.name = "button";
+previousButton.value = "Previous";
+document.querySelector("#previousButtonDiv").appendChild(previousButton);
+
+var submitButtonDiv = document.createElement('div');
+submitButtonDiv.id = "submitButtonDiv";
+document.querySelector("#form").appendChild(submitButtonDiv);
 
 var submitButton = document.createElement('input');
 submitButton.type = "submit";
@@ -45,4 +49,4 @@ submitButton.className = "button";
 submitButton.id = "submitButton";
 submitButton.name = "button";
 submitButton.value = "Submit";
-document.querySelector("#form").appendChild(submitButton);
+document.querySelector("#submitButtonDiv").appendChild(submitButton);
