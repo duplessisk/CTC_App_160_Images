@@ -31,16 +31,31 @@ app.get("/page_two", function(request,response) {
     response.sendFile(path.join(__dirname + '/page_two.html'));
 });
 
+var jsonString = "";
+
+var previouslySubmitted = false;
+var finalJsonString = "";
+
 app.post("/page_two", function(request,response) {
     var buttonClicked = request.body.button;
-    console.log("buttonClicked name: " + buttonClicked);
     jsonArrayPageTwo.length = 0;
     driveApp(answer_key_page_two,request,5);
     if (buttonClicked == "Previous") {
-        response.redirect('/');
+        if (previouslySubmitted) {
+            response.redirect('/page_two');
+        } else {
+            response.redirect('/');
+        }
     } else if (buttonClicked == "Submit") {
-        writeMissedImagePaths();
-        response.redirect('/results');
+        if (previouslySubmitted) {
+            jsonString = finalJsonString;
+            response.redirect('/results');
+        } else {
+            previouslySubmitted = true;
+            finalJsonString = jsonString;
+            writeMissedImagePaths();
+            response.redirect('/results');
+        }
     }
 });
 
@@ -117,6 +132,7 @@ function writeMissedImagePaths() {
     for (var i = 0; i < jsonArrayPageTwo.length; i++) {
         jsonString += JSON.stringify(jsonArrayPageTwo[i]);
     }
+    finalJsonString = jsonString;
     fs.writeFile('./public/incorrect_image_paths.json',jsonString, function(error) {
         if (error) {
             console.log(error);

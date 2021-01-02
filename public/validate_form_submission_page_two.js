@@ -5,12 +5,25 @@ var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 var userResponses = [];
 console.log("cached answers: " + localStorage.getItem('pageTwoSaved'));
 
-if (localStorage.getItem('pageTwoAlreadyVisited') == null) {
-    console.log("page not visited before");
-    for (var i = 0; i < 10; i++) {
-        userResponses[i] = "null";
-    }
-} else {
+// if (localStorage.getItem('pageTwoAlreadyVisited') == null) {
+//     console.log("page not visited before");
+//     for (var i = 0; i < 10; i++) {
+//         userResponses[i] = "null";
+//     }
+// } else {
+//     var userResponsesLocal = localStorage.getItem('pageTwoSaved');
+//     for (var i = 0; i < userResponsesLocal.length; i++) {
+//         if (String(userResponsesLocal.charAt(i)) == "t") {
+//             userResponses[i] = true;
+//         } else if (String(userResponsesLocal.charAt(i)) == "f") {
+//             userResponses[i] = false;
+//         } else {
+//             userResponses[i] = "null";
+//         }
+//     }
+// }
+
+if (localStorage.getItem('pageTwoAlreadyVisited')) {
     var userResponsesLocal = localStorage.getItem('pageTwoSaved');
     for (var i = 0; i < userResponsesLocal.length; i++) {
         if (String(userResponsesLocal.charAt(i)) == "t") {
@@ -21,7 +34,13 @@ if (localStorage.getItem('pageTwoAlreadyVisited') == null) {
             userResponses[i] = "null";
         }
     }
+} else {
+        console.log("page not visited before");
+        for (var i = 0; i < 10; i++) {
+            userResponses[i] = "null";
+        }
 }
+
 
 for (var i = 0; i < userResponses.length; i++) {
     console.log("userResponses: " + userResponses);
@@ -54,7 +73,7 @@ for (var i = 0; i < noCheckBoxes.length; i++) {
 
 document.querySelector('#previousButton').addEventListener('click', function() {
     userResponsesLocal = "";
-    localStorage.setItem('pageTwoAlreadyVisited', 1);
+    localStorage.setItem('pageTwoAlreadyVisited', true);
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i] == "null") {
             userResponsesLocal += "n";
@@ -74,20 +93,32 @@ document.querySelector('#previousButton').addEventListener('click', function() {
 
 document.querySelector('#submitButton').addEventListener('click', function() {
     userResponsesLocal = "";
-    localStorage.setItem('pageTwoAlreadyVisited', 1);
-    for (var i = 0; i < userResponses.length; i++) {
-        if (userResponses[i]) {
-             userResponsesLocal += "t";
-        } else if (!userResponses[i]) {
-            userResponsesLocal += "f";
-        } else {
-            userResponsesLocal += "n";
+    var alreadySubmitted = localStorage.getItem('testAlreadySubmitted');
+    if (alreadySubmitted) {
+        alert("You have already submitted this form. Therefore, your answers won't be changed");
+        userReponses = localStorage.getItem("finalUserResponses");
+        for (var i = 0; i < userResponses.length; i++) {
+            if (userResponses[i] != "null" && userResponses[i]) {
+                allCheckBoxes[i].checked = true
+            } 
+        }                                       
+    } else {
+        localStorage.setItem('testAlreadySubmitted', true);
+        for (var i = 0; i < userResponses.length; i++) {
+            if (userResponses[i]) {
+                 userResponsesLocal += "t";
+            } else if (!userResponses[i]) {
+                userResponsesLocal += "f";
+            } else {
+                userResponsesLocal += "n";
+            }
         }
+        if (userResponsesLocal.includes("n")) {
+            alert("You've left a question unanswered. You can navigate back " + 
+            "to this page later and answer the question, however, if you leave it blank on submission "
+            + "you will miss the question.");    
+        }
+        localStorage.setItem('pageTwoSaved', userResponsesLocal);
+        localStorage.setItem('finalUserResponses', userResponses);
     }
-    if (userResponsesLocal.includes("n")) {
-        alert("You've left a question unanswered. You can navigate back " + 
-        "to this page later and answer the question, however, if you leave it blank on submission "
-        + "you will miss the question.");    
-    }
-    localStorage.setItem('pageTwoSaved', userResponsesLocal);
 });
