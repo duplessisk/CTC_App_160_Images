@@ -43,18 +43,37 @@ app.get("/review", function(request,response) {
     response.sendFile(path.join(__dirname + '/review.html'));
 });
 
+var previouslySubmitted = false;
+var jsonString = "";
+var finalJsonString = "";
+
 app.post("/review", function(request,response) {
     var buttonClicked = request.body.button;
     if (buttonClicked == "Previous") {
-        response.redirect('/page_two');
+        if (previouslySubmitted) {
+            response.redirect('/double_submission');
+        } else {
+            response.redirect('/page_two');
+        }
     } else if (buttonClicked == "Submit") {
-        writeMissedImagePaths();
-        response.redirect('/results');
+        if (previouslySubmitted) {
+            jsonString = finalJsonString;
+            response.redirect('/double_submission');
+        } else {
+            finalJsonString = jsonString;
+            previouslySubmitted = true;
+            writeMissedImagePaths();
+            response.redirect('/results');
+        }
     }
 });
 
 app.get("/results", function(request,response) {
     response.sendFile(path.join(__dirname + '/results.html'));
+});
+
+app.get("/double_submission", function(request,response) {
+    response.sendFile(path.join(__dirname + '/double_submission.html'));
 });
 
 app.listen(process.env.PORT || 3000);
@@ -107,10 +126,6 @@ var jsonArrayPageOne = [];
 var jsonArrayPageTwo = [];
 
 function setMissedImagePaths(answerKey,userResponses,firstCellImageNumber) { 
-    console.log("firstCellImageNumber: " + firstCellImageNumber);
-    console.log("answerKey: " + answerKey);
-    console.log("userResponses: " + userResponses);
-    console.log();
     for (var i = 0; i < 5; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {
             var wrongImageObject = {
