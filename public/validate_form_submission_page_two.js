@@ -85,9 +85,9 @@ document.querySelector('#continueButton').addEventListener('click', function() {
         }
     }
     if (userResponsesLocal.includes("n")) {
-        alert("You've left a question unanswered. You can navigate back " + 
-        "to this page later and answer the question, however, if you leave it blank on submission "
-        + "you will miss the question.");
+        localStorage.setItem('pageTwoHasNull', true);
+    } else {
+        localStorage.setItem('pageTwoHasNull', false);
     }
     localStorage.setItem('pageTwoSaved', userResponsesLocal);
 });

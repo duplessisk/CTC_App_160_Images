@@ -1,23 +1,23 @@
-var previousButtonDiv = document.createElement('div');
-previousButtonDiv.id = "previousButtonDiv";
-document.querySelector("#form").appendChild(previousButtonDiv);
+var previousButtonReviewPageDiv = document.createElement('div');
+previousButtonReviewPageDiv.id = "previousButtonReviewPageDiv";
+document.querySelector("#form").appendChild(previousButtonReviewPageDiv);
 
-var previousButton = document.createElement('input');
-previousButton.type = "submit";
-previousButton.className = "button";
-previousButton.id = "previousButton";
-previousButton.name = "button";
-previousButton.value = "Previous";
-document.querySelector("#previousButtonDiv").appendChild(previousButton);
+var previousButtonReviewPage = document.createElement('input');
+previousButtonReviewPage.type = "submit";
+previousButtonReviewPage.className = "button";
+previousButtonReviewPage.id = "previousButtonReviewPage";
+previousButtonReviewPage.name = "button";
+previousButtonReviewPage.value = "Previous";
+document.querySelector("#previousButtonReviewPageDiv").appendChild(previousButtonReviewPage);
 
-var submitButtonDiv = document.createElement('div');
-submitButtonDiv.id = "submitButtonDiv";
-document.querySelector("#form").appendChild(submitButtonDiv);
+var submitButtonReviewPageDiv = document.createElement('div');
+submitButtonReviewPageDiv.id = "submitButtonReviewPageDiv";
+document.querySelector("#form").appendChild(submitButtonReviewPageDiv);
 
-var submitButton = document.createElement('input');
-submitButton.type = "submit";
-submitButton.className = "button";
-submitButton.id = "submitButton";
-submitButton.name = "button";
-submitButton.value = "Submit";
-document.querySelector("#submitButtonDiv").appendChild(submitButton);
+var submitButtonReviewPage = document.createElement('input');
+submitButtonReviewPage.type = "submit";
+submitButtonReviewPage.className = "button";
+submitButtonReviewPage.id = "submitButtonReviewPage";
+submitButtonReviewPage.name = "button";
+submitButtonReviewPage.value = "Submit";
+document.querySelector("#submitButtonReviewPageDiv").appendChild(submitButtonReviewPage);
