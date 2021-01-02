@@ -19,3 +19,9 @@ document.querySelector('#submitButton').addEventListener('click', function() {
         localStorage.setItem('formAlreadySubmitted', true);
     }
 });
+
+var reviewMessage = document.createElement('p');
+reviewMessage.id = reviewMessage;
+reviewMessage.innerHTML = "Please go back and review your answers. Any unanswered questions will be marked " + 
+"as incorrect.";
+document.querySelector("#reviewMessageDiv").appendChild(reviewMessage);

@@ -201,3 +201,8 @@ body,html {
     margin-bottom: 5%;
     display: inline-block;
 }
+
+#reviewMessageDiv{
+    margin-left: 30%;
+    margin-bottom: 1%;
+}
