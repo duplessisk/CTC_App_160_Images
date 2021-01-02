@@ -39,14 +39,14 @@ previousButton.name = "button";
 previousButton.value = "Previous";
 document.querySelector("#previousButtonDiv").appendChild(previousButton);
 
-var submitButtonDiv = document.createElement('div');
-submitButtonDiv.id = "submitButtonDiv";
-document.querySelector("#form").appendChild(submitButtonDiv);
+var continueButtonDiv = document.createElement('div');
+continueButtonDiv.id = "continueButtonDiv";
+document.querySelector("#form").appendChild(continueButtonDiv);
 
-var submitButton = document.createElement('input');
-submitButton.type = "submit";
-submitButton.className = "button";
-submitButton.id = "submitButton";
-submitButton.name = "button";
-submitButton.value = "Submit";
-document.querySelector("#submitButtonDiv").appendChild(submitButton);
+var continueButton = document.createElement('input');
+continueButton.type = "submit";
+continueButton.className = "button";
+continueButton.id = "continueButton";
+continueButton.name = "button";
+continueButton.value = "Continue";
+document.querySelector("#continueButtonDiv").appendChild(continueButton);

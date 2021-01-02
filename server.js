@@ -14,9 +14,6 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-var jsonArrayPageOne = [];
-var jsonArrayPageTwo = [];
-
 app.get("/", function(request,response) {
     response.sendFile(path.join(__dirname + '/page_one.html'));
 });
@@ -31,33 +28,28 @@ app.get("/page_two", function(request,response) {
     response.sendFile(path.join(__dirname + '/page_two.html'));
 });
 
-var jsonString = "";
-
-var previouslySubmitted = false;
-var finalJsonString = "";
-
 app.post("/page_two", function(request,response) {
     var buttonClicked = request.body.button;
     jsonArrayPageTwo.length = 0;
     driveApp(answer_key_page_two,request,5);
     if (buttonClicked == "Previous") {
-        if (previouslySubmitted) {
-            console.log("staying on page 2");
-            response.redirect('/page_two');
-        } else {
-            console.log("redirecting to page 1");
-            response.redirect('/');
-        }
+        response.redirect('/');
+    } else if (buttonClicked == "Continue") {
+        response.redirect('/review');
+    }
+});
+
+app.get("/review", function(request,response) {
+    response.sendFile(path.join(__dirname + '/review.html'));
+});
+
+app.post("/review", function(request,response) {
+    var buttonClicked = request.body.button;
+    if (buttonClicked == "Previous") {
+        response.redirect('/page_two');
     } else if (buttonClicked == "Submit") {
-        if (previouslySubmitted) {
-            jsonString = finalJsonString;
-            response.redirect('/results');
-        } else {
-            previouslySubmitted = true;
-            finalJsonString = jsonString;
-            writeMissedImagePaths();
-            response.redirect('/results');
-        }
+        writeMissedImagePaths();
+        response.redirect('/results');
     }
 });
 
@@ -111,7 +103,14 @@ function recordUserResponses(userResponses) {
     }
 }
 
+var jsonArrayPageOne = [];
+var jsonArrayPageTwo = [];
+
 function setMissedImagePaths(answerKey,userResponses,firstCellImageNumber) { 
+    console.log("firstCellImageNumber: " + firstCellImageNumber);
+    console.log("answerKey: " + answerKey);
+    console.log("userResponses: " + userResponses);
+    console.log();
     for (var i = 0; i < 5; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {
             var wrongImageObject = {
@@ -134,7 +133,6 @@ function writeMissedImagePaths() {
     for (var i = 0; i < jsonArrayPageTwo.length; i++) {
         jsonString += JSON.stringify(jsonArrayPageTwo[i]);
     }
-    finalJsonString = jsonString;
     fs.writeFile('./public/incorrect_image_paths.json',jsonString, function(error) {
         if (error) {
             console.log(error);

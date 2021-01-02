@@ -186,7 +186,17 @@ body,html {
     margin-left: 44.35%;
 }
 
+#continueButtonDiv {
+    margin-left: 0%;
+}
+
 #submitButtonDiv, #previousButtonDiv {
+    margin-top: 4%;
+    margin-bottom: 5%;
+    display: inline-block;
+}
+
+#continueButtonDiv, #previousButtonDiv {
     margin-top: 4%;
     margin-bottom: 5%;
     display: inline-block;
