@@ -5,24 +5,6 @@ var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 var userResponses = [];
 console.log("cached answers: " + localStorage.getItem('pageTwoSaved'));
 
-// if (localStorage.getItem('pageTwoAlreadyVisited') == null) {
-//     console.log("page not visited before");
-//     for (var i = 0; i < 10; i++) {
-//         userResponses[i] = "null";
-//     }
-// } else {
-//     var userResponsesLocal = localStorage.getItem('pageTwoSaved');
-//     for (var i = 0; i < userResponsesLocal.length; i++) {
-//         if (String(userResponsesLocal.charAt(i)) == "t") {
-//             userResponses[i] = true;
-//         } else if (String(userResponsesLocal.charAt(i)) == "f") {
-//             userResponses[i] = false;
-//         } else {
-//             userResponses[i] = "null";
-//         }
-//     }
-// }
-
 if (localStorage.getItem('pageTwoAlreadyVisited')) {
     var userResponsesLocal = localStorage.getItem('pageTwoSaved');
     for (var i = 0; i < userResponsesLocal.length; i++) {
@@ -74,21 +56,28 @@ for (var i = 0; i < noCheckBoxes.length; i++) {
 document.querySelector('#previousButton').addEventListener('click', function() {
     userResponsesLocal = "";
     localStorage.setItem('pageTwoAlreadyVisited', true);
-    for (var i = 0; i < userResponses.length; i++) {
-        if (userResponses[i] == "null") {
-            userResponsesLocal += "n";
-        } else if (userResponses[i] == true) {
-            userResponsesLocal += "t";
-        } else {
-            userResponsesLocal += "f";
+    var alreadySubmitted = localStorage.getItem('testAlreadySubmitted');
+    if (alreadySubmitted) {
+        alert("You've already submitted the form. Therefore, you can't navigate to previous pages " +
+        "to change your answers");
+    } else {
+        for (var i = 0; i < userResponses.length; i++) {
+            if (userResponses[i] == "null") {
+                userResponsesLocal += "n";
+            } else if (userResponses[i] == true) {
+                userResponsesLocal += "t";
+            } else {
+                userResponsesLocal += "f";
+            }
         }
+        alert("userReponsesLocal: " + userResponsesLocal);
+        if (userResponsesLocal.includes("n")) {
+            alert("You've left a question unanswered. You can navigate back " + 
+            "to this page later and answer the question, however, if you leave it blank on submission "
+            + "you will miss the question.");
+        }
+        localStorage.setItem('pageTwoSaved', userResponsesLocal);
     }
-    if (userResponsesLocal.includes("n")) {
-        alert("You've left a question unanswered. You can navigate back " + 
-        "to this page later and answer the question, however, if you leave it blank on submission "
-        + "you will miss the question.");
-    }
-    localStorage.setItem('pageTwoSaved', userResponsesLocal);
 });
 
 document.querySelector('#submitButton').addEventListener('click', function() {
@@ -105,14 +94,15 @@ document.querySelector('#submitButton').addEventListener('click', function() {
     } else {
         localStorage.setItem('testAlreadySubmitted', true);
         for (var i = 0; i < userResponses.length; i++) {
-            if (userResponses[i]) {
-                 userResponsesLocal += "t";
-            } else if (!userResponses[i]) {
-                userResponsesLocal += "f";
-            } else {
+            if (userResponses[i] == "null") {
                 userResponsesLocal += "n";
+            } else if (userResponses[i] == true) {
+                userResponsesLocal += "t";
+            } else {
+                userResponsesLocal += "f";
             }
         }
+        alert("userReponsesLocal: " + userResponsesLocal);
         if (userResponsesLocal.includes("n")) {
             alert("You've left a question unanswered. You can navigate back " + 
             "to this page later and answer the question, however, if you leave it blank on submission "

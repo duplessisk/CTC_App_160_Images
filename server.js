@@ -42,8 +42,10 @@ app.post("/page_two", function(request,response) {
     driveApp(answer_key_page_two,request,5);
     if (buttonClicked == "Previous") {
         if (previouslySubmitted) {
+            console.log("staying on page 2");
             response.redirect('/page_two');
         } else {
+            console.log("redirecting to page 1");
             response.redirect('/');
         }
     } else if (buttonClicked == "Submit") {
