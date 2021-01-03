@@ -44,25 +44,17 @@ app.get("/review", function(request,response) {
 });
 
 var previouslySubmitted = false;
-var jsonString = "";
-var finalJsonString = "";
 
 app.post("/review", function(request,response) {
-    var buttonClicked = request.body.button;
-    if (buttonClicked == "Previous") {
-        if (previouslySubmitted) {
-            response.redirect('/double_submission');
-        } else {
+    if (previouslySubmitted) {
+        response.redirect('/form_already_submitted_page');
+    } else {
+        previouslySubmitted = true;
+        var buttonClicked = request.body.button;
+        if (buttonClicked == "Previous") {
             response.redirect('/page_two');
-        }
-    } else if (buttonClicked == "Submit") {
-        if (previouslySubmitted) {
-            jsonString = finalJsonString;
-            response.redirect('/double_submission');
         } else {
-            finalJsonString = jsonString;
-            previouslySubmitted = true;
-            writeMissedImagePaths();
+            postMissedImagePaths();
             response.redirect('/results');
         }
     }
@@ -72,8 +64,8 @@ app.get("/results", function(request,response) {
     response.sendFile(path.join(__dirname + '/results.html'));
 });
 
-app.get("/double_submission", function(request,response) {
-    response.sendFile(path.join(__dirname + '/double_submission.html'));
+app.get("/form_already_submitted_page", function(request,response) {
+    response.sendFile(path.join(__dirname + '/form_already_submitted_page.html'));
 });
 
 app.listen(process.env.PORT || 3000);
@@ -89,12 +81,10 @@ function createAnswerKey(answerKey) {
     var ansKey = answerKey.answerKey;
     var answerKey = [];
     for (var i = 0; i < ansKey.length; i++) {
-        if (ansKey[i] === "y") {
+        if (ansKey[i] == "y") {
             answerKey[i] = true;
-        } else if (ansKey[i] === "n") {
-            answerKey[i] = false;
         } else {
-            answerKey[i] = null;
+            answerKey[i] = false;
         }
     }
     return answerKey;
@@ -140,7 +130,7 @@ function setMissedImagePaths(answerKey,userResponses,firstCellImageNumber) {
     }
 }
 
-function writeMissedImagePaths() {
+function postMissedImagePaths() {
     var jsonString = "";
     for (var i = 0; i < jsonArrayPageOne.length; i++) {
         jsonString += JSON.stringify(jsonArrayPageOne[i]);

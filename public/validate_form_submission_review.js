@@ -1,8 +1,6 @@
 document.querySelector('#previousButtonReviewPage').addEventListener('click', function() {
     var formAlreadySubmitted = localStorage.getItem('formAlreadySubmitted');
     if (formAlreadySubmitted) {
-        // alert("This form has been submitted already. You cannot go back and modify " + 
-        // "the previous results.");
         localStorage.setItem('formCompleted', true);
     } else {
         localStorage.setItem('formAlreadySubmitted', true);
@@ -12,8 +10,6 @@ document.querySelector('#previousButtonReviewPage').addEventListener('click', fu
 document.querySelector('#submitButtonReviewPage').addEventListener('click', function() {
     var formAlreadySubmitted = localStorage.getItem('formAlreadySubmitted');
     if (formAlreadySubmitted) {
-        // alert("This form has been submitted already. Therefore, no modifications " + 
-        // "can be made to previous results.");
         localStorage.setItem('formCompleted', true);
     } else {
         localStorage.setItem('formAlreadySubmitted', true);
