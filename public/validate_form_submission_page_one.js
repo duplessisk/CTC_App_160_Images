@@ -5,7 +5,6 @@ var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 var userResponses = [];
 
 if (localStorage.getItem('pageOneAlreadyVisited') == null) {
-    console.log("page not visited before");
     for (var i = 0; i < 10; i++) {
         userResponses[i] = "null";
     }

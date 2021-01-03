@@ -1,7 +1,7 @@
 for (var i = 5; i < 10; i++) {
-    var newDiv = document.createElement('div');
-    document.querySelector("#form").appendChild(newDiv);
-    newDiv.innerHTML = 
+    var newQuestion = document.createElement('div');
+    document.querySelector("#form").appendChild(newQuestion);
+    newQuestion.innerHTML = 
         "<div class='new-image-row'> "+ 
             "<div class='checkboxes-container'>" + 
                 "<div class='checkbox-container'>" + 
