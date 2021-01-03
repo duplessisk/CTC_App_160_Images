@@ -69,3 +69,16 @@ document.querySelector('#nextButton').addEventListener('click', function() {
     }
     localStorage.setItem('pageOneSaved', userResponsesLocal);
 });
+
+var reviewPageVisited = localStorage.getItem('reviewPageVisited');
+if (reviewPageVisited == "true") {
+    var hyperLinkToReviewPageDiv = document.createElement('div');
+    hyperLinkToReviewPageDiv.id = 'hyperLinkToReviewPageDiv';
+    document.body.appendChild(hyperLinkToReviewPageDiv);
+
+    var hyperLinkToReviewPage = document.createElement('a');
+    hyperLinkToReviewPage.id = 'hyperLinkToReviewPage';
+    hyperLinkToReviewPage.href = "./review";
+    hyperLinkToReviewPage.innerHTML = "Return to review page";
+    document.querySelector('#hyperLinkToReviewPageDiv').appendChild(hyperLinkToReviewPage);
+}

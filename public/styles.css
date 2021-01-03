@@ -147,6 +147,7 @@ body,html {
 }
 
 #nextButton {
+    margin-bottom: 1%;
     margin-left: 52.2%;
 }
 
@@ -251,5 +252,14 @@ body,html {
 
 #skippedPages {
     margin-left: -24%;
+    font-family: Arial;
+}
+
+#hyperLinkToReviewPageDiv {
+    margin-left: 48.5%;
+    margin-bottom: 5%;
+}
+
+#hyperLinkToReviewPage {
     font-family: Arial;
 }

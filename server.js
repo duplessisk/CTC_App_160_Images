@@ -132,15 +132,19 @@ function setMissedImagePaths(answerKey,userResponses,firstCellImageNumber) {
 
 function postMissedImagePaths() {
     var jsonString = "";
-    for (var i = 0; i < jsonArrayPageOne.length; i++) {
-        jsonString += JSON.stringify(jsonArrayPageOne[i]);
-    }
-    for (var i = 0; i < jsonArrayPageTwo.length; i++) {
-        jsonString += JSON.stringify(jsonArrayPageTwo[i]);
-    }
-    fs.writeFile('./public/incorrect_image_paths.json',jsonString, function(error) {
+    jsonString = postMissedImagePathsHelper(jsonArrayPageOne, jsonString);
+    jsonString = postMissedImagePathsHelper(jsonArrayPageTwo, jsonString);
+    fs.writeFile('./public/incorrect_image_paths.json', jsonString, function(error) {
         if (error) {
             console.log(error);
         }
     })
 }
+
+function postMissedImagePathsHelper(jsonArray, jsonString) {
+    for (var i = 0; i < jsonArray.length; i++) {
+        jsonString += JSON.stringify(jsonArray[i]);
+    }
+    return jsonString;
+}
+
