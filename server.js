@@ -14,13 +14,12 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-var jsonString = "";
-
 app.get("/", function(request,response) {
     response.sendFile(path.join(__dirname + '/page_one.html'));
 });
 
-app.post("/", function(request,response) {
+app.post("/page_one", function(request,response) {
+    jsonArrayPageOne.length = 0;
     driveApp(answer_key_page_one,request,0);
     response.redirect('/page_two');
 });
@@ -30,50 +29,75 @@ app.get("/page_two", function(request,response) {
 });
 
 app.post("/page_two", function(request,response) {
+    var buttonClicked = request.body.button;
+    jsonArrayPageTwo.length = 0;
     driveApp(answer_key_page_two,request,5);
-    writeMissedImagePaths();
-    response.redirect('/results');
+    if (buttonClicked == "Previous") {
+        response.redirect('/');
+    } else if (buttonClicked == "Continue") {
+        response.redirect('/review');
+    }
+});
+
+app.get("/review", function(request,response) {
+    response.sendFile(path.join(__dirname + '/review.html'));
+});
+
+var previouslySubmitted = false;
+var jsonString = "";
+var finalJsonString = "";
+
+app.post("/review", function(request,response) {
+    var buttonClicked = request.body.button;
+    if (buttonClicked == "Previous") {
+        if (previouslySubmitted) {
+            response.redirect('/double_submission');
+        } else {
+            response.redirect('/page_two');
+        }
+    } else if (buttonClicked == "Submit") {
+        if (previouslySubmitted) {
+            jsonString = finalJsonString;
+            response.redirect('/double_submission');
+        } else {
+            finalJsonString = jsonString;
+            previouslySubmitted = true;
+            writeMissedImagePaths();
+            response.redirect('/results');
+        }
+    }
 });
 
 app.get("/results", function(request,response) {
     response.sendFile(path.join(__dirname + '/results.html'));
 });
 
+app.get("/double_submission", function(request,response) {
+    response.sendFile(path.join(__dirname + '/double_submission.html'));
+});
+
 app.listen(process.env.PORT || 3000);
 
 function driveApp(answerKeyPage,request,firstCellImageNumber) {
     var answerKey = createAnswerKey(answerKeyPage);
-    // checkAnswerKey(answerKey);
     var userResponses = initUserResponses(request);
-    console.log(userResponses);
     recordUserResponses(userResponses);
-    getMissedImagePaths(answerKey, userResponses, firstCellImageNumber);
+    setMissedImagePaths(answerKey, userResponses, firstCellImageNumber);
 }
 
 function createAnswerKey(answerKey) {
     var ansKey = answerKey.answerKey;
+    var answerKey = [];
     for (var i = 0; i < ansKey.length; i++) {
         if (ansKey[i] === "y") {
-            ansKey[i] = true;
+            answerKey[i] = true;
         } else if (ansKey[i] === "n") {
-            ansKey[i] = false;
+            answerKey[i] = false;
         } else {
-            ansKey[i] = null;
+            answerKey[i] = null;
         }
     }
-    return ansKey;
-}
-
-function checkAnswerKey(answerKey) {
-    if (answerKey.length != 5) {
-        throw "invalid answer key";
-    } else {
-        for (var i = 0; i < answerKey.length; i++) {
-            if (answerKey[i] == null) {
-                throw "invalid answer key";
-            }
-        }
-    }
+    return answerKey;
 }
 
 function initUserResponses(request) {
@@ -93,23 +117,37 @@ function recordUserResponses(userResponses) {
         } else if (userResponses[i] == "no")  {
             userResponses[i] = false;
         } else {
-            throw "invalid user response";
+            userResponses[i] = null;
         }
     }
 }
 
-function getMissedImagePaths(answerKey,userResponses,firstCellImageNumber) { 
+var jsonArrayPageOne = [];
+var jsonArrayPageTwo = [];
+
+function setMissedImagePaths(answerKey,userResponses,firstCellImageNumber) { 
     for (var i = 0; i < 5; i++) {
-        if (answerKey[i] != userResponses[i]) {
-            var wrongObject = {
+        if (answerKey[i] != userResponses[i] || userResponses[i] == null) {
+            var wrongImageObject = {
                 imagePath: '/static/cell_answers/cell' + String(i + firstCellImageNumber) + 'answer.JPG'
+            }            
+            if (firstCellImageNumber == 0) {
+                jsonArrayPageOne.push(wrongImageObject);
+            } else if (firstCellImageNumber == 5) {
+                jsonArrayPageTwo.push(wrongImageObject);
             }
-            jsonString += JSON.stringify(wrongObject);
         }
     }
 }
 
 function writeMissedImagePaths() {
+    var jsonString = "";
+    for (var i = 0; i < jsonArrayPageOne.length; i++) {
+        jsonString += JSON.stringify(jsonArrayPageOne[i]);
+    }
+    for (var i = 0; i < jsonArrayPageTwo.length; i++) {
+        jsonString += JSON.stringify(jsonArrayPageTwo[i]);
+    }
     fs.writeFile('./public/incorrect_image_paths.json',jsonString, function(error) {
         if (error) {
             console.log(error);
