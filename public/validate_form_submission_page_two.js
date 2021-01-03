@@ -64,11 +64,6 @@ document.querySelector('#previousButton').addEventListener('click', function() {
             userResponsesLocal += "f";
         }
     }
-    if (userResponsesLocal.includes("n")) {
-        alert("You've left a question unanswered. You can navigate back " + 
-        "to this page later and answer the question, however, if you leave it blank on submission "
-        + "you will miss the question.");
-    }
     localStorage.setItem('pageTwoSaved', userResponsesLocal);
 });
 

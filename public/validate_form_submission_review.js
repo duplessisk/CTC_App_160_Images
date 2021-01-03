@@ -22,7 +22,7 @@ document.querySelector('#submitButtonReviewPage').addEventListener('click', func
 
 
 var reviewMessage = document.createElement('p');
-reviewMessage.id = reviewMessage;
+reviewMessage.id = "reviewMessage";
 reviewMessage.innerHTML = "You can't submit this form twice, so please go back and review your answers. " +
 " Any unanswered questions will be marked as incorrect.";
 document.querySelector("#reviewMessageHeaderDiv").appendChild(reviewMessage);
@@ -32,6 +32,14 @@ var pageTwoHasNull = localStorage.getItem('pageTwoHasNull');
 
 var buffer = document.createElement('div');
 
+if (pageOneHasNull == "true" || pageTwoHasNull == "true") {
+    var skippedPages = document.createElement('p');
+    skippedPages.id = "skippedPages";
+    skippedPages.innerHTML = "You didn't answer questions on the following page(s): ";
+    document.querySelector("#reviewMessageResultsDiv").appendChild(skippedPages);
+    document.querySelector('#reviewMessageResultsDiv').appendChild(buffer);
+}
+
 if (pageOneHasNull == "true") {
     var pageOneNullMessage = document.createElement('a');
     pageOneNullMessage.href = "./";
@@ -39,7 +47,7 @@ if (pageOneHasNull == "true") {
     pageOneNullMessage.innerHTML = "page one";
     document.querySelector("#reviewMessageResultsDiv").appendChild(pageOneNullMessage);
     document.querySelector('#reviewMessageResultsDiv').appendChild(buffer);
-} 
+}
 
 if (pageTwoHasNull == "true") {
     var pageTwoNullMessage = document.createElement('a');

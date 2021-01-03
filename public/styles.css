@@ -157,7 +157,7 @@ body,html {
     margin-left: 50.5%;
     background: RGB(180,91,56);
     color: white;
-    font: bold 15px "Arial";
+    font: bold 15px Arial;
     height:3vw;
     width:8vw;
 }
@@ -233,4 +233,23 @@ body,html {
     margin-left: 46.5%;
     margin-bottom: 1%;
     display: block;
+    font-family: Arial;
+}
+
+#reviewMessage{
+    margin-left: -5%;
+    font-family: Arial;
+}
+
+#pageOneNullMessage{
+    font-family: Arial;
+}
+
+#pageTwoNullMessage{
+    font-family: Arial;
+}
+
+#skippedPages {
+    margin-left: -24%;
+    font-family: Arial;
 }
