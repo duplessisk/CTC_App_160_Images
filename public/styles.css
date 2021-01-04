@@ -205,25 +205,21 @@ body {
 
 /***Review Page Styling***/
 
-#reviewMessageHeaderDiv{
-    margin-left: 16%;
+#reviewMessageHeaderDiv {
+    margin-left: 12%;
     margin-bottom: 1%;
+    font-family: Arial;
 }
 
-#reviewMessageResultsDiv{
+#reviewMessageResultsDiv {
+    margin-left: 34%;
+    margin-bottom: 1%;
+    font-family: Arial;
+}
+
+#reviewMessagePagesDiv {
     margin-left: 46.5%;
     margin-bottom: 1%;
-    display: block;
-    font-family: Arial;
-}
-
-#reviewMessage{
-    margin-left: -5%;
-    font-family: Arial;
-}
-
-#skippedPages {
-    margin-left: -24%;
     font-family: Arial;
 }
 

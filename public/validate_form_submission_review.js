@@ -31,7 +31,6 @@ var buffer = document.createElement('div');
 
 if (pageOneHasNull == "true" || pageTwoHasNull == "true") {
     var skippedPages = document.createElement('p');
-    skippedPages.id = "skippedPages";
     skippedPages.innerHTML = "You didn't answer questions on the following page(s): ";
     document.querySelector("#reviewMessageResultsDiv").appendChild(skippedPages);
     document.querySelector('#reviewMessageResultsDiv').appendChild(buffer);
@@ -41,8 +40,8 @@ if (pageOneHasNull == "true") {
     var pageOneNullMessage = document.createElement('a');
     pageOneNullMessage.href = "./page_one";
     pageOneNullMessage.innerHTML = "Page One";
-    document.querySelector("#reviewMessageResultsDiv").appendChild(pageOneNullMessage);
-    document.querySelector('#reviewMessageResultsDiv').appendChild(buffer);
+    document.querySelector("#reviewMessagePagesDiv").appendChild(pageOneNullMessage);
+    document.querySelector('#reviewMessagePagesDiv').appendChild(buffer);
 }
 
 if (pageTwoHasNull == "true") {
@@ -50,7 +49,7 @@ if (pageTwoHasNull == "true") {
     pageTwoNullMessage.id = "pageTwoNullMessage";
     pageTwoNullMessage.href = "./page_two";
     pageTwoNullMessage.innerHTML = "Page Two";
-    document.querySelector("#reviewMessageResultsDiv").appendChild(pageTwoNullMessage);
+    document.querySelector("#reviewMessagePagesDiv").appendChild(pageTwoNullMessage);
 } 
 
 
