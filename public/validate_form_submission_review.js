@@ -39,7 +39,7 @@ if (pageOneHasNull == "true" || pageTwoHasNull == "true") {
 
 if (pageOneHasNull == "true") {
     var pageOneNullMessage = document.createElement('a');
-    pageOneNullMessage.href = "./";
+    pageOneNullMessage.href = "./page_one";
     pageOneNullMessage.innerHTML = "Page One";
     document.querySelector("#reviewMessageResultsDiv").appendChild(pageOneNullMessage);
     document.querySelector('#reviewMessageResultsDiv').appendChild(buffer);
