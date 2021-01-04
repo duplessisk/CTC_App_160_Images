@@ -32,7 +32,7 @@ function buildDoc(arr) {
         for (var i = 0; i < arr.length-1; i++) {
             console.log("round: " + i);
             var newImg = document.createElement('img');
-            newImg.id="newimg";
+            newImg.id="resultsImg";
             var s = arr[i];
             console.log("missed image path: " + s);
             console.log(s);
@@ -41,7 +41,7 @@ function buildDoc(arr) {
             s = s.substring(0,s.length-1);
             newImg.src = s;
             var p = document.createElement('p');
-            p.id = "pnew";
+            p.id = "resultsMessage";
             p.innerHTML = "You got image  " + imageNum + " incorrect";
             document.body.append(p);
 

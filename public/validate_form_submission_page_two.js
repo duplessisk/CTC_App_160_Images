@@ -1,4 +1,4 @@
-var allCheckBoxes = document.querySelectorAll('.radio__input');
+var allCheckBoxes = document.querySelectorAll('.default-radio-buttons');
 var yesCheckBoxes = document.querySelectorAll('.yes_check_boxes');
 var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 

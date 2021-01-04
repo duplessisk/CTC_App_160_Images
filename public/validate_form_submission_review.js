@@ -18,7 +18,6 @@ document.querySelector('#submitButtonReviewPage').addEventListener('click', func
     }
 });
 
-
 var reviewMessage = document.createElement('p');
 reviewMessage.id = "reviewMessage";
 reviewMessage.innerHTML = "You can't submit this form twice, so please go back and review your answers. " +
@@ -41,8 +40,7 @@ if (pageOneHasNull == "true" || pageTwoHasNull == "true") {
 if (pageOneHasNull == "true") {
     var pageOneNullMessage = document.createElement('a');
     pageOneNullMessage.href = "./";
-    pageOneNullMessage.id = "pageOneNullMessage";
-    pageOneNullMessage.innerHTML = "page one";
+    pageOneNullMessage.innerHTML = "Page One";
     document.querySelector("#reviewMessageResultsDiv").appendChild(pageOneNullMessage);
     document.querySelector('#reviewMessageResultsDiv').appendChild(buffer);
 }
@@ -50,8 +48,7 @@ if (pageOneHasNull == "true") {
 if (pageTwoHasNull == "true") {
     var pageTwoNullMessage = document.createElement('a');
     pageTwoNullMessage.href = "./page_two";
-    pageTwoNullMessage.id = "pageTwoNullMessage";
-    pageTwoNullMessage.innerHTML = "page two";
+    pageTwoNullMessage.innerHTML = "Page Two";
     document.querySelector("#reviewMessageResultsDiv").appendChild(pageTwoNullMessage);
 } 
 

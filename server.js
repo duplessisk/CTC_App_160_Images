@@ -15,6 +15,14 @@ app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function(request,response) {
+    response.sendFile(path.join(__dirname + '/intro_page.html'));
+});
+
+app.post("/intro_page", function(request,response) {
+    response.redirect('/page_one');
+});
+
+app.get("/page_one", function(request,response) {
     response.sendFile(path.join(__dirname + '/page_one.html'));
 });
 
@@ -33,7 +41,7 @@ app.post("/page_two", function(request,response) {
     jsonArrayPageTwo.length = 0;
     driveApp(answer_key_page_two,request,5);
     if (buttonClicked == "Previous") {
-        response.redirect('/');
+        response.redirect('/page_one');
     } else if (buttonClicked == "Continue") {
         response.redirect('/review');
     }
@@ -70,6 +78,7 @@ app.get("/form_already_submitted_page", function(request,response) {
 
 app.listen(process.env.PORT || 3000);
 
+// functions
 function driveApp(answerKeyPage,request,firstCellImageNumber) {
     var answerKey = createAnswerKey(answerKeyPage);
     var userResponses = initUserResponses(request);
