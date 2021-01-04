@@ -1,5 +1,3 @@
-console.log("server restarted");
-
 // import  npm modules
 const express = require("express");
 const path = require("path");
@@ -20,10 +18,18 @@ var previouslySubmitted = false;
 
 app.get("/", function(request,response) {
     previouslySubmitted = false;
-    response.sendFile(path.join(__dirname + '/intro_page.html'));
+    response.sendFile(path.join(__dirname + '/welcome_page.html'));
 });
 
-app.post("/intro_page", function(request,response) {
+app.post("/welcome_page", function(request,response) {
+    response.redirect('/instructions_page');
+});
+
+app.get("/instructions_page", function(request,response) {
+    response.sendFile(path.join(__dirname + '/instructions_page.html'));
+});
+
+app.post("/instructions_page", function(request,response) {
     response.redirect('/page_one');
 });
 

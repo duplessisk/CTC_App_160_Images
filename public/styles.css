@@ -9,6 +9,20 @@ body {
     margin-left: -3%;
 }
 
+#welcomeImage {
+    margin-left: 12%;
+    width: 80%;
+    height: auto;
+    top: 0;
+}
+
+#instructionsImage {
+    margin-left: 12%;
+    width: 80%;
+    height: auto;
+    top: 0;
+}
+
 #headerImage {
     margin-left: 12%;
     width: 80%;
@@ -118,12 +132,17 @@ body {
 }
 
 #beginButton {
-    margin-left: 45%;
+    margin-top: 5%;
+    margin-left: 49.5%;
 }
 
 #nextButton {
     margin-bottom: 1%;
     margin-left: 52.2%;
+}
+
+#understandButton {
+    font-style: 0.5vw;
 }
 
 #continueButtonDiv {
