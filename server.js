@@ -66,11 +66,11 @@ app.post("/review", function(request,response) {
     if (previouslySubmitted) {
         response.redirect('/form_already_submitted_page');
     } else {
-        previouslySubmitted = true;
         var buttonClicked = request.body.button;
         if (buttonClicked == "Previous") {
             response.redirect('/page_two');
         } else {
+            previouslySubmitted = true;
             postMissedImagePaths();
             response.redirect('/results');
         }
