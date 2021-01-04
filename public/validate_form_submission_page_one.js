@@ -76,7 +76,6 @@ if (reviewPageVisited == "true") {
     document.body.appendChild(hyperLinkToReviewPageDiv);
 
     var hyperLinkToReviewPage = document.createElement('a');
-    hyperLinkToReviewPage.id = 'hyperLinkToReviewPage';
     hyperLinkToReviewPage.href = "./review";
     hyperLinkToReviewPage.innerHTML = "Return to review page";
     document.querySelector('#hyperLinkToReviewPageDiv').appendChild(hyperLinkToReviewPage);
