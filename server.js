@@ -1,3 +1,5 @@
+console.log("server restarted");
+
 // import  npm modules
 const express = require("express");
 const path = require("path");
@@ -14,7 +16,10 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
+var previouslySubmitted = false;
+
 app.get("/", function(request,response) {
+    previouslySubmitted = false;
     response.sendFile(path.join(__dirname + '/intro_page.html'));
 });
 
@@ -50,8 +55,6 @@ app.post("/page_two", function(request,response) {
 app.get("/review", function(request,response) {
     response.sendFile(path.join(__dirname + '/review.html'));
 });
-
-var previouslySubmitted = false;
 
 app.post("/review", function(request,response) {
     if (previouslySubmitted) {
