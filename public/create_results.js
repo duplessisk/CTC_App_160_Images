@@ -48,7 +48,7 @@ function buildDoc(arr) {
             document.body.appendChild(newImg);
 
             var bottomPadding = document.createElement('div');
-            bottomPadding.className = "bottom-padding";
+            bottomPadding.id = "bottomPadding";
             document.body.appendChild(bottomPadding);
         }
     } else {

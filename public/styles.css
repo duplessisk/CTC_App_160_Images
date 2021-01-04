@@ -67,6 +67,18 @@ body {
     border: 0.25em solid rgba(248, 245, 245, 0.829);
 }
 
+#progressPageOne {
+    margin-top: 0.5%;
+    margin-left: 51.5%;
+    font-family: Arial;
+}
+
+#progressPageTwo {
+    margin-top: -4%;
+    margin-left: 51%;
+    font-family: Arial;
+}
+
 /*****Radio Button Styling*****/
 
 .radio-button-labels {
@@ -212,6 +224,10 @@ body {
     font-family: Arial;
 }
 
+a:visited {   
+    color: rgb(13, 13, 196);   
+}
+
 /***Results Page Styling***/
 
 #resultsMessage {
@@ -225,7 +241,6 @@ body {
     margin-left: 20%;
 }
 
-#progress {
-    margin-left: 51.5%;
-    font-family: Arial;
+#bottomPadding {   
+    margin-bottom: 10%;   
 }

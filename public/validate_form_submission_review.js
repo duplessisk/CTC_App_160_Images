@@ -47,6 +47,7 @@ if (pageOneHasNull == "true") {
 
 if (pageTwoHasNull == "true") {
     var pageTwoNullMessage = document.createElement('a');
+    pageTwoNullMessage.id = "pageTwoNullMessage";
     pageTwoNullMessage.href = "./page_two";
     pageTwoNullMessage.innerHTML = "Page Two";
     document.querySelector("#reviewMessageResultsDiv").appendChild(pageTwoNullMessage);
