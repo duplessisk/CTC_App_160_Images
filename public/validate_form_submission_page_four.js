@@ -3,13 +3,15 @@ var yesCheckBoxes = document.querySelectorAll('.yes_check_boxes');
 var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 
 var userResponses = [];
+console.log("cached answers: " + localStorage.getItem('pageFourSaved'));
 
-if (localStorage.getItem('pageOneAlreadyVisited') == null) {
+if (localStorage.getItem('pageFourAlreadyVisited') == null) {
+    console.log("page not visited before");
     for (var i = 0; i < 20; i++) {
         userResponses[i] = "null";
     }
 } else {
-    var userResponsesLocal = localStorage.getItem('pageOneSaved');
+    var userResponsesLocal = localStorage.getItem('pageFourSaved');
     for (var i = 0; i < userResponsesLocal.length; i++) {
         if (String(userResponsesLocal.charAt(i)) == "t") {
             userResponses[i] = true;
@@ -22,8 +24,9 @@ if (localStorage.getItem('pageOneAlreadyVisited') == null) {
 }
 
 for (var i = 0; i < userResponses.length; i++) {
+    console.log("userResponses: " + userResponses);
     if (userResponses[i] != "null" && userResponses[i]) {
-        allCheckBoxes[i].checked = true;
+        allCheckBoxes[i].checked = true
     } 
 }
 
@@ -49,9 +52,24 @@ for (var i = 0; i < noCheckBoxes.length; i++) {
     });
 }
 
+document.querySelector('#previousButton').addEventListener('click', function() {
+    userResponsesLocal = "";
+    localStorage.setItem('pageFourAlreadyVisited', 1);
+    for (var i = 0; i < userResponses.length; i++) {
+        if (userResponses[i] == "null") {
+            userResponsesLocal += "n";
+        } else if (userResponses[i] == true) {
+            userResponsesLocal += "t";
+        } else {
+            userResponsesLocal += "f";
+        }
+    }
+    localStorage.setItem('pageFourSaved', userResponsesLocal);
+});
+
 document.querySelector('#nextButton').addEventListener('click', function() {
     userResponsesLocal = "";
-    localStorage.setItem('pageOneAlreadyVisited', 1);
+    localStorage.setItem('pageFourAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i] == "null") {
             userResponsesLocal += "n";
@@ -62,9 +80,9 @@ document.querySelector('#nextButton').addEventListener('click', function() {
         }
     }
     if (userResponsesLocal.includes("n")) {
-        localStorage.setItem('pageOneHasNull', true);
+        localStorage.setItem('pageFourHasNull', true);
     } else {
-        localStorage.setItem('pageOneHasNull', false);
+        localStorage.setItem('pageFourHasNull', false);
     }
-    localStorage.setItem('pageOneSaved', userResponsesLocal);
+    localStorage.setItem('pageFourSaved', userResponsesLocal);
 });

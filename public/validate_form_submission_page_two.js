@@ -67,7 +67,7 @@ document.querySelector('#previousButton').addEventListener('click', function() {
     localStorage.setItem('pageTwoSaved', userResponsesLocal);
 });
 
-document.querySelector('#continueButton').addEventListener('click', function() {
+document.querySelector('#nextButton').addEventListener('click', function() {
     userResponsesLocal = "";
     localStorage.setItem('pageTwoAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {

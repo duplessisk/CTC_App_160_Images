@@ -5,6 +5,10 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const answer_key_page_one = require("./answer_key_page_one");
 const answer_key_page_two = require("./answer_key_page_two");
+const answer_key_page_three = require("./answer_key_page_three");
+const answer_key_page_four = require("./answer_key_page_four");
+const answer_key_page_five = require("./answer_key_page_five");
+
 
 // create express app
 const app = express();
@@ -53,6 +57,51 @@ app.post("/page_two", function(request,response) {
     driveApp(answer_key_page_two,request,2);
     if (buttonClicked == "Previous") {
         response.redirect('/page_one');
+    } else if (buttonClicked == "Next") {
+        response.redirect('/page_three');
+    }
+});
+
+app.get("/page_three", function(request,response) {
+    response.sendFile(path.join(__dirname + '/page_three.html'));
+});
+
+app.post("/page_three", function(request,response) {
+    var buttonClicked = request.body.button;
+    jsonArrayPageThree.length = 0;
+    driveApp(answer_key_page_three,request,3);
+    if (buttonClicked == "Previous") {
+        response.redirect('/page_two');
+    } else if (buttonClicked == "Next") {
+        response.redirect('/page_four');
+    }
+});
+
+app.get("/page_four", function(request,response) {
+    response.sendFile(path.join(__dirname + '/page_four.html'));
+});
+
+app.post("/page_four", function(request,response) {
+    var buttonClicked = request.body.button;
+    jsonArrayPageFour.length = 0;
+    driveApp(answer_key_page_four,request,4);
+    if (buttonClicked == "Previous") {
+        response.redirect('/page_three');
+    } else if (buttonClicked == "Next") {
+        response.redirect('/page_five');
+    }
+});
+
+app.get("/page_five", function(request,response) {
+    response.sendFile(path.join(__dirname + '/page_five.html'));
+});
+
+app.post("/page_five", function(request,response) {
+    var buttonClicked = request.body.button;
+    jsonArrayPageFive.length = 0;
+    driveApp(answer_key_page_five,request,5);
+    if (buttonClicked == "Previous") {
+        response.redirect('/page_four');
     } else if (buttonClicked == "Continue") {
         response.redirect('/review');
     }
@@ -68,7 +117,7 @@ app.post("/review", function(request,response) {
     } else {
         var buttonClicked = request.body.button;
         if (buttonClicked == "Previous") {
-            response.redirect('/page_two');
+            response.redirect('/page_five');
         } else {
             previouslySubmitted = true;
             postMissedImagePaths();
@@ -137,6 +186,10 @@ function recordUserResponses(userResponses) {
 
 var jsonArrayPageOne = [];
 var jsonArrayPageTwo = [];
+var jsonArrayPageThree = [];
+var jsonArrayPageFour = [];
+var jsonArrayPageFive = [];
+
 
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
     for (var i = 0; i < 10; i++) {
@@ -148,6 +201,12 @@ function setMissedImagePaths(answerKey,userResponses,pageNumber) {
                 jsonArrayPageOne.push(wrongImageObject);
             } else if (pageNumber == 2) {
                 jsonArrayPageTwo.push(wrongImageObject);
+            } else if (pageNumber == 3) {
+                jsonArrayPageThree.push(wrongImageObject);
+            } else if (pageNumber == 4) {
+                jsonArrayPageFour.push(wrongImageObject);
+            } else if (pageNumber == 5) {
+                jsonArrayPageFive.push(wrongImageObject);
             }
         }
     }
@@ -157,6 +216,10 @@ function postMissedImagePaths() {
     var jsonString = "";
     jsonString = postMissedImagePathsHelper(jsonArrayPageOne, jsonString);
     jsonString = postMissedImagePathsHelper(jsonArrayPageTwo, jsonString);
+    jsonString = postMissedImagePathsHelper(jsonArrayPageThree, jsonString);
+    jsonString = postMissedImagePathsHelper(jsonArrayPageFour, jsonString);
+    jsonString = postMissedImagePathsHelper(jsonArrayPageFive, jsonString);
+
     fs.writeFile('./public/incorrect_image_paths.json', jsonString, function(error) {
         if (error) {
             console.log(error);
@@ -170,4 +233,3 @@ function postMissedImagePathsHelper(jsonArray, jsonString) {
     }
     return jsonString;
 }
-

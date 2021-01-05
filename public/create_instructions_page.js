@@ -7,5 +7,5 @@ understandButton.type = "submit";
 understandButton.className = "button";
 understandButton.id = "understandButton";
 understandButton.name = "button";
-understandButton.value = "Okay";
+understandButton.value = "Next";
 document.querySelector("#beginButtonDiv").appendChild(understandButton);

@@ -21,7 +21,7 @@ for (var i = 0; i < 10; i++) {
             "</div>" + 
                 "</div>" +
                 "<div class= 'cell-image-row-container'>" + 
-                    "<img src='/static/cell_images/cell1"+i+".JPG' alt='This image was originally intended to display a row of cell images' id='cellImage'>" + 
+                    "<img src='/static/cell_images/cell4"+i+".JPG' alt='This image was originally intended to display a row of cell images' id='cellImage'>" + 
                 "</div>" + 
             "</div>" + 
         "</div>"
@@ -39,14 +39,14 @@ previousButton.name = "button";
 previousButton.value = "Previous";
 document.querySelector("#previousButtonDiv").appendChild(previousButton);
 
-var nextButtonDiv = document.createElement('div');
-nextButtonDiv.id = "nextButtonDiv";
-document.querySelector("#form").appendChild(nextButtonDiv);
+var continueButtonDiv = document.createElement('div');
+continueButtonDiv.id = "continueButtonDiv";
+document.querySelector("#form").appendChild(continueButtonDiv);
 
-var nextButton = document.createElement('input');
-nextButton.type = "submit";
-nextButton.className = "button";
-nextButton.id = "nextButton";
-nextButton.name = "button";
-nextButton.value = "Next";
-document.querySelector("#nextButtonDiv").appendChild(nextButton);
+var continueButton = document.createElement('input');
+continueButton.type = "submit";
+continueButton.className = "button";
+continueButton.id = "continueButton";
+continueButton.name = "button";
+continueButton.value = "Continue";
+document.querySelector("#continueButtonDiv").appendChild(continueButton);
