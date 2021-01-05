@@ -7,7 +7,7 @@ console.log("cached answers: " + localStorage.getItem('pageTwoSaved'));
 
 if (localStorage.getItem('pageTwoAlreadyVisited') == null) {
     console.log("page not visited before");
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 20; i++) {
         userResponses[i] = "null";
     }
 } else {

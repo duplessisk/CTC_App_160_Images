@@ -5,7 +5,7 @@ var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 var userResponses = [];
 
 if (localStorage.getItem('pageOneAlreadyVisited') == null) {
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 20; i++) {
         userResponses[i] = "null";
     }
 } else {

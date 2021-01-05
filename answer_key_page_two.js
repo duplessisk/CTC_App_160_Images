@@ -11,5 +11,4 @@ var answerKey =
 /*18*/ 'y',
 /*19*/ 'y',
                 ];
-
 exports.answerKey = answerKey;

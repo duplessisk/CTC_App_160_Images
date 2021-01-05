@@ -36,7 +36,7 @@ function buildDoc(arr) {
             var s = arr[i];
             console.log("missed image path: " + s);
             console.log(s);
-            var imageNum = Number(s.charAt(26)) + 1;
+            var imageNum = s.substring(26,28);
             s = s.substring(1);
             s = s.substring(0,s.length-1);
             newImg.src = s;
