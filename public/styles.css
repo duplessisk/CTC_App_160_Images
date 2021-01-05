@@ -256,3 +256,22 @@ a:visited {
 #bottomPadding {   
     margin-bottom: 10%;   
 }
+
+.cell-type {
+    text-align: center;
+}
+
+.types {
+    /* text-align: center; */
+    margin-bottom: 10%;
+    font-size: 5vw;
+}
+
+.message-div {
+    text-align: center;
+    font-size: 2vw; 
+}
+
+.showTypeButton {
+    margin-left: 45.5%;
+}
