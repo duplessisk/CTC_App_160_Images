@@ -39,7 +39,7 @@ app.get("/page_one", function(request,response) {
 
 app.post("/page_one", function(request,response) {
     jsonArrayPageOne.length = 0;
-    driveApp(answer_key_page_one,request,0);
+    driveApp(answer_key_page_one,request,1);
     response.redirect('/page_two');
 });
 
@@ -50,7 +50,7 @@ app.get("/page_two", function(request,response) {
 app.post("/page_two", function(request,response) {
     var buttonClicked = request.body.button;
     jsonArrayPageTwo.length = 0;
-    driveApp(answer_key_page_two,request,5);
+    driveApp(answer_key_page_two,request,2);
     if (buttonClicked == "Previous") {
         response.redirect('/page_one');
     } else if (buttonClicked == "Continue") {
@@ -88,11 +88,11 @@ app.get("/form_already_submitted_page", function(request,response) {
 app.listen(process.env.PORT || 3000);
 
 // functions
-function driveApp(answerKeyPage,request,firstCellImageNumber) {
+function driveApp(answerKeyPage,request,pageNumber) {
     var answerKey = createAnswerKey(answerKeyPage);
     var userResponses = initUserResponses(request);
     recordUserResponses(userResponses);
-    setMissedImagePaths(answerKey, userResponses, firstCellImageNumber);
+    setMissedImagePaths(answerKey, userResponses, pageNumber);
 }
 
 function createAnswerKey(answerKey) {
@@ -114,7 +114,12 @@ function initUserResponses(request) {
         request.body.radio1,
         request.body.radio2,
         request.body.radio3,
-        request.body.radio4
+        request.body.radio4,
+        request.body.radio5,
+        request.body.radio6,
+        request.body.radio7,
+        request.body.radio8,
+        request.body.radio9
     ]
 }
 
@@ -133,15 +138,15 @@ function recordUserResponses(userResponses) {
 var jsonArrayPageOne = [];
 var jsonArrayPageTwo = [];
 
-function setMissedImagePaths(answerKey,userResponses,firstCellImageNumber) { 
-    for (var i = 0; i < 5; i++) {
+function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
+    for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {
             var wrongImageObject = {
-                imagePath: '/static/cell_answers/cell' + String(i + firstCellImageNumber) + 'answer.JPG'
+                imagePath: '/static/cell_answers/cell' + String(pageNumber - 1) + String(i) + 'answer.JPG'
             }            
-            if (firstCellImageNumber == 0) {
+            if (pageNumber == 1) {
                 jsonArrayPageOne.push(wrongImageObject);
-            } else if (firstCellImageNumber == 5) {
+            } else if (pageNumber == 2) {
                 jsonArrayPageTwo.push(wrongImageObject);
             }
         }

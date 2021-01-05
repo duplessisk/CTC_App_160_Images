@@ -1,4 +1,4 @@
-for (var i = 0; i < 5; i++) {
+for (var i = 0; i < 10; i++) {
     var newQuestion = document.createElement('div');
     document.querySelector("#form").appendChild(newQuestion);
     newQuestion.innerHTML = 
@@ -21,7 +21,7 @@ for (var i = 0; i < 5; i++) {
             "</div>" + 
                 "</div>" +
                 "<div class= 'cell-image-row-container'>" + 
-                    "<img src='/static/cell_images/cell"+i+".JPG' alt='This image was originally intended to display a row of cell images' id='cellImage'>" + 
+                    "<img src='/static/cell_images/cell0"+i+".JPG' alt='This image was originally intended to display a row of cell images' id='cellImage'>" + 
                 "</div>" + 
             "</div>" + 
         "</div>"
