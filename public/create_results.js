@@ -1,3 +1,70 @@
+// create cell types
+var cellTypes = ['A','A','A','A','A','A','A','A','A','A',
+                 'B','B','B','B','B','B','B','B','B','B',
+                 'C','C','C','C','C','C','C','C','C','C',
+                 'D','D','D','D','D','D','D','D','D','D',
+                 'E','E','E','E','E','E','E','E','E','E',
+                ];
+
+// get counts for num of missed cells
+getBlock("A","null");
+getBlock("B","null");
+getBlock("C","null");
+getBlock("D","null");
+getBlock("E","null");
+
+var totalNumCellTypes = [0,0,0,0,0];
+totalNumEachCellType();
+
+// functions to get data
+function totalNumEachCellType() {
+    for (var i = 0; i < cellTypes.length; i++) {
+        if (cellTypes[i] == "A") {
+            totalNumCellTypes[0] += 1;
+        } else if (cellTypes[i] == "B") {
+            totalNumCellTypes[1] += 1;
+        } else if (cellTypes[i] == "C") {
+            totalNumCellTypes[2] += 1;
+        } else if (cellTypes[i] == "D") {
+            totalNumCellTypes[3] += 1;
+        } else {
+            totalNumCellTypes[4] += 1;
+        }
+    }
+}
+
+var numMissedEachCellType = [
+                                totalNumCellTypes[0],totalNumCellTypes[1],
+                                totalNumCellTypes[2],totalNumCellTypes[3],
+                                totalNumCellTypes[4]
+                            ];
+
+function processLocalCellType(localCellType) {
+    if (localCellType == "A") {
+        numMissedEachCellType[0] -= 1;
+    } else if (localCellType == "B") {
+        numMissedEachCellType[1] -= 1;
+    } else if (localCellType == "C") {
+        numMissedEachCellType[2] -= 1;
+    } else if (localCellType == "D") {
+        numMissedEachCellType[3] -= 1;
+    } else if (localCellType == "E") {
+        numMissedEachCellType[4] -= 1;
+    }
+}
+
+var percentCorrectEachCellType = [
+                                    100*numMissedEachCellType[0]/totalNumCellTypes[0],
+                                    100*numMissedEachCellType[1]/totalNumCellTypes[1],
+                                    100*numMissedEachCellType[2]/totalNumCellTypes[2],
+                                    100*numMissedEachCellType[3]/totalNumCellTypes[3],
+                                    100*numMissedEachCellType[4]/totalNumCellTypes[4],
+                                ]  
+                               
+console.log("totalNumCellTypes: " + totalNumCellTypes.toString());
+console.log("numMissedEachCellType: " + numMissedEachCellType.toString());
+console.log("percentCorrectEachCellType: " + percentCorrectEachCellType.toString());
+                                
 // create DIVs
 var buttonTypeA = document.createElement('div');
 buttonTypeA.className = "button_type";
@@ -8,7 +75,7 @@ typeA.id = "typeA";
 typeA.className = "types";
 document.body.appendChild(typeA);
 var typeALabel = document.createElement('p');
-typeALabel.innerHTML = "Type A Cell Results";
+typeALabel.innerHTML = "Type A Cell Results. " + "You got "+percentCorrectEachCellType[0]+""+ "%";
 typeALabel.className = "label-types";
 document.getElementById("buttonTypeA").appendChild(typeALabel);
 
@@ -21,7 +88,7 @@ typeB.id = "typeB";
 typeB.className = "types";
 document.body.appendChild(typeB);
 var typeBLabel = document.createElement('p');
-typeBLabel.innerHTML = "Type B Cell Results";
+typeBLabel.innerHTML = "Type B Cell Results. " + "You got "+percentCorrectEachCellType[1]+""+ "%";
 typeBLabel.className = "label-types";
 document.getElementById("buttonTypeB").appendChild(typeBLabel);
 
@@ -34,7 +101,7 @@ typeC.id = "typeC";
 typeC.className = "types";
 document.body.appendChild(typeC);
 var typeCLabel = document.createElement('p');
-typeCLabel.innerHTML = "Type C Cell Results";
+typeCLabel.innerHTML = "Type C Cell Results. " + "You got "+percentCorrectEachCellType[2]+""+ "%";
 typeCLabel.className = "label-types";
 document.getElementById("buttonTypeC").appendChild(typeCLabel);
 
@@ -47,7 +114,7 @@ typeD.id = "typeD";
 typeD.className = "types";
 document.body.appendChild(typeD);
 var typeDLabel = document.createElement('p');
-typeDLabel.innerHTML = "Type D Cell Results";
+typeDLabel.innerHTML = "Type D Cell Results. " + "You got "+percentCorrectEachCellType[3]+""+ "%";
 typeDLabel.className = "label-types";
 document.getElementById("buttonTypeD").appendChild(typeDLabel);
 
@@ -60,7 +127,7 @@ typeE.id = "typeE";
 typeE.className = "types";
 document.body.appendChild(typeE);
 var typeELabel = document.createElement('p');
-typeELabel.innerHTML = "Type E Cell Results";
+typeELabel.innerHTML = "Type E Cell Results. " + "You got "+percentCorrectEachCellType[4]+""+ "%";
 typeELabel.className = "label-types";
 document.getElementById("buttonTypeE").appendChild(typeELabel);
 
@@ -95,6 +162,8 @@ showTypeEButton.id = "showTypeEButton";
 showTypeEButton.className = "show-type-button";
 document.querySelector("#buttonTypeE").appendChild(showTypeEButton);
 
+
+//make buttons dynamic
 var buttonsClickNumMap = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
 
 var buttonTypeArray = [showTypeAButton.id,showTypeBButton.id,showTypeCButton.id,showTypeDButton.id,showTypeEButton.id];
@@ -113,6 +182,7 @@ for (var i = 0; i < buttonTypeArray.length; i++) {
     });
 }
 
+// functions to handle JSON file
 async function getBlock(globalCellType, showOrHide) {
     let jsonBlocks;
     try {
@@ -155,7 +225,8 @@ function buildDoc(arr,globalCellType,showOrHide) {
     }
 }
 
-// removes quotations from each missed image path so the computer can access the file
+
+// functions to process data from JSON file
 function getMissedImageSrc(missedImagePath) {
     missedImagePath = missedImagePath.substring(1);
     missedImagePath = missedImagePath.substring(0,missedImagePath.length-1);
@@ -170,6 +241,7 @@ function placeInCorrectCategory(imageNum,newImg,globalCellType,showOrHide) {
         var localCellType = cellTypes[imageNum];
     }
     if (localCellType == globalCellType) {
+        processLocalCellType(localCellType); 
         var messageDiv = document.createElement('div');
         messageDiv.className = "message-div";
         messageDiv.id = "messageDiv";
@@ -182,64 +254,6 @@ function placeInCorrectCategory(imageNum,newImg,globalCellType,showOrHide) {
             document.querySelector("#type"+localCellType+"").innerHTML = '';
         }
     }
-}
+} 
 
-// create cell types
-var cellTypes = 
-                [
-/*0*/ 'A',
-/*1*/ 'A',
-/*2*/ 'A',
-/*3*/ 'A',
-/*4*/ 'A',             
-/*5*/ 'A',
-/*6*/ 'A',
-/*7*/ 'A',
-/*8*/ 'A',
-/*9*/ 'A',
 
-/*10*/ 'B',
-/*11*/ 'B',
-/*12*/ 'B',
-/*13*/ 'B',
-/*14*/ 'B',             
-/*15*/ 'B',
-/*16*/ 'B',
-/*17*/ 'B',
-/*18*/ 'B',
-/*19*/ 'B',
-
-/*20*/ 'C',
-/*21*/ 'C',
-/*22*/ 'C',
-/*23*/ 'C',
-/*24*/ 'C',             
-/*25*/ 'C',
-/*26*/ 'C',
-/*27*/ 'C',
-/*28*/ 'C',
-/*29*/ 'C',
-
-/*30*/ 'D',
-/*31*/ 'D',
-/*32*/ 'D',
-/*33*/ 'D',
-/*34*/ 'D',             
-/*35*/ 'D',
-/*36*/ 'D',
-/*37*/ 'D',
-/*38*/ 'D',
-/*39*/ 'D',
-
-/*40*/ 'E',
-/*41*/ 'E',
-/*42*/ 'E',
-/*43*/ 'E',
-/*44*/ 'E',             
-/*45*/ 'E',
-/*46*/ 'E',
-/*47*/ 'E',
-/*48*/ 'E',
-/*49*/ 'E',
-
-                ];
