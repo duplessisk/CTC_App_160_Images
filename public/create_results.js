@@ -1,43 +1,58 @@
 // create DIVs
 var buttonTypeA = document.createElement('div');
+buttonTypeA.className = "button_type";
 buttonTypeA.id = "buttonTypeA";
 document.body.appendChild(buttonTypeA);
 var typeA = document.createElement('div');
 typeA.id = "typeA";
 typeA.className = "types";
 document.body.appendChild(typeA);
+var typeALabel = document.createTextNode("Type A Cell Results");
+document.getElementById("buttonTypeA").appendChild(typeALabel);
 
 var buttonTypeB = document.createElement('div');
+buttonTypeB.className = "button_type";
 buttonTypeB.id = "buttonTypeB";
 document.body.appendChild(buttonTypeB);
 var typeB = document.createElement('div');
 typeB.id = "typeB";
 typeB.className = "types";
 document.body.appendChild(typeB);
+var typeBLabel = document.createTextNode("Type B Cell Results");
+document.getElementById("buttonTypeB").appendChild(typeBLabel);
 
 var buttonTypeC = document.createElement('div');
+buttonTypeC.className = "button_type";
 buttonTypeC.id = "buttonTypeC";
 document.body.appendChild(buttonTypeC);
 var typeC = document.createElement('div');
 typeC.id = "typeC";
 typeC.className = "types";
 document.body.appendChild(typeC);
+var typeCLabel = document.createTextNode("Type C Cell Results");
+document.getElementById("buttonTypeC").appendChild(typeCLabel);
 
 var buttonTypeD = document.createElement('div');
+buttonTypeD.className = "button_type";
 buttonTypeD.id = "buttonTypeD";
 document.body.appendChild(buttonTypeD);
 var typeD = document.createElement('div');
 typeD.id = "typeD";
 typeD.className = "types";
 document.body.appendChild(typeD);
+var typeDLabel = document.createTextNode("Type D Cell Results");
+document.getElementById("buttonTypeD").appendChild(typeDLabel);
 
 var buttonTypeE = document.createElement('div');
+buttonTypeE.className = "button_type";
 buttonTypeE.id = "buttonTypeE";
 document.body.appendChild(buttonTypeE);
 var typeE = document.createElement('div');
 typeE.id = "typeE";
 typeE.className = "types";
 document.body.appendChild(typeE);
+var typeELabel = document.createTextNode("Type E Cell Results");
+document.getElementById("buttonTypeE").appendChild(typeELabel);
 
 // create buttons
 var showTypeAButton = document.createElement('button');
