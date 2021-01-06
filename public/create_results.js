@@ -39,14 +39,6 @@ typeE.id = "typeE";
 typeE.className = "types";
 document.body.appendChild(typeE);
 
-// Create Text
-var cellTypeALabel = document.createTextElement("Cell Type A");
-var cellTypeBLabel = document.createTextElement("Cell Type A");
-var cellTypeCLabel = document.createTextElement("Cell Type A");
-var cellTypeDLabel = document.createTextElement("Cell Type A");
-var cellTypeELabel = document.createTextElement("Cell Type A");
-
-
 // create buttons
 var showTypeAButton = document.createElement('button');
 showTypeAButton.innerHTML = "Show";
