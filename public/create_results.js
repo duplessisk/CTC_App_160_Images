@@ -1,23 +1,38 @@
+var buttonTypeA = document.createElement('div');
+buttonTypeA.id = "buttonTypeA";
+document.body.appendChild(buttonTypeA);
 var typeA = document.createElement('div');
 typeA.id = "typeA";
 typeA.className = "types";
 document.body.appendChild(typeA);
 
+var buttonTypeB = document.createElement('div');
+buttonTypeB.id = "buttonTypeB";
+document.body.appendChild(buttonTypeB);
 var typeB = document.createElement('div');
 typeB.id = "typeB";
 typeB.className = "types";
 document.body.appendChild(typeB);
 
+var buttonTypeC = document.createElement('div');
+buttonTypeC.id = "buttonTypeC";
+document.body.appendChild(buttonTypeC);
 var typeC = document.createElement('div');
 typeC.id = "typeC";
 typeC.className = "types";
 document.body.appendChild(typeC);
 
+var buttonTypeD = document.createElement('div');
+buttonTypeD.id = "buttonTypeD";
+document.body.appendChild(buttonTypeD);
 var typeD = document.createElement('div');
 typeD.id = "typeD";
 typeD.className = "types";
 document.body.appendChild(typeD);
 
+var buttonTypeE = document.createElement('div');
+buttonTypeE.id = "buttonTypeE";
+document.body.appendChild(buttonTypeE);
 var typeE = document.createElement('div');
 typeE.id = "typeE";
 typeE.className = "types";
@@ -25,56 +40,62 @@ document.body.appendChild(typeE);
 
 // create buttons
 var showTypeAButton = document.createElement('button');
-showTypeAButton.innerHTML = "missed typeA";
+showTypeAButton.innerHTML = "show";
 showTypeAButton.id = "showTypeAButton";
-showTypeAButton.className = "showTypeButton";
-document.querySelector("#typeA").appendChild(showTypeAButton);
+showTypeAButton.className = "show_type_button";
+document.querySelector("#buttonTypeA").appendChild(showTypeAButton);
 
 var showTypeBButton = document.createElement('button');
-showTypeBButton.innerHTML = "missed typeB";
+showTypeBButton.innerHTML = "show";
 showTypeBButton.id = "showTypeBButton";
-showTypeBButton.className = "showTypeButton";
-document.querySelector("#typeB").appendChild(showTypeBButton);
+showTypeBButton.className = "show_type_button";
+document.querySelector("#buttonTypeB").appendChild(showTypeBButton);
 
 var showTypeCButton = document.createElement('button');
-showTypeCButton.innerHTML = "missed typeC";
+showTypeCButton.innerHTML = "show";
 showTypeCButton.id = "showTypeCButton";
-showTypeCButton.className = "showTypeButton";
-document.querySelector("#typeC").appendChild(showTypeCButton);
+showTypeCButton.className = "show_type_button";
+document.querySelector("#buttonTypeC").appendChild(showTypeCButton);
 
 var showTypeDButton = document.createElement('button');
-showTypeDButton.innerHTML = "missed typeD";
+showTypeDButton.innerHTML = "show";
 showTypeDButton.id = "showTypeDButton";
-showTypeDButton.className = "showTypeButton";
-document.querySelector("#typeD").appendChild(showTypeDButton);
+showTypeDButton.className = "show_type_button";
+document.querySelector("#buttonTypeD").appendChild(showTypeDButton);
 
 var showTypeEButton = document.createElement('button');
-showTypeEButton.innerHTML = "missed typeE";
-showTypeDButton.id = "showTypeEButton";
-showTypeEButton.className = "showTypeButton";
-document.querySelector("#typeE").appendChild(showTypeEButton);
+showTypeEButton.innerHTML = "show";
+showTypeEButton.id = "showTypeEButton";
+showTypeEButton.className = "show_type_button";
+document.querySelector("#buttonTypeE").appendChild(showTypeEButton);
 
-var buttonTypeArray = ["#showTypeAButton","#showTypeBButton","#showTypeCButton","#showTypeDButton","#showTypeEButton"];
+var buttonsClickNumMap = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
 
-for (var i = 0; i < 1; i++) {
-    document.querySelector("#showTypeAButton").addEventListener('click', function() {
-        getBlock();
+var buttonTypeArray = [showTypeAButton.id,showTypeBButton.id,showTypeCButton.id,showTypeDButton.id,showTypeEButton.id];
+
+for (var i = 0; i < buttonTypeArray.length; i++) {
+    document.querySelectorAll(".show_type_button")[i].addEventListener('click', function() {
+        var s = this.id.charAt(8);
+        if (buttonsClickNumMap.get(s)%2 == 0) {
+            getBlock(s,'show');
+        } else {
+            getBlock(s,'hide');
+        }
+        buttonsClickNumMap.set(s,buttonsClickNumMap.get(s) + 1);
     });
 }
 
-async function getBlock() {
+async function getBlock(globalCellType, showOrHide) {
     let jsonBlocks;
     try {
         var response = await fetch("/static/incorrect_image_paths.json");
         jsonBlocks = await response.text();
         var arr = jsonObjectContents(jsonBlocks);
-        buildDoc(arr);
+        buildDoc(arr,globalCellType,showOrHide);
     } catch (e) {
         console.error(e);
     }
 }
-
-// getBlock();
 
 function jsonObjectContents(jsonBlocks) {
     var imagePathStrings = "";
@@ -91,7 +112,7 @@ function jsonObjectContents(jsonBlocks) {
     return arr;
 }
 
-function buildDoc(arr) {
+function buildDoc(arr,globalCellType,showOrHide) {
     if (arr.length-1 != 0) {
         for (var i = 0; i < arr.length-1; i++) {
             var newImg = document.createElement('img');
@@ -99,24 +120,11 @@ function buildDoc(arr) {
             var missedImagePath = arr[i];
             var imageNum = missedImagePath.substring(26,28);
             newImg.src = getMissedImageSrc(missedImagePath);
-            placeInCorrectCategory(imageNum,newImg);            
+            placeInCorrectCategory(imageNum,newImg,globalCellType,showOrHide);            
         }
     } else {
         document.body.append("you got no images incorrect!");
     }
-}
-
-function placeInCorrectCategory(imageNum,newImg) {
-    if (imageNum.charAt(0) == 'a') {
-        imageNum = imageNum.charAt(1);
-    } 
-    imageNum = Number(imageNum);
-    var cellType = cellTypes[imageNum];
-    var messageDiv = document.createElement('div');
-    messageDiv.className = "message-div";
-    messageDiv.innerHTML = "You got image  " + imageNum + " incorrect";
-    document.querySelector("#type"+cellType+"").append(messageDiv);
-    document.querySelector("#type"+cellType+"").appendChild(newImg);
 }
 
 // removes quotations from each missed image path so the computer can access the file
@@ -125,6 +133,29 @@ function getMissedImageSrc(missedImagePath) {
     missedImagePath = missedImagePath.substring(0,missedImagePath.length-1);
     return missedImagePath;
 }
+
+function placeInCorrectCategory(imageNum,newImg,globalCellType,showOrHide) {
+    if (Number(imageNum.charAt(0) == 0)) {
+        var num = Number(imageNum.charAt(1));
+        var localCellType = cellTypes[num];
+    } else {
+        var localCellType = cellTypes[imageNum];
+    }
+    if (localCellType == globalCellType) {
+        var messageDiv = document.createElement('div');
+        messageDiv.className = "message-div";
+        messageDiv.id = "messageDiv";
+        messageDiv.innerHTML = "You got image  " + imageNum + " incorrect";
+        if (showOrHide == "show") {
+            document.querySelector("#type"+localCellType+"").appendChild(messageDiv);
+            document.querySelector("#type"+localCellType+"").appendChild(newImg);
+        }
+        if (showOrHide == "hide") {
+            document.querySelector("#type"+localCellType+"").innerHTML = '';
+        }
+    }
+}
+
 // create cell types
 var cellTypes = 
                 [
