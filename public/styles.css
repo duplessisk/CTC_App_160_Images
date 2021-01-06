@@ -104,7 +104,6 @@ body {
     border-radius: 50%;
     margin-right: 10px;
     box-sizing: border-box;
-    /* padding: 2px; original padding */
     padding: 3px;
 }
 
@@ -271,11 +270,15 @@ a:visited {
     font-size: 2vw; 
 }
 
-.show_type_button {
-    margin-left: 45.5%;
+.show-type-button {
+    margin-left: 48.25%;
     cursor: pointer;
     background: RGB(180,91,56);
     color: white;
     font: bold 1vw Arial;
+}
+
+.label-types {
+    text-align: center;
 }
 

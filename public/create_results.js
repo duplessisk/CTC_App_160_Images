@@ -7,7 +7,9 @@ var typeA = document.createElement('div');
 typeA.id = "typeA";
 typeA.className = "types";
 document.body.appendChild(typeA);
-var typeALabel = document.createTextNode("Type A Cell Results");
+var typeALabel = document.createElement('p');
+typeALabel.innerHTML = "Type A Cell Results";
+typeALabel.className = "label-types";
 document.getElementById("buttonTypeA").appendChild(typeALabel);
 
 var buttonTypeB = document.createElement('div');
@@ -18,7 +20,9 @@ var typeB = document.createElement('div');
 typeB.id = "typeB";
 typeB.className = "types";
 document.body.appendChild(typeB);
-var typeBLabel = document.createTextNode("Type B Cell Results");
+var typeBLabel = document.createElement('p');
+typeBLabel.innerHTML = "Type B Cell Results";
+typeBLabel.className = "label-types";
 document.getElementById("buttonTypeB").appendChild(typeBLabel);
 
 var buttonTypeC = document.createElement('div');
@@ -29,7 +33,9 @@ var typeC = document.createElement('div');
 typeC.id = "typeC";
 typeC.className = "types";
 document.body.appendChild(typeC);
-var typeCLabel = document.createTextNode("Type C Cell Results");
+var typeCLabel = document.createElement('p');
+typeCLabel.innerHTML = "Type C Cell Results";
+typeCLabel.className = "label-types";
 document.getElementById("buttonTypeC").appendChild(typeCLabel);
 
 var buttonTypeD = document.createElement('div');
@@ -40,7 +46,9 @@ var typeD = document.createElement('div');
 typeD.id = "typeD";
 typeD.className = "types";
 document.body.appendChild(typeD);
-var typeDLabel = document.createTextNode("Type D Cell Results");
+var typeDLabel = document.createElement('p');
+typeDLabel.innerHTML = "Type D Cell Results";
+typeDLabel.className = "label-types";
 document.getElementById("buttonTypeD").appendChild(typeDLabel);
 
 var buttonTypeE = document.createElement('div');
@@ -51,38 +59,40 @@ var typeE = document.createElement('div');
 typeE.id = "typeE";
 typeE.className = "types";
 document.body.appendChild(typeE);
-var typeELabel = document.createTextNode("Type E Cell Results");
+var typeELabel = document.createElement('p');
+typeELabel.innerHTML = "Type E Cell Results";
+typeELabel.className = "label-types";
 document.getElementById("buttonTypeE").appendChild(typeELabel);
 
 // create buttons
 var showTypeAButton = document.createElement('button');
 showTypeAButton.innerHTML = "Show";
 showTypeAButton.id = "showTypeAButton";
-showTypeAButton.className = "show_type_button";
+showTypeAButton.className = "show-type-button";
 document.querySelector("#buttonTypeA").appendChild(showTypeAButton);
 
 var showTypeBButton = document.createElement('button');
 showTypeBButton.innerHTML = "Show";
 showTypeBButton.id = "showTypeBButton";
-showTypeBButton.className = "show_type_button";
+showTypeBButton.className = "show-type-button";
 document.querySelector("#buttonTypeB").appendChild(showTypeBButton);
 
 var showTypeCButton = document.createElement('button');
 showTypeCButton.innerHTML = "Show";
 showTypeCButton.id = "showTypeCButton";
-showTypeCButton.className = "show_type_button";
+showTypeCButton.className = "show-type-button";
 document.querySelector("#buttonTypeC").appendChild(showTypeCButton);
 
 var showTypeDButton = document.createElement('button');
 showTypeDButton.innerHTML = "Show";
 showTypeDButton.id = "showTypeDButton";
-showTypeDButton.className = "show_type_button";
+showTypeDButton.className = "show-type-button";
 document.querySelector("#buttonTypeD").appendChild(showTypeDButton);
 
 var showTypeEButton = document.createElement('button');
 showTypeEButton.innerHTML = "Show";
 showTypeEButton.id = "showTypeEButton";
-showTypeEButton.className = "show_type_button";
+showTypeEButton.className = "show-type-button";
 document.querySelector("#buttonTypeE").appendChild(showTypeEButton);
 
 var buttonsClickNumMap = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
@@ -90,7 +100,7 @@ var buttonsClickNumMap = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 
 var buttonTypeArray = [showTypeAButton.id,showTypeBButton.id,showTypeCButton.id,showTypeDButton.id,showTypeEButton.id];
 
 for (var i = 0; i < buttonTypeArray.length; i++) {
-    document.querySelectorAll(".show_type_button")[i].addEventListener('click', function() {
+    document.querySelectorAll(".show-type-button")[i].addEventListener('click', function() {
         var s = this.id.charAt(8);
         if (buttonsClickNumMap.get(s)%2 == 0) {
             getBlock(s,'show');
