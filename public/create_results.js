@@ -1,3 +1,4 @@
+// create DIVs
 var buttonTypeA = document.createElement('div');
 buttonTypeA.id = "buttonTypeA";
 document.body.appendChild(buttonTypeA);
@@ -38,33 +39,41 @@ typeE.id = "typeE";
 typeE.className = "types";
 document.body.appendChild(typeE);
 
+// Create Text
+var cellTypeALabel = document.createTextElement("Cell Type A");
+var cellTypeBLabel = document.createTextElement("Cell Type A");
+var cellTypeCLabel = document.createTextElement("Cell Type A");
+var cellTypeDLabel = document.createTextElement("Cell Type A");
+var cellTypeELabel = document.createTextElement("Cell Type A");
+
+
 // create buttons
 var showTypeAButton = document.createElement('button');
-showTypeAButton.innerHTML = "show";
+showTypeAButton.innerHTML = "Show";
 showTypeAButton.id = "showTypeAButton";
 showTypeAButton.className = "show_type_button";
 document.querySelector("#buttonTypeA").appendChild(showTypeAButton);
 
 var showTypeBButton = document.createElement('button');
-showTypeBButton.innerHTML = "show";
+showTypeBButton.innerHTML = "Show";
 showTypeBButton.id = "showTypeBButton";
 showTypeBButton.className = "show_type_button";
 document.querySelector("#buttonTypeB").appendChild(showTypeBButton);
 
 var showTypeCButton = document.createElement('button');
-showTypeCButton.innerHTML = "show";
+showTypeCButton.innerHTML = "Show";
 showTypeCButton.id = "showTypeCButton";
 showTypeCButton.className = "show_type_button";
 document.querySelector("#buttonTypeC").appendChild(showTypeCButton);
 
 var showTypeDButton = document.createElement('button');
-showTypeDButton.innerHTML = "show";
+showTypeDButton.innerHTML = "Show";
 showTypeDButton.id = "showTypeDButton";
 showTypeDButton.className = "show_type_button";
 document.querySelector("#buttonTypeD").appendChild(showTypeDButton);
 
 var showTypeEButton = document.createElement('button');
-showTypeEButton.innerHTML = "show";
+showTypeEButton.innerHTML = "Show";
 showTypeEButton.id = "showTypeEButton";
 showTypeEButton.className = "show_type_button";
 document.querySelector("#buttonTypeE").appendChild(showTypeEButton);
@@ -78,8 +87,10 @@ for (var i = 0; i < buttonTypeArray.length; i++) {
         var s = this.id.charAt(8);
         if (buttonsClickNumMap.get(s)%2 == 0) {
             getBlock(s,'show');
+            document.getElementById("showType"+s+"Button").innerHTML = "Hide";
         } else {
             getBlock(s,'hide');
+            document.getElementById("showType"+s+"Button").innerHTML = "Show";
         }
         buttonsClickNumMap.set(s,buttonsClickNumMap.get(s) + 1);
     });
