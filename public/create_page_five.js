@@ -16,7 +16,7 @@ for (var i = 0; i < 10; i++) {
                 "<label for='myRadioIdNo"+i+"' class='radio-button-labels'>" + 
                     "<input type='radio' value='no' name='radio"+i+"' class='default-radio-buttons no_check_boxes' id='myRadioIdNo"+i+"'>" + 
                     "<div class='custom-radio-buttons'></div>" + 
-                    "Not-CTC" + 
+                    "Not Cell" + 
                 "</label>" +
             "</div>" + 
                 "</div>" +
