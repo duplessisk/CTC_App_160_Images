@@ -6,65 +6,6 @@ var cellTypes = ['A','A','A','A','A','A','A','A','A','A',
                  'E','E','E','E','E','E','E','E','E','E',
                 ];
 
-// get counts for num of missed cells
-getBlock("A","null");
-getBlock("B","null");
-getBlock("C","null");
-getBlock("D","null");
-getBlock("E","null");
-
-var totalNumCellTypes = [0,0,0,0,0];
-totalNumEachCellType();
-
-// functions to get data
-function totalNumEachCellType() {
-    for (var i = 0; i < cellTypes.length; i++) {
-        if (cellTypes[i] == "A") {
-            totalNumCellTypes[0] += 1;
-        } else if (cellTypes[i] == "B") {
-            totalNumCellTypes[1] += 1;
-        } else if (cellTypes[i] == "C") {
-            totalNumCellTypes[2] += 1;
-        } else if (cellTypes[i] == "D") {
-            totalNumCellTypes[3] += 1;
-        } else {
-            totalNumCellTypes[4] += 1;
-        }
-    }
-}
-
-var numMissedEachCellType = [
-                                totalNumCellTypes[0],totalNumCellTypes[1],
-                                totalNumCellTypes[2],totalNumCellTypes[3],
-                                totalNumCellTypes[4]
-                            ];
-
-function processLocalCellType(localCellType) {
-    if (localCellType == "A") {
-        numMissedEachCellType[0] -= 1;
-    } else if (localCellType == "B") {
-        numMissedEachCellType[1] -= 1;
-    } else if (localCellType == "C") {
-        numMissedEachCellType[2] -= 1;
-    } else if (localCellType == "D") {
-        numMissedEachCellType[3] -= 1;
-    } else if (localCellType == "E") {
-        numMissedEachCellType[4] -= 1;
-    }
-}
-
-var percentCorrectEachCellType = [
-                                    100*numMissedEachCellType[0]/totalNumCellTypes[0],
-                                    100*numMissedEachCellType[1]/totalNumCellTypes[1],
-                                    100*numMissedEachCellType[2]/totalNumCellTypes[2],
-                                    100*numMissedEachCellType[3]/totalNumCellTypes[3],
-                                    100*numMissedEachCellType[4]/totalNumCellTypes[4],
-                                ]  
-                               
-console.log("totalNumCellTypes: " + totalNumCellTypes.toString());
-console.log("numMissedEachCellType: " + numMissedEachCellType.toString());
-console.log("percentCorrectEachCellType: " + percentCorrectEachCellType.toString());
-                                
 // create DIVs
 var buttonTypeA = document.createElement('div');
 buttonTypeA.className = "button_type";
@@ -75,7 +16,7 @@ typeA.id = "typeA";
 typeA.className = "types";
 document.body.appendChild(typeA);
 var typeALabel = document.createElement('p');
-typeALabel.innerHTML = "Type A Cell Results. " + "You got "+percentCorrectEachCellType[0]+""+ "%";
+typeALabel.innerHTML = "Type A Cell Results";
 typeALabel.className = "label-types";
 document.getElementById("buttonTypeA").appendChild(typeALabel);
 
@@ -88,7 +29,7 @@ typeB.id = "typeB";
 typeB.className = "types";
 document.body.appendChild(typeB);
 var typeBLabel = document.createElement('p');
-typeBLabel.innerHTML = "Type B Cell Results. " + "You got "+percentCorrectEachCellType[1]+""+ "%";
+typeBLabel.innerHTML = "Type B Cell Results";
 typeBLabel.className = "label-types";
 document.getElementById("buttonTypeB").appendChild(typeBLabel);
 
@@ -101,7 +42,7 @@ typeC.id = "typeC";
 typeC.className = "types";
 document.body.appendChild(typeC);
 var typeCLabel = document.createElement('p');
-typeCLabel.innerHTML = "Type C Cell Results. " + "You got "+percentCorrectEachCellType[2]+""+ "%";
+typeCLabel.innerHTML = "Type C Cell Results";
 typeCLabel.className = "label-types";
 document.getElementById("buttonTypeC").appendChild(typeCLabel);
 
@@ -114,7 +55,7 @@ typeD.id = "typeD";
 typeD.className = "types";
 document.body.appendChild(typeD);
 var typeDLabel = document.createElement('p');
-typeDLabel.innerHTML = "Type D Cell Results. " + "You got "+percentCorrectEachCellType[3]+""+ "%";
+typeDLabel.innerHTML = "Type D Cell Results";
 typeDLabel.className = "label-types";
 document.getElementById("buttonTypeD").appendChild(typeDLabel);
 
@@ -127,7 +68,7 @@ typeE.id = "typeE";
 typeE.className = "types";
 document.body.appendChild(typeE);
 var typeELabel = document.createElement('p');
-typeELabel.innerHTML = "Type E Cell Results. " + "You got "+percentCorrectEachCellType[4]+""+ "%";
+typeELabel.innerHTML = "Type E Cell Results";
 typeELabel.className = "label-types";
 document.getElementById("buttonTypeE").appendChild(typeELabel);
 
@@ -182,7 +123,6 @@ for (var i = 0; i < buttonTypeArray.length; i++) {
     });
 }
 
-// functions to handle JSON file
 async function getBlock(globalCellType, showOrHide) {
     let jsonBlocks;
     try {
@@ -241,7 +181,6 @@ function placeInCorrectCategory(imageNum,newImg,globalCellType,showOrHide) {
         var localCellType = cellTypes[imageNum];
     }
     if (localCellType == globalCellType) {
-        processLocalCellType(localCellType); 
         var messageDiv = document.createElement('div');
         messageDiv.className = "message-div";
         messageDiv.id = "messageDiv";
