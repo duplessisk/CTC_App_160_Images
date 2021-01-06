@@ -6,98 +6,33 @@ var cellTypes = ['A','A','A','A','A','A','A','A','A','A',
                  'E','E','E','E','E','E','E','E','E','E',
                 ];
 
-// create DIVs
-var typeAHeaderDiv = document.createElement('div');
-typeAHeaderDiv.id = "typeAHeaderDiv";
-document.body.appendChild(typeAHeaderDiv);
-var typeAResultsDiv = document.createElement('div');
-typeAResultsDiv.id = "typeAResultDiv";
-typeAResultsDiv.className = "types";
-document.body.appendChild(typeAResultsDiv);
-var typeALabel = document.createElement('p');
-typeALabel.innerHTML = "Type A Cell Results";
-typeALabel.className = "label-types";
-document.getElementById("typeAHeaderDiv").appendChild(typeALabel);
-
-var typeBHeaderDiv = document.createElement('div');
-typeBHeaderDiv.id = "typeBHeaderDiv";
-document.body.appendChild(typeBHeaderDiv);
-var typeBResultsDiv = document.createElement('div');
-typeBResultsDiv.id = "typeBResultDiv";
-typeBResultsDiv.className = "types";
-document.body.appendChild(typeBResultsDiv);
-var typeBLabel = document.createElement('p');
-typeBLabel.innerHTML = "Type B Cell Results";
-typeBLabel.className = "label-types";
-document.getElementById("typeBHeaderDiv").appendChild(typeBLabel);
-
-var typeCHeaderDiv = document.createElement('div');
-typeCHeaderDiv.id = "typeCHeaderDiv";
-document.body.appendChild(typeCHeaderDiv);
-var typeCResultsDiv = document.createElement('div');
-typeCResultsDiv.id = "typeCResultDiv";
-typeCResultsDiv.className = "types";
-document.body.appendChild(typeCResultsDiv);
-var typeCLabel = document.createElement('p');
-typeCLabel.innerHTML = "Type C Cell Results";
-typeCLabel.className = "label-types";
-document.getElementById("typeCHeaderDiv").appendChild(typeCLabel);
-
-var typeDHeaderDiv = document.createElement('div');
-typeDHeaderDiv.id = "typeDHeaderDiv";
-document.body.appendChild(typeDHeaderDiv);
-var typeDResultsDiv = document.createElement('div');
-typeDResultsDiv.id = "typeDResultDiv";
-typeDResultsDiv.className = "types";
-document.body.appendChild(typeDResultsDiv);
-var typeDLabel = document.createElement('p');
-typeDLabel.innerHTML = "Type D Cell Results";
-typeDLabel.className = "label-types";
-document.getElementById("typeDHeaderDiv").appendChild(typeDLabel);
-
-var typeEHeaderDiv = document.createElement('div');
-typeEHeaderDiv.id = "typeEHeaderDiv";
-document.body.appendChild(typeEHeaderDiv);
-var typeEResultsDiv = document.createElement('div');
-typeEResultsDiv.id = "typeEResultDiv";
-typeEResultsDiv.className = "types";
-document.body.appendChild(typeEResultsDiv);
-var typeELabel = document.createElement('p');
-typeELabel.innerHTML = "Type E Cell Results";
-typeELabel.className = "label-types";
-document.getElementById("typeEHeaderDiv").appendChild(typeELabel);
+// create DIVs with correct structure
+var tempTypes = ["A","B","C","D","E"];
+for (var i = 0; i < 5; i++) {
+    // typeHeader DIVs
+    typeHeaderDiv = document.createElement('div');
+    typeHeaderDiv.id = "type"+tempTypes[i]+"HeaderDiv";
+    document.body.appendChild(typeHeaderDiv);
+    // typeResult DIVs
+    var typeResultsDiv = document.createElement('div');
+    typeResultsDiv.id = "type"+tempTypes[i]+"ResultDiv";
+    typeResultsDiv.className = "types";
+    document.body.appendChild(typeResultsDiv);
+    // typeLabel
+    var typeLabel = document.createElement('p');
+    typeLabel.innerHTML = "Type "+tempTypes[i]+" Cell Results";
+    typeLabel.className = "label-types";
+    document.getElementById("type"+tempTypes[i]+"HeaderDiv").appendChild(typeLabel);
+}
 
 // create buttons
-var typeAButton = document.createElement('button');
-typeAButton.innerHTML = "Show";
-typeAButton.id = "typeAButton";
-typeAButton.className = "show-type-button";
-document.querySelector("#typeAHeaderDiv").appendChild(typeAButton);
-
-var typeBButton = document.createElement('button');
-typeBButton.innerHTML = "Show";
-typeBButton.id = "typeBButton";
-typeBButton.className = "show-type-button";
-document.querySelector("#typeBHeaderDiv").appendChild(typeBButton);
-
-var typeCButton = document.createElement('button');
-typeCButton.innerHTML = "Show";
-typeCButton.id = "typeCButton";
-typeCButton.className = "show-type-button";
-document.querySelector("#typeCHeaderDiv").appendChild(typeCButton);
-
-var typeDButton = document.createElement('button');
-typeDButton.innerHTML = "Show";
-typeDButton.id = "typeDButton";
-typeDButton.className = "show-type-button";
-document.querySelector("#typeDHeaderDiv").appendChild(typeDButton);
-
-var typeEButton = document.createElement('button');
-typeEButton.innerHTML = "Show";
-typeEButton.id = "typeEButton";
-typeEButton.className = "show-type-button";
-document.querySelector("#typeEHeaderDiv").appendChild(typeEButton);
-
+for (var i = 0; i < 5; i++) {
+    var typeButton = document.createElement('button');
+    typeButton.innerHTML = "Show";
+    typeButton.id = "type"+tempTypes[i]+"Button";
+    typeButton.className = "show-type-button";
+    document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(typeButton);
+}
 
 //make buttons dynamic
 var buttonsClickNumMap = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
