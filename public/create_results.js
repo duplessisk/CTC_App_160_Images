@@ -34,34 +34,33 @@ for (var i = 0; i < 5; i++) {
     document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(typeButton);
 }
 
+var incorrectCellATypeArr = [];
+var incorrectCellBTypeArr = [];
+var incorrectCellCTypeArr = [];
+var incorrectCellDTypeArr = [];
+var incorrectCellETypeArr = [];
+
+getBlock();
+
 //make buttons dynamic
 var buttonsClickNumMap = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
 
-for (var i = 0; i < 5; i++) {
-    document.querySelectorAll(".show-type-button")[i].addEventListener('click', function() {
-        var s = this.id.charAt(4);
-        console.log("clicked button ID: " + s);
-        if (buttonsClickNumMap.get(s)%2 == 0) {
-            getBlock(s,'show');
-            document.getElementById("type"+s+"Button").innerHTML = "Hide";
-        } else {
-            getBlock(s,'hide');
-            document.getElementById("type"+s+"Button").innerHTML = "Show";
-        }
-        buttonsClickNumMap.set(s,buttonsClickNumMap.get(s) + 1);
-    });
-}
-
-async function getBlock(globalCellType, showOrHide) {
+async function getBlock() {
+    console.log("In get block");
     let jsonBlocks;
     try {
         var response = await fetch("/static/incorrect_image_paths.json");
         jsonBlocks = await response.text();
         var arr = jsonObjectContents(jsonBlocks);
-        buildDoc(arr,globalCellType,showOrHide);
+        buildDoc(arr);
     } catch (e) {
         console.error(e);
     }
+    console.log("incorrectCellATypeArr: " + incorrectCellATypeArr);
+    console.log("incorrectCellTypeBArr: " + incorrectCellBTypeArr);
+    console.log("incorrectCellTypeCArr: " + incorrectCellCTypeArr);
+    console.log("incorrectCellTypeDArr: " + incorrectCellDTypeArr);
+    console.log("incorrectCellTypeEArr: " + incorrectCellETypeArr);
 }
 
 function jsonObjectContents(jsonBlocks) {
@@ -79,15 +78,11 @@ function jsonObjectContents(jsonBlocks) {
     return arr;
 }
 
-function buildDoc(arr,globalCellType,showOrHide) {
+function buildDoc(arr) {
     if (arr.length-1 != 0) {
         for (var i = 0; i < arr.length-1; i++) {
-            var newImg = document.createElement('img');
-            newImg.id="resultsImg";
-            var missedImagePath = arr[i];
-            var imageNum = missedImagePath.substring(26,28);
-            newImg.src = getMissedImageSrc(missedImagePath);
-            placeInCorrectCategory(imageNum,newImg,globalCellType,showOrHide);            
+            var missedImagePath = getMissedImagePath(arr[i]);
+            placeInCorrectCategory(missedImagePath);            
         }
     } else {
         document.body.append("you got no images incorrect!");
@@ -95,30 +90,111 @@ function buildDoc(arr,globalCellType,showOrHide) {
 }
 
 // functions to process data from JSON file
-function getMissedImageSrc(missedImagePath) {
+function getMissedImagePath(missedImagePath) {
     missedImagePath = missedImagePath.substring(1);
     missedImagePath = missedImagePath.substring(0,missedImagePath.length-1);
     return missedImagePath;
 }
 
-function placeInCorrectCategory(imageNum,newImg,globalCellType,showOrHide) {
+function placeInCorrectCategory(missedImagePath) {
+    var imageNum = missedImagePath.substring(25,27);
+    var localCellType;
     if (Number(imageNum.charAt(0) == 0)) {
         var num = Number(imageNum.charAt(1));
-        var localCellType = cellTypes[num];
+        localCellType = cellTypes[num];
     } else {
-        var localCellType = cellTypes[imageNum];
+        localCellType = cellTypes[imageNum];
     }
-    if (localCellType == globalCellType) {
-        var messageDiv = document.createElement('div');
-        messageDiv.className = "message-div";
-        messageDiv.id = "messageDiv";
-        messageDiv.innerHTML = "You got image  " + imageNum + " incorrect";
-        if (showOrHide == "show") {
-            document.querySelector("#type"+localCellType+"ResultDiv").appendChild(messageDiv);
-            document.querySelector("#type"+localCellType+"ResultDiv").appendChild(newImg);
-        }
-        if (showOrHide == "hide") {
-            document.querySelector("#type"+localCellType+"ResultDiv").innerHTML = '';
-        }
+    addImagePathToCorrectBin(missedImagePath,localCellType);
+}
+
+function addImagePathToCorrectBin(missedImagePath,localCellType) {
+    if (localCellType == "A") {
+        incorrectCellATypeArr.push(missedImagePath);
+    } else if (localCellType == "B") {
+        incorrectCellBTypeArr.push(missedImagePath);
+    } else if (localCellType == "C") {
+        incorrectCellCTypeArr.push(missedImagePath);
+    } else if (localCellType == "D") {
+        incorrectCellDTypeArr.push(missedImagePath);
+    } else if (localCellType == "E") {
+        incorrectCellETypeArr.push(missedImagePath);
     }
 }
+
+for (var i = 0; i < 5; i++) {
+    document.querySelectorAll(".show-type-button")[i].addEventListener('click', function() {
+        
+    });
+}
+
+// async function getBlock(globalCellType, showOrHide) {
+//     let jsonBlocks;
+//     try {
+//         var response = await fetch("/static/incorrect_image_paths.json");
+//         jsonBlocks = await response.text();
+//         var arr = jsonObjectContents(jsonBlocks);
+//         buildDoc(arr,globalCellType,showOrHide);
+//     } catch (e) {
+//         console.error(e);
+//     }
+// }
+
+// function jsonObjectContents(jsonBlocks) {
+//     var imagePathStrings = "";
+//     for (let i in jsonBlocks) {
+//         let t = jsonBlocks[i];
+//         if (t != '{') {
+//             imagePathStrings += t;
+//         }
+//     } 
+//     var arr = imagePathStrings.split("}");
+//     for (var i = 0; i < arr.length; i++) {
+//         arr[i] = arr[i].substring(12);
+//     }
+//     return arr;
+// }
+
+// function buildDoc(arr,globalCellType,showOrHide) {
+//     if (arr.length-1 != 0) {
+//         for (var i = 0; i < arr.length-1; i++) {
+//             var newImg = document.createElement('img');
+//             newImg.id="resultsImg";
+//             var missedImagePath = arr[i];
+//             var imageNum = missedImagePath.substring(26,28);
+//             newImg.src = getMissedImageSrc(missedImagePath);
+//             placeInCorrectCategory(imageNum,newImg,globalCellType,showOrHide);            
+//         }
+//     } else {
+//         document.body.append("you got no images incorrect!");
+//     }
+// }
+
+// // functions to process data from JSON file
+// function getMissedImageSrc(missedImagePath) {
+//     missedImagePath = missedImagePath.substring(1);
+//     missedImagePath = missedImagePath.substring(0,missedImagePath.length-1);
+//     return missedImagePath;
+// }
+
+// function placeInCorrectCategory(imageNum,newImg,globalCellType,showOrHide) {
+//     if (Number(imageNum.charAt(0) == 0)) {
+//         var num = Number(imageNum.charAt(1));
+//         var localCellType = cellTypes[num];
+//     } else {
+//         var localCellType = cellTypes[imageNum];
+//     }
+//     if (localCellType == globalCellType) {
+//         var messageDiv = document.createElement('div');
+//         messageDiv.className = "message-div";
+//         messageDiv.id = "messageDiv";
+//         messageDiv.innerHTML = "You got image  " + imageNum + " incorrect";
+//         if (showOrHide == "show") {
+//             document.querySelector("#type"+localCellType+"ResultDiv").appendChild(messageDiv);
+//             document.querySelector("#type"+localCellType+"ResultDiv").appendChild(newImg);
+//         }
+//         if (showOrHide == "hide") {
+//             document.querySelector("#type"+localCellType+"ResultDiv").innerHTML = '';
+//         }
+//     }
+// }
