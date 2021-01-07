@@ -44,7 +44,6 @@ async function getBlock() {
     } catch (e) {
         console.error(e);
     }
-    // initTypeResultDivs();
     getTotalNumByType();
     getIncorrectPercentageByType();
     initDataMessage();
@@ -71,27 +70,104 @@ function createButtons() {
         document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(showAllTypeButtonDiv);
         var showAllTypeButton = document.createElement('button');
         showAllTypeButton.innerHTML = "Show All";
-        showAllTypeButton.id = "showAll"+tempTypes[i]+"TypeButton";
+        showAllTypeButton.id = "showAllType"+tempTypes[i]+"Button";
         showAllTypeButton.className = "show-all-type-button";
         document.querySelector("#showAllType"+tempTypes[i]+"ButtonDiv").appendChild(showAllTypeButton);
         // document.querySelector("#type"+tempTypes[i]+"ButtonDiv").appendChild(showAllTypeButton);
     }
 }
 
-var buttonsClickNumMap = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
+var showButtonsClickNumMap = new Map([['A', true], ['B', true], ['C', true], ['D', true], ['E', true]]);
+var showAllButtonsClickNumMap = new Map([['A', true], ['B', true], ['C', true], ['D', true], ['E', true]]);
+
 function querySelectButtons() {
     for (var i = 0; i < 5; i++) {
         document.querySelectorAll(".show-type-button")[i].addEventListener('click', function() {
             var s = this.id.charAt(4);
-            if (buttonsClickNumMap.get(s)%2 == 0) {
+            if (showButtonsClickNumMap.get(s)) { // show images for show button
                 document.getElementById("type"+s+"Button").innerHTML = "Hide";
+                // hide images for show All button
+                if (document.getElementById("showAllType"+s+"Button").innerHTML == "Hide All") {
+                    document.getElementById("showAllType"+s+"Button").innerHTML = "Show-All";
+                    document.querySelector("#type"+s+"ResultDiv").innerHTML = '';
+                    showAllButtonsClickNumMap.set(s,true);
+                }
+                showButtonsClickNumMap.set(s,false);
                 initTypeResultDivs(s);
-            } else {
+            } else { // hide images for show button
                 document.getElementById("type"+s+"Button").innerHTML = "Show";
                 document.querySelector("#type"+s+"ResultDiv").innerHTML = '';
+                showButtonsClickNumMap.set(s,true);
             }
-            buttonsClickNumMap.set(s,buttonsClickNumMap.get(s) + 1);
         });
+    }
+
+    for (var i = 0; i < 5; i++) {
+        document.querySelectorAll(".show-all-type-button")[i].addEventListener('click', function() {
+            var s = this.id.charAt(11);
+            if (showAllButtonsClickNumMap.get(s)) { // show images for show all button
+                document.getElementById("showAllType"+s+"Button").innerHTML = "Hide All";
+                showAllButtonsClickNumMap.set(s,false);
+                // hide images for show button
+                if (document.getElementById("type"+s+"Button").innerHTML == "Hide") {
+                    document.getElementById("type"+s+"Button").innerHTML = "Show";
+                    document.querySelector("#type"+s+"ResultDiv").innerHTML = '';
+                    showButtonsClickNumMap.set(s,true);
+                }
+                showButtonsClickNumMap.set(s,true);
+                setAllImagesPath(s);
+            } else { // hide images for show all button
+                document.getElementById("showAllType"+s+"Button").innerHTML = "Show All";
+                document.querySelector("#type"+s+"ResultDiv").innerHTML = '';
+                showAllButtonsClickNumMap.set(s,true);
+            }
+        });
+    }
+}
+
+function initTypeResultDivs(s) {
+    var cellTypeMissed = incorrectCellTypesMap.get(s);
+    for (var j = 0; j < cellTypeMissed.length; j++) {
+        var newImg = document.createElement('img');
+        newImg.id="resultsImg";
+        var missedImagePath = cellTypeMissed[j];
+        var imageNum = missedImagePath.substring(25,27);
+        newImg.src = getMissedImageSrc(missedImagePath);
+        var messageDiv = document.createElement('div');
+        messageDiv.className = "message-div";
+        messageDiv.id = "messageDiv";
+        messageDiv.innerHTML = "You got image  " + imageNum + " incorrect";
+        document.querySelector("#type"+s+"ResultDiv").appendChild(messageDiv);
+        document.querySelector("#type"+s+"ResultDiv").appendChild(newImg);
+    }
+}
+
+
+function setAllImagesPath(s) {
+    for (var i = 0; i < 5; i++) {
+        for (var j = 0; j < 10; j++) {
+            var imageNum = String(i) + String(j);
+            var localCellType;
+            if (Number(imageNum.charAt(0) == 0)) {
+                var num = Number(imageNum.charAt(1));
+                localCellType = cellTypes[num];
+            } else {
+                localCellType = cellTypes[imageNum];
+            }
+            if (localCellType == s) {
+                var newImg = document.createElement('img');
+                newImg.src = "/static/cell_answers/cell" +imageNum+ "answer.JPG";
+                newImg.id="resultsImg";
+
+                var messageDiv = document.createElement('div');
+                messageDiv.className = "message-div";
+                messageDiv.id = "messageDiv";
+                messageDiv.innerHTML = "Image " + imageNum;
+    
+                document.querySelector("#type"+localCellType+"ResultDiv").appendChild(messageDiv);
+                document.querySelector("#type"+localCellType+"ResultDiv").appendChild(newImg); 
+            }           
+        }
     }
 }
 
@@ -120,23 +196,6 @@ function getIncorrectPercentageByType() {
         var totalIncorrectByTypeValue = totalIncorrectByType.get(totalIncorrectByTypeKeys[i]);
         incorrectPercentageByType[i] = 
                 100*(totalNumByTypeValue - totalIncorrectByTypeValue)/(totalNumByTypeValue);
-    }
-}
-
-function initTypeResultDivs(s) {
-    var cellTypeMissed = incorrectCellTypesMap.get(s);
-    for (var j = 0; j < cellTypeMissed.length; j++) {
-        var newImg = document.createElement('img');
-        newImg.id="resultsImg";
-        var missedImagePath = cellTypeMissed[j];
-        var imageNum = missedImagePath.substring(25,27);
-        newImg.src = getMissedImageSrc(missedImagePath);
-        var messageDiv = document.createElement('div');
-        messageDiv.className = "message-div";
-        messageDiv.id = "messageDiv";
-        messageDiv.innerHTML = "You got image  " + imageNum + " incorrect";
-        document.querySelector("#type"+s+"ResultDiv").appendChild(messageDiv);
-        document.querySelector("#type"+s+"ResultDiv").appendChild(newImg);
     }
 }
 
