@@ -6,6 +6,8 @@ var cellTypes = ['A','A','A','A','A','A','A','A','A','A',
                  'E','E','E','E','E','E','E','E','E','E',
                 ];
 
+getBlock();
+
 // create DIVs with correct structure
 var tempTypes = ["A","B","C","D","E"];
 for (var i = 0; i < 5; i++) {
@@ -34,19 +36,10 @@ for (var i = 0; i < 5; i++) {
     document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(typeButton);
 }
 
-var incorrectCellATypeArr = [];
-var incorrectCellBTypeArr = [];
-var incorrectCellCTypeArr = [];
-var incorrectCellDTypeArr = [];
-var incorrectCellETypeArr = [];
-
-getBlock();
-
-//make buttons dynamic
 var buttonsClickNumMap = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
+var incorrectCellTypesMap = new Map([['A', []], ['B', []], ['C', []], ['D', []], ['E', []]]);
 
 async function getBlock() {
-    console.log("In get block");
     let jsonBlocks;
     try {
         var response = await fetch("/static/incorrect_image_paths.json");
@@ -56,11 +49,34 @@ async function getBlock() {
     } catch (e) {
         console.error(e);
     }
-    console.log("incorrectCellATypeArr: " + incorrectCellATypeArr);
-    console.log("incorrectCellTypeBArr: " + incorrectCellBTypeArr);
-    console.log("incorrectCellTypeCArr: " + incorrectCellCTypeArr);
-    console.log("incorrectCellTypeDArr: " + incorrectCellDTypeArr);
-    console.log("incorrectCellTypeEArr: " + incorrectCellETypeArr);
+    initTypeResultDivs();
+}
+
+function initTypeResultDivs() {
+    var incorrectCellTypesMapKeys = Array.from(incorrectCellTypesMap.keys());
+    for (var i = 0; i < incorrectCellTypesMapKeys.length; i++) {
+        var cellTypeMissed = incorrectCellTypesMap.get(incorrectCellTypesMapKeys[i]);
+        // console.log("cellTypeMissed" + cellTypeMissed);
+        for (var j = 0; j < cellTypeMissed.length; j++) {
+            var newImg = document.createElement('img');
+            newImg.id="resultsImg";
+            var missedImagePath = cellTypeMissed[j];
+            var imageNum = missedImagePath.substring(25,27);
+            newImg.src = getMissedImageSrc(missedImagePath);
+            var messageDiv = document.createElement('div');
+            messageDiv.className = "message-div";
+            messageDiv.id = "messageDiv";
+            messageDiv.innerHTML = "You got image  " + imageNum + " incorrect";
+            document.querySelector("#type"+incorrectCellTypesMapKeys[i]+"ResultDiv").appendChild(messageDiv);
+            document.querySelector("#type"+incorrectCellTypesMapKeys[i]+"ResultDiv").appendChild(newImg);
+        }
+    }
+}
+
+function getMissedImageSrc(missedImagePath) {
+    missedImagePath = missedImagePath.substring(1);
+    missedImagePath = missedImagePath.substring(0,missedImagePath.length);
+    return missedImagePath;
 }
 
 function jsonObjectContents(jsonBlocks) {
@@ -105,26 +121,19 @@ function placeInCorrectCategory(missedImagePath) {
     } else {
         localCellType = cellTypes[imageNum];
     }
-    addImagePathToCorrectBin(missedImagePath,localCellType);
+    incorrectCellTypesMap.get(localCellType).push(missedImagePath);
 }
 
-function addImagePathToCorrectBin(missedImagePath,localCellType) {
-    if (localCellType == "A") {
-        incorrectCellATypeArr.push(missedImagePath);
-    } else if (localCellType == "B") {
-        incorrectCellBTypeArr.push(missedImagePath);
-    } else if (localCellType == "C") {
-        incorrectCellCTypeArr.push(missedImagePath);
-    } else if (localCellType == "D") {
-        incorrectCellDTypeArr.push(missedImagePath);
-    } else if (localCellType == "E") {
-        incorrectCellETypeArr.push(missedImagePath);
-    }
-}
 
 for (var i = 0; i < 5; i++) {
     document.querySelectorAll(".show-type-button")[i].addEventListener('click', function() {
-        
+        var s = this.id.charAt(4);
+        if (buttonsClickNumMap.get(s)%2 == 0) {
+
+        } else {
+
+        }
+        buttonsClickNumMap.set(s,buttonsClickNumMap.get(s) + 1);
     });
 }
 
