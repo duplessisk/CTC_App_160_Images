@@ -271,7 +271,15 @@ a:visited {
 }
 
 .show-type-button {
-    margin-left: 48.25%;
+    /* margin-left: 48.25%; */
+    cursor: pointer;
+    background: RGB(180,91,56);
+    color: white;
+    font: bold 1vw Arial;
+}
+
+.show-all-type-button {
+    /* margin-left: 48.25%; */
     cursor: pointer;
     background: RGB(180,91,56);
     color: white;
@@ -287,4 +295,18 @@ a:visited {
     margin-top: -1%;
     margin-bottom: 2%;
 }
+
+.show-type-button {
+    margin-left: 45%;
+}
+
+.show-all-type-button, .show-type-button {
+    display: inline-block;
+}
+
+/* #typeAButtonDiv, #showAllTypeAButtonDiv {
+    margin-left: 40%;
+    display: inline-block;
+} */
+
 

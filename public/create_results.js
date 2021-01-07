@@ -13,6 +13,7 @@ var tempTypes = ["A","B","C","D","E"];
 for (var i = 0; i < 5; i++) {
     // typeHeader DIVs
     typeHeaderDiv = document.createElement('div');
+    typeHeaderDiv.className = "header-divs"
     typeHeaderDiv.id = "type"+tempTypes[i]+"HeaderDiv";
     document.body.appendChild(typeHeaderDiv);
     // typeResult DIVs
@@ -54,11 +55,26 @@ async function getBlock() {
 // create buttons
 function createButtons() {
     for (var i = 0; i < 5; i++) {
+        var typeButtonDiv = document.createElement('span');
+        typeButtonDiv.className = "type-button-divs";
+        typeButtonDiv.id = "type"+tempTypes[i]+"ButtonDiv";
+        document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(typeButtonDiv);
         var typeButton = document.createElement('button');
         typeButton.innerHTML = "Show";
         typeButton.id = "type"+tempTypes[i]+"Button";
         typeButton.className = "show-type-button";
-        document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(typeButton);
+        document.querySelector("#type"+tempTypes[i]+"ButtonDiv").appendChild(typeButton);
+
+        var showAllTypeButtonDiv = document.createElement('span');
+        showAllTypeButtonDiv.className = "show-all-type-button-divs";
+        showAllTypeButtonDiv.id = "showAllType"+tempTypes[i]+"ButtonDiv";
+        document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(showAllTypeButtonDiv);
+        var showAllTypeButton = document.createElement('button');
+        showAllTypeButton.innerHTML = "Show All";
+        showAllTypeButton.id = "showAll"+tempTypes[i]+"TypeButton";
+        showAllTypeButton.className = "show-all-type-button";
+        document.querySelector("#showAllType"+tempTypes[i]+"ButtonDiv").appendChild(showAllTypeButton);
+        // document.querySelector("#type"+tempTypes[i]+"ButtonDiv").appendChild(showAllTypeButton);
     }
 }
 
@@ -67,7 +83,6 @@ function querySelectButtons() {
     for (var i = 0; i < 5; i++) {
         document.querySelectorAll(".show-type-button")[i].addEventListener('click', function() {
             var s = this.id.charAt(4);
-            console.log("click num: " + buttonsClickNumMap.get(s)%2);
             if (buttonsClickNumMap.get(s)%2 == 0) {
                 document.getElementById("type"+s+"Button").innerHTML = "Hide";
                 initTypeResultDivs(s);
