@@ -9,6 +9,20 @@ var cellTypes = ['A','A','A','A','A','A','A','A','A','A',
 getBlock();
 
 // create DIVs with correct structure
+
+// pageHeader DIV
+pageHeaderDiv = document.createElement('div');
+pageHeaderDiv.id = "pageHeaderDiv";
+document.body.appendChild(pageHeaderDiv);
+overallResults = document.createElement('div');
+overallResults.id = "overallResults";
+overallResults.innerHTML = "Replace This Text";
+document.querySelector("#pageHeaderDiv").appendChild(overallResults);
+
+bufferDiv = document.createElement('div');
+bufferDiv.id = "bufferDiv";
+document.body.appendChild(bufferDiv);
+
 var tempTypes = ["A","B","C","D","E"];
 for (var i = 0; i < 5; i++) {
     // typeHeader DIVs
@@ -26,6 +40,12 @@ for (var i = 0; i < 5; i++) {
     typeLabel.innerHTML = "Type "+tempTypes[i]+" Cell Results";
     typeLabel.className = "label-types";
     document.getElementById("type"+tempTypes[i]+"HeaderDiv").appendChild(typeLabel);
+    // line breaks
+    if (i < 4) {
+        var lineBreaks = document.createElement('hr');
+        lineBreaks.className = "line-breaks";
+        document.body.append(lineBreaks);
+    }
 }
 
 var buttonsClickNumMap = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
@@ -49,6 +69,27 @@ async function getBlock() {
     initDataMessage();
     createButtons();
     querySelectButtons();
+    var testScore = calculateTestScore();
+    var totalCorrect = 50 - getNumIncorrect();
+    document.querySelector("#overallResults").innerHTML = "Score: " + testScore + "% (" + totalCorrect + " out of " + cellTypes.length + ")";
+}
+
+function getNumIncorrect() {
+    var numIncorrect = 0;
+    var totalIncorrectByTypeKeys = Array.from(totalIncorrectByType.keys());
+    // console.log(totalIncorrectByTypeKeys.toString())
+    for (var i = 0; i < totalIncorrectByTypeKeys.length; i++) {
+        numIncorrect += totalIncorrectByType.get(totalIncorrectByTypeKeys[i]);
+    }
+    return numIncorrect;
+}
+
+function calculateTestScore() {
+    var totalPercentage = 0;
+    for (var i = 0; i < incorrectPercentageByType.length; i++) {
+        totalPercentage += incorrectPercentageByType[i];
+    }
+    return totalPercentage/incorrectPercentageByType.length;
 }
 
 // create buttons
@@ -59,7 +100,7 @@ function createButtons() {
         typeButtonDiv.id = "type"+tempTypes[i]+"ButtonDiv";
         document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(typeButtonDiv);
         var typeButton = document.createElement('button');
-        typeButton.innerHTML = "Show";
+        typeButton.innerHTML = "Show Missed";
         typeButton.id = "type"+tempTypes[i]+"Button";
         typeButton.className = "show-type-button";
         document.querySelector("#type"+tempTypes[i]+"ButtonDiv").appendChild(typeButton);
@@ -73,7 +114,6 @@ function createButtons() {
         showAllTypeButton.id = "showAllType"+tempTypes[i]+"Button";
         showAllTypeButton.className = "show-all-type-button";
         document.querySelector("#showAllType"+tempTypes[i]+"ButtonDiv").appendChild(showAllTypeButton);
-        // document.querySelector("#type"+tempTypes[i]+"ButtonDiv").appendChild(showAllTypeButton);
     }
 }
 
@@ -85,17 +125,17 @@ function querySelectButtons() {
         document.querySelectorAll(".show-type-button")[i].addEventListener('click', function() {
             var s = this.id.charAt(4);
             if (showButtonsClickNumMap.get(s)) { // show images for show button
-                document.getElementById("type"+s+"Button").innerHTML = "Hide";
+                document.getElementById("type"+s+"Button").innerHTML = "Hide Missed";
                 // hide images for show All button
                 if (document.getElementById("showAllType"+s+"Button").innerHTML == "Hide All") {
-                    document.getElementById("showAllType"+s+"Button").innerHTML = "Show-All";
+                    document.getElementById("showAllType"+s+"Button").innerHTML = "Show All";
                     document.querySelector("#type"+s+"ResultDiv").innerHTML = '';
                     showAllButtonsClickNumMap.set(s,true);
                 }
                 showButtonsClickNumMap.set(s,false);
                 initTypeResultDivs(s);
             } else { // hide images for show button
-                document.getElementById("type"+s+"Button").innerHTML = "Show";
+                document.getElementById("type"+s+"Button").innerHTML = "Show Missed";
                 document.querySelector("#type"+s+"ResultDiv").innerHTML = '';
                 showButtonsClickNumMap.set(s,true);
             }
@@ -109,8 +149,8 @@ function querySelectButtons() {
                 document.getElementById("showAllType"+s+"Button").innerHTML = "Hide All";
                 showAllButtonsClickNumMap.set(s,false);
                 // hide images for show button
-                if (document.getElementById("type"+s+"Button").innerHTML == "Hide") {
-                    document.getElementById("type"+s+"Button").innerHTML = "Show";
+                if (document.getElementById("type"+s+"Button").innerHTML == "Hide Missed") {
+                    document.getElementById("type"+s+"Button").innerHTML = "Show Missed";
                     document.querySelector("#type"+s+"ResultDiv").innerHTML = '';
                     showButtonsClickNumMap.set(s,true);
                 }
@@ -142,7 +182,6 @@ function initTypeResultDivs(s) {
     }
 }
 
-
 function setAllImagesPath(s) {
     for (var i = 0; i < 5; i++) {
         for (var j = 0; j < 10; j++) {
@@ -172,11 +211,17 @@ function setAllImagesPath(s) {
 }
 
 function initDataMessage() {
-    var totalNumByTypeKeys = Array.from(totalNumByType.keys());
-    for (var i = 0; i < totalNumByTypeKeys.length; i++) {
+    var totalIncorrectByTypeKeys = Array.from(totalIncorrectByType.keys());
+    for (var i = 0; i < totalIncorrectByTypeKeys.length; i++) {
         var dataMessageDiv = document.createElement('div');
         dataMessageDiv.className = "data-messages";
-        dataMessageDiv.innerHTML = "You missed "+totalNumByType.get(totalNumByTypeKeys[i])+" images (" +incorrectPercentageByType[i]+"%)";
+        if (totalIncorrectByType.get(totalIncorrectByTypeKeys[i]) == 0) {
+            dataMessageDiv.innerHTML = "You missed no images (" +incorrectPercentageByType[i]+"%)";
+        } else if (totalIncorrectByType.get(totalIncorrectByTypeKeys[i]) == 1) {
+            dataMessageDiv.innerHTML = "You missed "+totalIncorrectByType.get(totalIncorrectByTypeKeys[i])+" image (" +incorrectPercentageByType[i]+"%)";
+        } else {
+            dataMessageDiv.innerHTML = "You missed "+totalIncorrectByType.get(totalIncorrectByTypeKeys[i])+" images (" +incorrectPercentageByType[i]+"%)";
+        }
         document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(dataMessageDiv);
     }
 }
@@ -226,9 +271,7 @@ function buildDoc(arr) {
             var missedImagePath = getMissedImagePath(arr[i]);
             placeInCorrectCategory(missedImagePath);            
         }
-    } else {
-        document.body.append("you got no images incorrect!");
-    }
+    } 
 }
 
 // functions to process data from JSON file
@@ -251,19 +294,3 @@ function placeInCorrectCategory(missedImagePath) {
     totalIncorrectByType.set(localCellType,incorrectCellTypeCount + 1);
     incorrectCellTypesMap.get(localCellType).push(missedImagePath);
 }
-
-    // console.log("totalIncorrectByTypeA: " + totalIncorrectByType.get("A"));
-    // console.log("totalIncorrectByTypeB: " + totalIncorrectByType.get("B"));
-    // console.log("totalIncorrectByTypeC: " + totalIncorrectByType.get("C"));
-    // console.log("totalIncorrectByTypeD: " + totalIncorrectByType.get("D"));
-    // console.log("totalIncorrectByTypeE: " + totalIncorrectByType.get("E"));
-    // console.log("totalNumByTypeA: " + totalNumByType.get("A"));
-    // console.log("totalNumByTypeB: " + totalNumByType.get("B"));
-    // console.log("totalNumByTypeC: " + totalNumByType.get("C"));
-    // console.log("totalNumByTypeD: " + totalNumByType.get("D"));
-    // console.log("totalNumByTypeE: " + totalNumByType.get("E"));
-    // console.log("incorrectPercentageByTypeA: " + incorrectPercentageByType[0]);
-    // console.log("incorrectPercentageByTypeB: " + incorrectPercentageByType[1]);
-    // console.log("incorrectPercentageByTypeC: " + incorrectPercentageByType[2]);
-    // console.log("incorrectPercentageByTypeD: " + incorrectPercentageByType[3]);
-    // console.log("incorrectPercentageByTypeE: " + incorrectPercentageByType[4]);

@@ -241,10 +241,30 @@ a:visited {
 
 /***Results Page Styling***/
 
+#pageHeaderDiv {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;    
+    /* background-color: rgba(100, 98, 98, 0.856); */
+    background-color: RGB(180,91,56);
+}
+
+#overallResults {
+    text-align: center;
+    font-family: Arial;
+    font-size: 200%;
+    color: white;
+}
+
 #resultsMessage {
     text-align: center;
     color: black;
-    font-size: 1.5vw;
+    /* font-size: 1.5vw; */
+}
+
+#bufferDiv {
+    margin: 3%;
 }
 
 #resultsImg {
@@ -261,8 +281,8 @@ a:visited {
 }
 
 .types {
-    margin-bottom: 10%;
     font-size: 5vw;
+    font-weight: 0;
 }
 
 .message-div {
@@ -271,7 +291,6 @@ a:visited {
 }
 
 .show-type-button {
-    /* margin-left: 48.25%; */
     cursor: pointer;
     background: RGB(180,91,56);
     color: white;
@@ -279,34 +298,45 @@ a:visited {
 }
 
 .show-all-type-button {
-    /* margin-left: 48.25%; */
     cursor: pointer;
     background: RGB(180,91,56);
     color: white;
     font: bold 1vw Arial;
 }
 
+.header-divs {
+    font-family: Arial;
+}
+
 .label-types {
     text-align: center;
+    font-size: 1.925vw;
 }
 
 .data-messages {
     text-align: center;
+    font-size: 1.335vw;
     margin-top: -1%;
-    margin-bottom: 2%;
+    margin-bottom: 1%;
 }
 
 .show-type-button {
-    margin-left: 45%;
+    margin-left: 41.5%;
+    width: 8%;
+}
+
+.show-all-type-button {
+    margin-left: 1%;
+    width: 8%;
 }
 
 .show-all-type-button, .show-type-button {
     display: inline-block;
 }
 
-/* #typeAButtonDiv, #showAllTypeAButtonDiv {
-    margin-left: 40%;
-    display: inline-block;
-} */
+.line-breaks {
+    height: 1px;
+    background-color:rgba(100, 98, 98, 0.856);
+}
 
 
