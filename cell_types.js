@@ -57,3 +57,5 @@ var cellTypes =
 /*49*/ 'E',
 
                 ];
+
+exports.cellTypes = cellTypes;

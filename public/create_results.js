@@ -6,23 +6,22 @@ var cellTypes = ['A','A','A','A','A','A','A','A','A','A',
                  'E','E','E','E','E','E','E','E','E','E',
                 ];
 
-getBlock();
-
-// create DIVs with correct structure
-
-// pageHeader DIV
+// init pageHeader
 pageHeaderDiv = document.createElement('div');
 pageHeaderDiv.id = "pageHeaderDiv";
 document.body.appendChild(pageHeaderDiv);
 overallResults = document.createElement('div');
 overallResults.id = "overallResults";
-overallResults.innerHTML = "Replace This Text";
+document.querySelector("#pageHeaderDiv").appendChild(overallResults);
+document.body.appendChild(pageHeaderDiv);
 document.querySelector("#pageHeaderDiv").appendChild(overallResults);
 
+// buffer to allow for gap between pageHeader and rest of page 
 bufferDiv = document.createElement('div');
 bufferDiv.id = "bufferDiv";
 document.body.appendChild(bufferDiv);
 
+// create results DIV for each different cell type  
 var tempTypes = ["A","B","C","D","E"];
 for (var i = 0; i < 5; i++) {
     // typeHeader DIVs
@@ -54,30 +53,9 @@ var totalNumByType = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]])
 var totalIncorrectByType = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
 var incorrectPercentageByType = [100,100,100,100,100];
 
-async function getBlock() {
-    let jsonBlocks;
-    try {
-        var response = await fetch("/static/incorrect_image_paths.json");
-        jsonBlocks = await response.text();
-        var arr = jsonObjectContents(jsonBlocks);
-        buildDoc(arr);
-    } catch (e) {
-        console.error(e);
-    }
-    getTotalNumByType();
-    getIncorrectPercentageByType();
-    initDataMessage();
-    createButtons();
-    querySelectButtons();
-    var testScore = calculateTestScore();
-    var totalCorrect = 50 - getNumIncorrect();
-    document.querySelector("#overallResults").innerHTML = "Score: " + testScore + "% (" + totalCorrect + " out of " + cellTypes.length + ")";
-}
-
 function getNumIncorrect() {
     var numIncorrect = 0;
     var totalIncorrectByTypeKeys = Array.from(totalIncorrectByType.keys());
-    // console.log(totalIncorrectByTypeKeys.toString())
     for (var i = 0; i < totalIncorrectByTypeKeys.length; i++) {
         numIncorrect += totalIncorrectByType.get(totalIncorrectByTypeKeys[i]);
     }
@@ -90,6 +68,46 @@ function calculateTestScore() {
         totalPercentage += incorrectPercentageByType[i];
     }
     return totalPercentage/incorrectPercentageByType.length;
+}
+
+async function main() {
+    var response = await fetch("/static/incorrect_image_paths.json");
+    jsonBlocks = await response.text();
+    var arr = jsonObjectContents(jsonBlocks);
+    buildDoc(arr);
+    getTotalNumByType();
+    getIncorrectPercentageByType();
+    initDataMessage();
+    createButtons();
+    querySelectButtons();
+    var testScore = calculateTestScore();
+    var totalCorrect = 50 - getNumIncorrect();
+    document.querySelector("#overallResults").innerHTML = "Score: " + testScore +
+        "% (" + totalCorrect + " out of " + cellTypes.length + ")";
+}
+
+function jsonObjectContents(jsonBlocks) {
+    var imagePathStrings = "";
+    for (let i in jsonBlocks) {
+        let t = jsonBlocks[i];
+        if (t != '{') {
+            imagePathStrings += t;
+        }
+    } 
+    var arr = imagePathStrings.split("}");
+    for (var i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].substring(12);
+    }
+    return arr;
+}
+
+function buildDoc(arr) {
+    if (arr.length-1 != 0) {
+        for (var i = 0; i < arr.length-1; i++) {
+            var missedImagePath = getMissedImagePath(arr[i]);
+            placeInCorrectCategory(missedImagePath);            
+        }
+    } 
 }
 
 // create buttons
@@ -250,30 +268,6 @@ function getMissedImageSrc(missedImagePath) {
     return missedImagePath;
 }
 
-function jsonObjectContents(jsonBlocks) {
-    var imagePathStrings = "";
-    for (let i in jsonBlocks) {
-        let t = jsonBlocks[i];
-        if (t != '{') {
-            imagePathStrings += t;
-        }
-    } 
-    var arr = imagePathStrings.split("}");
-    for (var i = 0; i < arr.length; i++) {
-        arr[i] = arr[i].substring(12);
-    }
-    return arr;
-}
-
-function buildDoc(arr) {
-    if (arr.length-1 != 0) {
-        for (var i = 0; i < arr.length-1; i++) {
-            var missedImagePath = getMissedImagePath(arr[i]);
-            placeInCorrectCategory(missedImagePath);            
-        }
-    } 
-}
-
 // functions to process data from JSON file
 function getMissedImagePath(missedImagePath) {
     missedImagePath = missedImagePath.substring(1);
@@ -294,3 +288,6 @@ function placeInCorrectCategory(missedImagePath) {
     totalIncorrectByType.set(localCellType,incorrectCellTypeCount + 1);
     incorrectCellTypesMap.get(localCellType).push(missedImagePath);
 }
+
+// run main function to init/create page
+main();

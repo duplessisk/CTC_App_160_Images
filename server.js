@@ -8,6 +8,7 @@ const answer_key_page_two = require("./answer_key_page_two");
 const answer_key_page_three = require("./answer_key_page_three");
 const answer_key_page_four = require("./answer_key_page_four");
 const answer_key_page_five = require("./answer_key_page_five");
+const cellTypes = require("./cell_types");
 
 
 // create express app
@@ -42,7 +43,7 @@ app.get("/page_one", function(request,response) {
 });
 
 app.post("/page_one", function(request,response) {
-    jsonArrayPageOne.length = 0;
+    jsonArrayPages[0].length = 0;
     driveApp(answer_key_page_one,request,1);
     response.redirect('/page_two');
 });
@@ -53,7 +54,7 @@ app.get("/page_two", function(request,response) {
 
 app.post("/page_two", function(request,response) {
     var buttonClicked = request.body.button;
-    jsonArrayPageTwo.length = 0;
+    jsonArrayPages[1].length = 0;
     driveApp(answer_key_page_two,request,2);
     if (buttonClicked == "Previous") {
         response.redirect('/page_one');
@@ -68,7 +69,7 @@ app.get("/page_three", function(request,response) {
 
 app.post("/page_three", function(request,response) {
     var buttonClicked = request.body.button;
-    jsonArrayPageThree.length = 0;
+    jsonArrayPages[2].length = 0;
     driveApp(answer_key_page_three,request,3);
     if (buttonClicked == "Previous") {
         response.redirect('/page_two');
@@ -83,7 +84,7 @@ app.get("/page_four", function(request,response) {
 
 app.post("/page_four", function(request,response) {
     var buttonClicked = request.body.button;
-    jsonArrayPageFour.length = 0;
+    jsonArrayPages[3].length = 0;
     driveApp(answer_key_page_four,request,4);
     if (buttonClicked == "Previous") {
         response.redirect('/page_three');
@@ -98,7 +99,7 @@ app.get("/page_five", function(request,response) {
 
 app.post("/page_five", function(request,response) {
     var buttonClicked = request.body.button;
-    jsonArrayPageFive.length = 0;
+    jsonArrayPages[4].length = 0;
     driveApp(answer_key_page_five,request,5);
     if (buttonClicked == "Previous") {
         response.redirect('/page_four');
@@ -121,6 +122,7 @@ app.post("/review", function(request,response) {
         } else {
             previouslySubmitted = true;
             postMissedImagePaths();
+            postResultsData();
             response.redirect('/results');
         }
     }
@@ -135,6 +137,8 @@ app.get("/form_already_submitted_page", function(request,response) {
 });
 
 app.listen(process.env.PORT || 3000);
+
+var jsonArrayPages = [[],[],[],[],[],[]];
 
 // functions
 function driveApp(answerKeyPage,request,pageNumber) {
@@ -184,52 +188,99 @@ function recordUserResponses(userResponses) {
     }
 }
 
-var jsonArrayPageOne = [];
-var jsonArrayPageTwo = [];
-var jsonArrayPageThree = [];
-var jsonArrayPageFour = [];
-var jsonArrayPageFive = [];
-
+var jsonMapPages = new Map([['A', ""], ['B', ""], ['C', ""], ['D', ""], ['E', ""]]);
 
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
     for (var i = 0; i < 10; i++) {
-        if (answerKey[i] != userResponses[i] || userResponses[i] == null) {
+        if (answerKey[i] != userResponses[i] || userResponses[i] == null) {     
             var wrongImageObject = {
                 imagePath: '/static/cell_answers/cell' + String(pageNumber - 1) + String(i) + 'answer.JPG'
-            }            
-            if (pageNumber == 1) {
-                jsonArrayPageOne.push(wrongImageObject);
-            } else if (pageNumber == 2) {
-                jsonArrayPageTwo.push(wrongImageObject);
-            } else if (pageNumber == 3) {
-                jsonArrayPageThree.push(wrongImageObject);
-            } else if (pageNumber == 4) {
-                jsonArrayPageFour.push(wrongImageObject);
-            } else if (pageNumber == 5) {
-                jsonArrayPageFive.push(wrongImageObject);
-            }
+            }      
+            jsonArrayPages[pageNumber - 1].push(JSON.stringify(wrongImageObject));
         }
     }
 }
 
 function postMissedImagePaths() {
-    var jsonString = "";
-    jsonString = postMissedImagePathsHelper(jsonArrayPageOne, jsonString);
-    jsonString = postMissedImagePathsHelper(jsonArrayPageTwo, jsonString);
-    jsonString = postMissedImagePathsHelper(jsonArrayPageThree, jsonString);
-    jsonString = postMissedImagePathsHelper(jsonArrayPageFour, jsonString);
-    jsonString = postMissedImagePathsHelper(jsonArrayPageFive, jsonString);
-
-    fs.writeFile('./public/incorrect_image_paths.json', jsonString, function(error) {
-        if (error) {
-            console.log(error);
+    allCellTypes = cellTypes.cellTypes;
+    for (var pageNum = 0; pageNum < jsonArrayPages.length; pageNum++) {
+        for (var questionNum = 0; questionNum < jsonArrayPages[pageNum].length; questionNum++) {
+            var localCellType = getLocalCellType(pageNum,questionNum,allCellTypes);
+            totalIncorrectByType.set(localCellType,totalIncorrectByType.get(localCellType) + 1);
+            jsonMapPages.set(localCellType, jsonMapPages.get(localCellType) + jsonArrayPages[pageNum][questionNum]);
         }
-    })
+    }
+
+    var possibleCellTypes = ["A","B","C","D","E"];
+    for (var pageNum = 1; pageNum < 6; pageNum++) {
+        fs.writeFile("./public/incorrect_image_paths" + possibleCellTypes[pageNum - 1] + ".json", 
+        jsonMapPages.get(possibleCellTypes[pageNum - 1]), function(error) {
+            if (error) {
+                console.log(error);
+            }
+        });
+    }
 }
 
-function postMissedImagePathsHelper(jsonArray, jsonString) {
-    for (var i = 0; i < jsonArray.length; i++) {
-        jsonString += JSON.stringify(jsonArray[i]);
+function getLocalCellType(pageNum, questionNum, localCellTypes) {
+    if (pageNum == 0) {
+        return localCellTypes[questionNum];
+    } else {
+        return localCellTypes[Number(String(pageNum) + String(questionNum))];
     }
-    return jsonString;
+}
+
+var totalIncorrectByType = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
+var numEachType = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
+
+function postResultsData() {
+    var totalIncorrectString = setTotalIncorrect();
+    var totalIncorrectByTypeString = setTotalIncorrectByType();
+    var totalNumEachType = setNumEachType();
+    console.log("totalIncorrectString: " + totalIncorrectString);
+    console.log("totalIncorrectByTypeString: " + totalIncorrectByTypeString);
+    console.log("totalNumEachType: " + totalNumEachType);
+    // fs.writeFile("./public/results_data.json", {totalIncorrectString, totalIncorrectByTypeString, totalNumEachType},
+    //     function(error) {
+    //         if (error) {
+    //             console.log(error);
+    //         }
+    //     });
+}
+
+function setTotalIncorrect() {
+    var totalIncorrect = 0
+    for (var pageNum = 1; pageNum < 6; pageNum++) {
+        totalIncorrect += jsonArrayPages[pageNum-1].length;
+    }
+    var totalIncorrectObject = {
+        totalIncorrect: ''+totalIncorrect+''
+    } 
+    return JSON.stringify(totalIncorrectObject);
+}
+
+function setTotalIncorrectByType() {
+    var possibleCellTypes = ["A","B","C","D","E"];
+    var totalIncorrectByTypeObject = {};
+    var totalIncorrectByTypeKeys = Array.from(totalIncorrectByType.keys());
+    for (var keyNum = 0; keyNum < totalIncorrectByTypeKeys.length; keyNum++) {
+        var specificTypeTotalIncorrect = totalIncorrectByType.get(possibleCellTypes[keyNum]);
+        totalIncorrectByTypeObject["" + possibleCellTypes[keyNum] + ""] = specificTypeTotalIncorrect;
+    }
+    return JSON.stringify(totalIncorrectByTypeObject);
+}
+
+function setNumEachType() {
+    allCellTypes = cellTypes.cellTypes;
+    for (var i = 0; i < allCellTypes.length; i++) {
+        numEachType.set(allCellTypes[i] , numEachType.get(allCellTypes[i]) + 1);
+    }
+    var possibleCellTypes = ["A","B","C","D","E"];
+    var numEachTypeObject = {};
+    var numEachTypeKeys = Array.from(numEachType.keys());
+    for (var keyNum = 0; keyNum < numEachTypeKeys.length; keyNum++) {
+        var specificNumEachType = numEachType.get(possibleCellTypes[keyNum]);
+        numEachTypeObject["" + possibleCellTypes[keyNum] + ""] = specificNumEachType;
+    }
+    return JSON.stringify(numEachTypeObject);
 }
