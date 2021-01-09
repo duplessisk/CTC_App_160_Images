@@ -1,4 +1,3 @@
-// create cell types
 var cellTypes = 
                 [
 /*0*/ 'A',
@@ -55,7 +54,6 @@ var cellTypes =
 /*47*/ 'E',
 /*48*/ 'E',
 /*49*/ 'E',
-
                 ];
 
 exports.cellTypes = cellTypes;

@@ -138,8 +138,6 @@ app.get("/form_already_submitted_page", function(request,response) {
 
 app.listen(process.env.PORT || 3000);
 
-var jsonArrayPages = [[],[],[],[],[],[]];
-
 // functions
 function driveApp(answerKeyPage,request,pageNumber) {
     var answerKey = createAnswerKey(answerKeyPage);
@@ -188,7 +186,9 @@ function recordUserResponses(userResponses) {
     }
 }
 
-var jsonMapPages = new Map([['A', ""], ['B', ""], ['C', ""], ['D', ""], ['E', ""]]);
+// Stores path of each image the user answered incorrectly by page 
+//            page  :  1,   2,   3,   4,   5
+var jsonArrayPages = [ [] , [] , [] , [] , [] ];
 
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
     for (var i = 0; i < 10; i++) {
@@ -196,25 +196,62 @@ function setMissedImagePaths(answerKey,userResponses,pageNumber) {
             var wrongImageObject = {
                 imagePath: '/static/cell_answers/cell' + String(pageNumber - 1) + String(i) + 'answer.JPG'
             }      
-            jsonArrayPages[pageNumber - 1].push(JSON.stringify(wrongImageObject));
+            jsonArrayPages[pageNumber - 1].push(JSON.stringify(wrongImageObject,null,4));
         }
     }
 }
 
-function postMissedImagePaths() {
-    allCellTypes = cellTypes.cellTypes;
-    for (var pageNum = 0; pageNum < jsonArrayPages.length; pageNum++) {
-        for (var questionNum = 0; questionNum < jsonArrayPages[pageNum].length; questionNum++) {
-            var localCellType = getLocalCellType(pageNum,questionNum,allCellTypes);
-            totalIncorrectByType.set(localCellType,totalIncorrectByType.get(localCellType) + 1);
-            jsonMapPages.set(localCellType, jsonMapPages.get(localCellType) + jsonArrayPages[pageNum][questionNum]);
-        }
-    }
+// Stores the path of each image the user answered incorrectly by cell type bin
+var jsonMapPages = new Map([['A', ""], ['B', ""], ['C', ""], ['D', ""], ['E', ""]]);
 
+/**
+ * Organizes and posts image paths associated with an incorrect user answer into the appropriate cell type bins
+ */
+function postMissedImagePaths() {
+    setJsonMapPages();
+    writeMissedCellTypeFiles();
+}
+
+/**
+ * Puts paths of images the user got incorrect in the appropriate cell-type bin
+ */
+function setJsonMapPages() {
+    allCellTypes = cellTypes.cellTypes;
+    for (var i = 0; i < jsonArrayPages.length; i++) {
+        for (var j = 0; j < jsonArrayPages[i].length; j++) {
+            var missedImagePath = jsonArrayPages[i][j];
+            var thisCellType = getThisCellType(missedImagePath,allCellTypes);
+            // adds one to the total number incorrect for this particular cell type
+            totalIncorrectByType.set(thisCellType,totalIncorrectByType.get(thisCellType) + 1);
+            jsonMapPages.set(thisCellType, jsonMapPages.get(thisCellType) + jsonArrayPages[i][j]);
+        }
+    } 
+}
+
+/**
+ * Gets the cell type for the image the user answered incorrectly
+ * @param {String} missedImagePath - Path for image that the user answered incorrectly
+ * @param {Array} allCellTypes - Array containing the cell types for each image
+ */
+function getThisCellType(missedImagePath,allCellTypes) {
+    var missedImageNum = missedImagePath.substring(45,47);
+    if (Number(missedImageNum.charAt(0) == 0)) {
+        var num = Number(missedImageNum.charAt(1));
+        return allCellTypes[num];
+    } else {
+        return allCellTypes[Number(missedImageNum)];
+    }
+}
+
+/**
+ * Writes and posts JSON files (seperate file for each cell type bin) containing the user's incorrect answers.
+ */
+function writeMissedCellTypeFiles() {
     var possibleCellTypes = ["A","B","C","D","E"];
-    for (var pageNum = 1; pageNum < 6; pageNum++) {
-        fs.writeFile("./public/incorrect_image_paths" + possibleCellTypes[pageNum - 1] + ".json", 
-        jsonMapPages.get(possibleCellTypes[pageNum - 1]), function(error) {
+    for (var pageNum = 1; pageNum <= 5; pageNum++) {
+        fs.writeFile("./public/incorrect_image_paths" + possibleCellTypes[pageNum - 1] + ".json",
+        jsonMapPages.get(possibleCellTypes[pageNum - 1]),
+        function(error) {
             if (error) {
                 console.log(error);
             }
@@ -222,65 +259,74 @@ function postMissedImagePaths() {
     }
 }
 
-function getLocalCellType(pageNum, questionNum, localCellTypes) {
-    if (pageNum == 0) {
-        return localCellTypes[questionNum];
-    } else {
-        return localCellTypes[Number(String(pageNum) + String(questionNum))];
-    }
-}
-
-var totalIncorrectByType = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
-var numEachType = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
-
+/**
+ * Posts a breakdown of the user's performance overall and within each cell type on the exam. 
+ */
 function postResultsData() {
     var totalIncorrectString = setTotalIncorrect();
     var totalIncorrectByTypeString = setTotalIncorrectByType();
     var totalNumEachType = setNumEachType();
-    console.log("totalIncorrectString: " + totalIncorrectString);
-    console.log("totalIncorrectByTypeString: " + totalIncorrectByTypeString);
-    console.log("totalNumEachType: " + totalNumEachType);
-    // fs.writeFile("./public/results_data.json", {totalIncorrectString, totalIncorrectByTypeString, totalNumEachType},
-    //     function(error) {
-    //         if (error) {
-    //             console.log(error);
-    //         }
-    //     });
+    fs.writeFile("./public/results_data.json", 
+        "[" + "\n" + 
+            totalIncorrectString + "," + "\n" + 
+            totalIncorrectByTypeString + "," + "\n" + 
+            totalNumEachType + "\n" + 
+        "]", function() {
+    });
 }
 
+/**
+ * Gets the user's total number of incorrect responses 
+ */
 function setTotalIncorrect() {
-    var totalIncorrect = 0
-    for (var pageNum = 1; pageNum < 6; pageNum++) {
+    var totalIncorrect = 0;
+    for (var pageNum = 1; pageNum <= 5; pageNum++) {
         totalIncorrect += jsonArrayPages[pageNum-1].length;
     }
     var totalIncorrectObject = {
-        totalIncorrect: ''+totalIncorrect+''
+        totalIncorrect: '' + totalIncorrect + ''
     } 
-    return JSON.stringify(totalIncorrectObject);
+    return JSON.stringify(totalIncorrectObject,null,4);
 }
 
+// stores number of each cell type user got incorrect
+var totalIncorrectByType = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
+
+/**
+ * Sets the user's total number of incorrect responses by cell type
+ */
 function setTotalIncorrectByType() {
     var possibleCellTypes = ["A","B","C","D","E"];
     var totalIncorrectByTypeObject = {};
     var totalIncorrectByTypeKeys = Array.from(totalIncorrectByType.keys());
-    for (var keyNum = 0; keyNum < totalIncorrectByTypeKeys.length; keyNum++) {
-        var specificTypeTotalIncorrect = totalIncorrectByType.get(possibleCellTypes[keyNum]);
-        totalIncorrectByTypeObject["" + possibleCellTypes[keyNum] + ""] = specificTypeTotalIncorrect;
+    for (var i = 0; i < totalIncorrectByTypeKeys.length; i++) {
+        var specificTypeTotalIncorrect = totalIncorrectByType.get(possibleCellTypes[i]);
+        totalIncorrectByTypeObject["numIncorrectType" + possibleCellTypes[i] + ""] = specificTypeTotalIncorrect;
     }
-    return JSON.stringify(totalIncorrectByTypeObject);
+    return JSON.stringify(totalIncorrectByTypeObject,null,4);
 }
 
+// stores total number of each cell type
+var numEachType = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
+
+/**
+ * Sets the number of questions for each cell type.
+ */
 function setNumEachType() {
     allCellTypes = cellTypes.cellTypes;
+
+    // initialize numEachType 
     for (var i = 0; i < allCellTypes.length; i++) {
         numEachType.set(allCellTypes[i] , numEachType.get(allCellTypes[i]) + 1);
     }
+
+    // post numEachType contents
     var possibleCellTypes = ["A","B","C","D","E"];
     var numEachTypeObject = {};
     var numEachTypeKeys = Array.from(numEachType.keys());
-    for (var keyNum = 0; keyNum < numEachTypeKeys.length; keyNum++) {
-        var specificNumEachType = numEachType.get(possibleCellTypes[keyNum]);
-        numEachTypeObject["" + possibleCellTypes[keyNum] + ""] = specificNumEachType;
+    for (var i = 0; i < numEachTypeKeys.length; i++) {
+        var specificNumEachType = numEachType.get(possibleCellTypes[i]);
+        numEachTypeObject["totalNumType" + possibleCellTypes[i] + ""] = specificNumEachType;
     }
-    return JSON.stringify(numEachTypeObject);
+    return JSON.stringify(numEachTypeObject,null,4);
 }
