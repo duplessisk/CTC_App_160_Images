@@ -121,6 +121,7 @@ app.post("/review", function(request,response) {
             response.redirect('/page_five');
         } else {
             previouslySubmitted = true;
+            // postAllImagePaths();
             postMissedImagePaths();
             postResultsData();
             response.redirect('/results');
@@ -249,7 +250,7 @@ function getThisCellType(missedImagePath,allCellTypes) {
 function writeMissedCellTypeFiles() {
     var possibleCellTypes = ["A","B","C","D","E"];
     for (var pageNum = 1; pageNum <= 5; pageNum++) {
-        fs.writeFile("./public/incorrect_image_paths" + possibleCellTypes[pageNum - 1] + ".json",
+        fs.writeFile("./public/incorrect_image_paths_" + possibleCellTypes[pageNum - 1] + ".json",
         jsonMapPages.get(possibleCellTypes[pageNum - 1]),
         function(error) {
             if (error) {
