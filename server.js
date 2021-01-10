@@ -9,6 +9,7 @@ const answer_key_page_three = require("./answer_key_page_three");
 const answer_key_page_four = require("./answer_key_page_four");
 const answer_key_page_five = require("./answer_key_page_five");
 const cellTypes = require("./cell_types");
+const { stringify } = require("querystring");
 
 
 // create express app
@@ -121,7 +122,7 @@ app.post("/review", function(request,response) {
             response.redirect('/page_five');
         } else {
             previouslySubmitted = true;
-            // postAllImagePaths();
+            postAllImagePaths();
             postMissedImagePaths();
             postResultsData();
             response.redirect('/results');
@@ -206,6 +207,54 @@ function setMissedImagePaths(answerKey,userResponses,pageNumber) {
 var jsonMapPages = new Map([['A', ""], ['B', ""], ['C', ""], ['D', ""], ['E', ""]]);
 
 /**
+ * Writes and posts JSON files (seperate file for each cell type bin) containing the user's incorrect answers.
+ */
+function postAllImagePaths() {
+    var allImagesByType = setAllImagePaths();
+    writeAllImagePaths(allImagesByType);
+}
+
+/**
+ * 
+ */
+function setAllImagePaths() {
+    allCellTypes = cellTypes.cellTypes;
+    var allImagesByType = new Map();
+    for (var i = 0; i < allCellTypes.length/10; i++) {
+        for (var j = 0; j < 10; j++) {
+            var imagePath = '/static/cell_answers/cell' + String(i) + String(j) + 'answer.JPG';
+            var thisCellType = getThisCellType(imagePath,allCellTypes,25,27); 
+            if (allImagesByType.has(thisCellType)) {
+                allImagesByType.get(thisCellType).push(imagePath);
+            } else {
+                var newArr = new Array(imagePath);
+                allImagesByType.set(thisCellType, newArr); 
+            }
+        }
+    }
+    return allImagesByType;
+}
+
+/**
+ * 
+ * @param {Map} allImagesByTypeObject 
+ */
+function writeAllImagePaths(allImagesByType) {
+    fs.writeFile("./public/all_image_paths.json", '', function(e){});
+    var allImagesByTypeKeys = Array.from(allImagesByType.keys());
+    for (var i = 0; i < allImagesByTypeKeys.length; i++) {
+        for (var j = 0; j < allImagesByType.get(allImagesByTypeKeys[i]).length; j++) {
+            var thisImageObject = {};
+            thisImageObject[allImagesByTypeKeys[i] + String(i) + String(j)] =
+            allImagesByType.get(allImagesByTypeKeys[i])[j];
+            console.log(thisImageObject);
+            fs.appendFileSync("./public/all_image_paths.json", JSON.stringify(thisImageObject, null, 4),
+                     function(e){});
+        }
+    }
+}
+
+/**
  * Organizes and posts image paths associated with an incorrect user answer into the appropriate cell type bins
  */
 function postMissedImagePaths() {
@@ -221,7 +270,7 @@ function setJsonMapPages() {
     for (var i = 0; i < jsonArrayPages.length; i++) {
         for (var j = 0; j < jsonArrayPages[i].length; j++) {
             var missedImagePath = jsonArrayPages[i][j];
-            var thisCellType = getThisCellType(missedImagePath,allCellTypes);
+            var thisCellType = getThisCellType(missedImagePath,allCellTypes,45,47);
             // adds one to the total number incorrect for this particular cell type
             totalIncorrectByType.set(thisCellType,totalIncorrectByType.get(thisCellType) + 1);
             jsonMapPages.set(thisCellType, jsonMapPages.get(thisCellType) + jsonArrayPages[i][j]);
@@ -234,13 +283,13 @@ function setJsonMapPages() {
  * @param {String} missedImagePath - Path for image that the user answered incorrectly
  * @param {Array} allCellTypes - Array containing the cell types for each image
  */
-function getThisCellType(missedImagePath,allCellTypes) {
-    var missedImageNum = missedImagePath.substring(45,47);
-    if (Number(missedImageNum.charAt(0) == 0)) {
-        var num = Number(missedImageNum.charAt(1));
+function getThisCellType(imagePath,allCellTypes,start,end) {
+    var imageNum = imagePath.substring(start,end);
+    if (Number(imageNum.charAt(0) == 0)) {
+        var num = Number(imageNum.charAt(1));
         return allCellTypes[num];
     } else {
-        return allCellTypes[Number(missedImageNum)];
+        return allCellTypes[Number(imageNum)];
     }
 }
 
