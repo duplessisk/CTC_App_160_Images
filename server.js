@@ -195,16 +195,11 @@ var jsonArrayPages = [ [] , [] , [] , [] , [] ];
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {     
-            var wrongImageObject = {
-                imagePath: '/static/cell_answers/cell' + String(pageNumber - 1) + String(i) + 'answer.JPG'
-            }      
-            jsonArrayPages[pageNumber - 1].push(JSON.stringify(wrongImageObject,null,4));
+            var imagePath = '/static/cell_answers/cell' + String(pageNumber - 1) + String(i) + 'answer.JPG'
+            jsonArrayPages[pageNumber - 1].push(imagePath);
         }
     }
 }
-
-// Stores the path of each image the user answered incorrectly by cell type bin
-var jsonMapPages = new Map([['A', ""], ['B', ""], ['C', ""], ['D', ""], ['E', ""]]);
 
 /**
  * Writes and posts JSON files (seperate file for each cell type bin) containing the user's incorrect answers.
@@ -236,52 +231,10 @@ function setAllImagePaths() {
 }
 
 /**
- * 
- * @param {Map} allImagesByTypeObject 
- */
-function writeAllImagePaths(allImagesByType) {
-    fs.writeFile("./public/all_image_paths.json", '', function(e){});
-    var allImagesByTypeKeys = Array.from(allImagesByType.keys());
-    for (var i = 0; i < allImagesByTypeKeys.length; i++) {
-        for (var j = 0; j < allImagesByType.get(allImagesByTypeKeys[i]).length; j++) {
-            var thisImageObject = {};
-            thisImageObject[allImagesByTypeKeys[i] + String(i) + String(j)] =
-            allImagesByType.get(allImagesByTypeKeys[i])[j];
-            console.log(thisImageObject);
-            fs.appendFileSync("./public/all_image_paths.json", JSON.stringify(thisImageObject, null, 4),
-                     function(e){});
-        }
-    }
-}
-
-/**
- * Organizes and posts image paths associated with an incorrect user answer into the appropriate cell type bins
- */
-function postMissedImagePaths() {
-    setJsonMapPages();
-    writeMissedCellTypeFiles();
-}
-
-/**
- * Puts paths of images the user got incorrect in the appropriate cell-type bin
- */
-function setJsonMapPages() {
-    allCellTypes = cellTypes.cellTypes;
-    for (var i = 0; i < jsonArrayPages.length; i++) {
-        for (var j = 0; j < jsonArrayPages[i].length; j++) {
-            var missedImagePath = jsonArrayPages[i][j];
-            var thisCellType = getThisCellType(missedImagePath,allCellTypes,45,47);
-            // adds one to the total number incorrect for this particular cell type
-            totalIncorrectByType.set(thisCellType,totalIncorrectByType.get(thisCellType) + 1);
-            jsonMapPages.set(thisCellType, jsonMapPages.get(thisCellType) + jsonArrayPages[i][j]);
-        }
-    } 
-}
-
-/**
  * Gets the cell type for the image the user answered incorrectly
  * @param {String} missedImagePath - Path for image that the user answered incorrectly
  * @param {Array} allCellTypes - Array containing the cell types for each image
+ * @return - cell type bin associated with specific image
  */
 function getThisCellType(imagePath,allCellTypes,start,end) {
     var imageNum = imagePath.substring(start,end);
@@ -294,18 +247,67 @@ function getThisCellType(imagePath,allCellTypes,start,end) {
 }
 
 /**
- * Writes and posts JSON files (seperate file for each cell type bin) containing the user's incorrect answers.
+ * Writes all image paths to a JSON file to be accessed on the client side 
+ * @param {Map} allImagesByTypeObject - contains all the organized by bin
  */
-function writeMissedCellTypeFiles() {
-    var possibleCellTypes = ["A","B","C","D","E"];
-    for (var pageNum = 1; pageNum <= 5; pageNum++) {
-        fs.writeFile("./public/incorrect_image_paths_" + possibleCellTypes[pageNum - 1] + ".json",
-        jsonMapPages.get(possibleCellTypes[pageNum - 1]),
-        function(error) {
-            if (error) {
-                console.log(error);
+function writeAllImagePaths(allImagesByType) {
+    fs.writeFile("./public/all_image_paths.json", '', function(e){});
+    var allImagesByTypeKeys = Array.from(allImagesByType.keys());
+    for (var i = 0; i < allImagesByTypeKeys.length; i++) {
+        for (var j = 0; j < allImagesByType.get(allImagesByTypeKeys[i]).length; j++) {
+            var thisImageObject = {};
+            thisImageObject[allImagesByTypeKeys[i] + String(i) + String(j)] =
+            allImagesByType.get(allImagesByTypeKeys[i])[j];
+            fs.appendFileSync("./public/all_image_paths.json", JSON.stringify(thisImageObject, null, 4),
+                     function(e){});
+        }
+    }
+}
+
+/**
+ * Organizes and posts image paths associated with an incorrect user answer into the appropriate cell type bins
+ */
+function postMissedImagePaths() {
+    var missedImagesByType = setFinalMissedImagePaths();
+    writeMissedImagePaths(missedImagesByType);
+}
+
+/**
+ * Organizes image paths associated with incorrect user answers into the appopriate cell type bin
+ * @return - map containing image paths associated with incorrect user answers organized by cell type bin
+ */
+function setFinalMissedImagePaths() {
+    var missedImagesByType = new Map();
+    for (var i = 0; i < jsonArrayPages.length; i++) {
+        for (var j = 0; j < jsonArrayPages[i].length; j++) {
+            var imagePath = jsonArrayPages[i][j];
+            var thisCellType = getThisCellType(imagePath,allCellTypes,25,27); 
+            if (missedImagesByType.has(thisCellType)) {
+                missedImagesByType.get(thisCellType).push(imagePath);
+            } else {
+                missedImagesByType.set(thisCellType, new Array(imagePath)); 
             }
-        });
+        }
+    }
+    return missedImagesByType;
+}
+
+/**
+ * Writes incorrect user responses (based on cell type bin) 
+ * to a JSON file to be accessed on the client side 
+ * @param {Map} allImagesByTypeObject - map containing image paths associated with 
+ *      incorrect user answers organized by cell type bin
+ */
+function writeMissedImagePaths(missedImagesByType) {
+    fs.writeFile("./public/missed_image_paths.json", '', function(e){});
+    var missedImagesByTypeKeys = Array.from(missedImagesByType.keys());
+    for (var i = 0; i < missedImagesByTypeKeys.length; i++) {
+        for (var j = 0; j < missedImagesByType.get(missedImagesByTypeKeys[i]).length; j++) {
+            var thisImageObject = {};
+            thisImageObject[missedImagesByTypeKeys[i]] = missedImagesByType.get(missedImagesByTypeKeys[i])[j];
+            fs.appendFileSync("./public/missed_image_paths.json", JSON.stringify(thisImageObject, null, 4),
+                function(e){});
+        }
     }
 }
 
