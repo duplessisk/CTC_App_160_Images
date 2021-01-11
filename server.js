@@ -282,6 +282,7 @@ function setFinalMissedImagePaths() {
         for (var j = 0; j < jsonArrayPages[i].length; j++) {
             var imagePath = jsonArrayPages[i][j];
             var thisCellType = getThisCellType(imagePath,allCellTypes,25,27); 
+            // increments total incorrect for this type
             if (missedImagesByType.has(thisCellType)) {
                 missedImagesByType.get(thisCellType).push(imagePath);
             } else {
@@ -341,14 +342,12 @@ function setTotalIncorrect() {
     return JSON.stringify(totalIncorrectObject,null,4);
 }
 
-// stores number of each cell type user got incorrect
-var totalIncorrectByType = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
-
 /**
  * Sets the user's total number of incorrect responses by cell type
  */
 function setTotalIncorrectByType() {
     var possibleCellTypes = ["A","B","C","D","E"];
+    var missedImagesByType = new Map();
     var totalIncorrectByTypeObject = {};
     var totalIncorrectByTypeKeys = Array.from(totalIncorrectByType.keys());
     for (var i = 0; i < totalIncorrectByTypeKeys.length; i++) {
@@ -357,9 +356,6 @@ function setTotalIncorrectByType() {
     }
     return JSON.stringify(totalIncorrectByTypeObject,null,4);
 }
-
-// stores total number of each cell type
-var numEachType = new Map([['A', 0], ['B', 0], ['C', 0], ['D', 0], ['E', 0]]);
 
 /**
  * Sets the number of questions for each cell type.
@@ -371,7 +367,7 @@ function setNumEachType() {
     for (var i = 0; i < allCellTypes.length; i++) {
         numEachType.set(allCellTypes[i] , numEachType.get(allCellTypes[i]) + 1);
     }
-
+    
     // post numEachType contents
     var possibleCellTypes = ["A","B","C","D","E"];
     var numEachTypeObject = {};
