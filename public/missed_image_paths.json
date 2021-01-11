@@ -1,4 +1,12 @@
 {
+    "A": "/static/cell_answers/cell00answer.JPG"
+}{
+    "A": "/static/cell_answers/cell01answer.JPG"
+}{
+    "A": "/static/cell_answers/cell02answer.JPG"
+}{
+    "A": "/static/cell_answers/cell03answer.JPG"
+}{
     "A": "/static/cell_answers/cell04answer.JPG"
 }{
     "A": "/static/cell_answers/cell05answer.JPG"
@@ -84,4 +92,10 @@
     "E": "/static/cell_answers/cell45answer.JPG"
 }{
     "E": "/static/cell_answers/cell46answer.JPG"
+}{
+    "E": "/static/cell_answers/cell47answer.JPG"
+}{
+    "E": "/static/cell_answers/cell48answer.JPG"
+}{
+    "E": "/static/cell_answers/cell49answer.JPG"
 }
