@@ -307,7 +307,6 @@ function postMissedImagePaths() {
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
-            totalIncorrect += 1;   
             var imagePath = '/static/cell_answers/cell' + 
                 String(pageNumber - 1) + String(i) + 'answer.JPG';
             var thisCellType = getThisCellType(imagePath);
@@ -348,8 +347,8 @@ var numImagesByType = new Map();
  * type on the exam. 
  */
 function postResultsData() {
-    var totalIncorrectString = setTotalIncorrect();
     var totalIncorrectByTypeString = setTotalIncorrectByType();
+    var totalIncorrectString = setTotalIncorrect();
     var numImagesByTypeString = setNumImagesByType();
     fs.writeFile("./public/results_data.json", 
         "[" + "\n" + 
@@ -385,6 +384,7 @@ function setTotalIncorrectByType() {
             totalIncorrectByType.get(totalIncorrectByTypeKeys[i]);
         totalIncorrectByTypeObject["numIncorrectType" + 
             totalIncorrectByTypeKeys[i] + ""] = thisTypeTotalIncorrect;
+        totalIncorrect += thisTypeTotalIncorrect;
     }
     return JSON.stringify(totalIncorrectByTypeObject,null,4);
 }
