@@ -142,14 +142,17 @@ app.get("/results", function(request,response) {
 });
 
 app.get("/form_already_submitted_page", function(request,response) {
-    response.sendFile(path.join(__dirname + '/form_already_submitted_page.html'));
+    response.sendFile(path.join(__dirname + 
+        '/form_already_submitted_page.html'));
 });
 
 app.listen(process.env.PORT || 3000);
 
 /**
- * Stores answer key, user responses, and determines missed image paths for each page in the client side form.
- * @param {JS document} answerKeyPage - js document containing all answers with "yes" and "no" string values. 
+ * Stores answer key, user responses, and determines missed image paths for
+ * each page in the client side form.
+ * @param {JS document} answerKeyPage - js document containing all answers with 
+ *      "yes" and "no" string values. 
  * @param {Object} request - holds all http request information from user.
  * @param {number} pageNumber - page number in client side application.
  */
@@ -162,9 +165,11 @@ function driveApp(answerKeyPage,request,pageNumber) {
 
 
 /**
- * Replaces all answers with boolean and null values equivalent to the specified answer.
+ * Replaces all answers with boolean and null values equivalent to the 
+ * specified answer.
  * This function is not explicitly necessary, but makes following code cleaner.
- * @param {JS document} answerKey - js document containing all the answers with "yes" and "no" string values.
+ * @param {JS document} answerKey - js document containing all the answers with 
+ * "yes" and "no" string values.
  * @return - Array containing all answers with boolean values.
  */
 function createAnswerKey(answerKey) {
@@ -201,9 +206,11 @@ function initUserResponses(request) {
 }
 
 /**
- * Replaces all user responses with boolean and null values equivalent to their responses.
+ * Replaces all user responses with boolean and null values equivalent to their 
+ * responses.
  * This function is not explicitly necessary, but makes following code cleaner.
- * @param {Array} userResponses - array containing user responses for all the cell images.
+ * @param {Array} userResponses - array containing user responses for all the 
+ * cell images.
  */
 function recordUserResponses(userResponses) {
     for (var i = 0; i < userResponses.length; i++) {
@@ -225,7 +232,8 @@ allCellTypes = cellTypes.cellTypes;
 var missedImagesByType = new Map();
 
 /**
- * Writes and posts JSON files (seperate file for each cell type bin) containing the user's incorrect answers.
+ * Writes and posts JSON files (seperate file for each cell type bin) 
+ * containing the user's incorrect answers.
  */
 function postAllImagePaths() {
     var allImagesByType = setAllImagePaths();
@@ -239,15 +247,18 @@ function setAllImagePaths() {
     var allImagesByType = new Map();
     for (var i = 0; i < allCellTypes.length/10; i++) {
         for (var j = 0; j < 10; j++) {
-            var imagePath = '/static/cell_answers/cell' + String(i) + String(j) + 'answer.JPG';
+            var imagePath = '/static/cell_answers/cell' + String(i) + String(j)
+                + 'answer.JPG';
             var thisCellType = getThisCellType(imagePath); 
             if (allImagesByType.has(thisCellType)) {
                 allImagesByType.get(thisCellType).push(imagePath);
                 // increment total number images for this cell type
-                numImagesByType.set(thisCellType, numImagesByType.get(thisCellType) + 1);
+                numImagesByType.set(thisCellType, 
+                    numImagesByType.get(thisCellType) + 1);
             } else {
                 allImagesByType.set(thisCellType, new Array(imagePath)); 
-                numImagesByType.set(thisCellType, 1); // init total number images for this cell type
+                // init total number images for this cell type
+                numImagesByType.set(thisCellType, 1);
             }
         }
     }
@@ -256,51 +267,61 @@ function setAllImagePaths() {
 
 /**
  * Writes all image paths to a JSON file to be accessed on the client side. 
- * @param {Map} allImagesByTypeObject - contains all the images organized by cell type bin.
+ * @param {Map} allImagesByTypeObject - contains all the images organized by 
+ * cell type bin.
  */
 function writeImagePaths(imagesByType,fileName) {
     fs.writeFile("./public/" + fileName + ".json", "", function(){
         var imagesByTypeKeys = Array.from(imagesByType.keys());
         for (var i = 0; i < imagesByTypeKeys.length; i++) {
-            for (var j = 0; j < imagesByType.get(imagesByTypeKeys[i]).length; j++) {
-                var thisImageObject = {};
-                thisImageObject[imagesByTypeKeys[i]] =
-                imagesByType.get(imagesByTypeKeys[i])[j];
-                fs.appendFileSync("./public/" + fileName + ".json", JSON.stringify(thisImageObject, null, 4),
-                         function(){});
+            for (var j = 0; 
+                j < imagesByType.get(imagesByTypeKeys[i]).length; j++) {
+                    var thisImageObject = {};
+                    thisImageObject[imagesByTypeKeys[i]] =
+                    imagesByType.get(imagesByTypeKeys[i])[j];
+                    fs.appendFileSync("./public/" + fileName + ".json", 
+                        JSON.stringify(thisImageObject, null, 4), function(){});
             }
         }
     });
 }
 
 /**
- * Organizes and posts image paths associated with an incorrect user answer into the appropriate cell type bins.
+ * Organizes and posts image paths associated with an incorrect user answer 
+ * into the appropriate cell type bins.
  */
 function postMissedImagePaths() {
     writeImagePaths(missedImagesByType, "missed_image_paths");
 }
 
 /**
- * Stores (by cell type bin) the image paths of each image the user responded to incorrectly.
- * @param {Array} answerKey - Array containing boolean values representing answers for each question.
- * @param {Array} userResponses - Array containing boolean values representing user responses for each question.
- * @param {number} pageNumber - Client side page number corresponding with user response.
+ * Stores (by cell type bin) the image paths of each image the user responded 
+ * to incorrectly.
+ * @param {Array} answerKey - Array containing boolean values representing 
+ * answers for each question.
+ * @param {Array} userResponses - Array containing boolean values representing 
+ * user responses for each question.
+ * @param {number} pageNumber - Client side page number corresponding with user
+ *  response.
  */
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
             totalIncorrect += 1;   
-            var imagePath = '/static/cell_answers/cell' + String(pageNumber - 1) + String(i) + 'answer.JPG';
+            var imagePath = '/static/cell_answers/cell' + 
+                String(pageNumber - 1) + String(i) + 'answer.JPG';
             var thisCellType = getThisCellType(imagePath);
             missedImagesByType.get(thisCellType).push(imagePath);
-            totalIncorrectByType.set(thisCellType, totalIncorrectByType.get(thisCellType) + 1);
+            totalIncorrectByType.set(thisCellType, 
+                totalIncorrectByType.get(thisCellType) + 1);
         }
     }
 }
 
 /**
  * Gets the cell type for the image the user answered incorrectly
- * @param {String} missedImagePath - Path for image that the user answered incorrectly
+ * @param {String} missedImagePath - Path for image that the user answered 
+ * incorrectly
  * @return - cell type bin associated with specific image
  */
 function getThisCellType(imagePath) {
@@ -323,7 +344,8 @@ var totalIncorrectByType = new Map();
 var numImagesByType = new Map();
 
 /**
- * Posts a breakdown of the user's performance overall and within each cell type on the exam. 
+ * Posts a breakdown of the user's performance overall and within each cell 
+ * type on the exam. 
  */
 function postResultsData() {
     var totalIncorrectString = setTotalIncorrect();
@@ -339,8 +361,10 @@ function postResultsData() {
 }
 
 /**
- * Creates a JSON String representing the total number of incorrect responses by the user.
- * @return - JSON String representing total number of incorrect responses by the user.
+ * Creates a JSON String representing the total number of incorrect responses
+ * by the user.
+ * @return - JSON String representing total number of incorrect responses by 
+ * the user.
  */
 function setTotalIncorrect() {
     totalIncorrectObject = {};
@@ -350,14 +374,17 @@ function setTotalIncorrect() {
 
 /**
  * Sets the user's total number of incorrect responses by cell type.
- * @return - a string representing the user's total number of incorrect responses by cell type.
+ * @return - a string representing the user's total number of incorrect 
+ * responses by cell type.
  */
 function setTotalIncorrectByType() {
     var totalIncorrectByTypeObject = {};
     var totalIncorrectByTypeKeys = Array.from(totalIncorrectByType.keys());
     for (var i = 0; i < totalIncorrectByTypeKeys.length; i++) {
-        var thisTypeTotalIncorrect = totalIncorrectByType.get(totalIncorrectByTypeKeys[i]);
-        totalIncorrectByTypeObject["numIncorrectType" + totalIncorrectByTypeKeys[i] + ""] = thisTypeTotalIncorrect;
+        var thisTypeTotalIncorrect = 
+            totalIncorrectByType.get(totalIncorrectByTypeKeys[i]);
+        totalIncorrectByTypeObject["numIncorrectType" + 
+            totalIncorrectByTypeKeys[i] + ""] = thisTypeTotalIncorrect;
     }
     return JSON.stringify(totalIncorrectByTypeObject,null,4);
 }
@@ -371,7 +398,8 @@ function setNumImagesByType() {
     var numImagesByTypeKeys = Array.from(numImagesByType.keys());
     for (var i = 0; i < numImagesByTypeKeys.length; i++) {
         var thisNumImagesByType = numImagesByType.get(numImagesByTypeKeys[i]);
-        numImagesByTypeObject["totalNumType" + numImagesByTypeKeys[i] + ""] = thisNumImagesByType;
+        numImagesByTypeObject["totalNumType" + numImagesByTypeKeys[i] + ""] = 
+            thisNumImagesByType;
     }
     return JSON.stringify(numImagesByTypeObject,null,4);
 }
