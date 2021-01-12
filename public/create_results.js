@@ -39,41 +39,128 @@ for (var i = 0; i < 5; i++) {
     }
 }
 
-var cellTypes = ['A','B','C','D','E'];
-
 // Stores image paths of all incorrect user answers in the appropriate cell type bin
-var incorrectTypesMap = new Map([['A', []], ['B', []], ['C', []], ['D', []], ['E', []]]);
+var missedTypesMap = new Map();
+
+// Stores image paths of all images in the appropriate cell type bin
+var allTypesMap = new Map();
 
 /**
  * Main function that reads in JSON files, and links the data with the DOM.
  */
 async function main() {
-    for (var i = 0; i < cellTypes.length; i++) {
-        incorrectTypesMap.set(cellTypes[i], await fetch("/static/incorrect_image_paths_" + cellTypes[i] + ".json"));
-        incorrectTypesMap.set(cellTypes[i], await incorrectTypesMap.get(cellTypes[i]).text());
-        incorrectTypesMap.set(cellTypes[i], getJsonContents(incorrectTypesMap.get(cellTypes[i])));
-    }
+    var missedImagePathsJson = await fetch("/static/missed_image_paths.json");
+    var missedImagePathsText = await missedImagePathsJson.text();
+    setImagePaths(missedImagePathsText, missedTypesMap, "missed");
+
+    var allImagePathsJson = await fetch("/static/all_image_paths.json");
+    var allImagePathsText = await allImagePathsJson.text();
+    setImagePaths(allImagePathsText, allTypesMap, "all");
+
+    var resultsJson = await fetch("/static/results_data.json");
+    var resultsJsonText = await resultsJson.text();
+    setResultsMaps(resultsJsonText);
+
+    setResults();
     createButtons();
     querySelectButtons();
 }
+
+// total number of questions the user missed
+var totalNumIncorrect;
+
+// Stores the total number of incorrect responses by the user by cell type bin
+var incorrectNumTypesMap = new Map();
+
+// Stores the total number of images per cell type bin
+var totalNumTypesMap = new Map();
 
 /**
  * Returns an array containing the data from the specified JSON file
  * @param {Promise} incorrectTypeBlocks - Promise object that needs to be parsed in order to obtain data
  */
-function getJsonContents(incorrectTypeBlocks) {
-    var imagePathStrings = "";
-    for (let i in incorrectTypeBlocks) {
-        let t = incorrectTypeBlocks[i];
+function setImagePaths(imagePathsText, typesMap) {
+    var imagePathsString = filterString(imagePathsText);
+    setTypesMap(imagePathsString.substring(0,imagePathsString.length - 1),
+        typesMap);
+}
+
+/**
+ * Creates string representing missed_image_paths.JSON that excludes unnecessary tokens
+ * @param {String} missedImagePathsText - contents from missed_image_paths.JSON
+ * in String form
+ * @return - String containing all missed image paths
+ */
+function filterString(imagePathsText) {
+    imagePathsString = "";
+    for (let i in imagePathsText) {
+        let t = imagePathsText[i];
         if (t != '{') {
-            imagePathStrings += t;
+            imagePathsString += t;
         }
     } 
-    var jsonObjectArr = imagePathStrings.split("}");
+    return imagePathsString;
+}
+
+/**
+ * Occupies missedTypesMap with the type of cell the user answered incorrectly 
+ * and the image path associated with that cell.
+ * @param {String} imagePathsString - String containing all missed image paths.
+ */
+function setTypesMap(imagePathsString, typesMap) {
+    var jsonObjectArr = imagePathsString.split("}");
     for (var i = 0; i < jsonObjectArr.length; i++) {
-        jsonObjectArr[i] = jsonObjectArr[i].substring(19);
+        var thisCellType = jsonObjectArr[i].charAt(6);
+        var imagePath = jsonObjectArr[i].substring(11,48);
+        if (typesMap.has(thisCellType)) {
+            typesMap.get(thisCellType).push(imagePath);
+        } else {
+            typesMap.set(thisCellType, new Array(imagePath)); 
+        }    
     }
-    return jsonObjectArr;
+}
+
+/**
+ * Sets incorrectNumTypesMap and totalNumTypesMap with contents from 
+ * results_data.json. 
+ * @param {String} resultsText - String representation of results_data.json 
+ *                               contents. 
+ */
+function setResultsMaps(resultsText) {
+    var resultsString = filterString(resultsText);
+
+    var jsonResultsArr = resultsString.split("}");
+
+    setTotalNumIncorrect(jsonResultsArr[0]);
+    setNumByTypesMap(jsonResultsArr[1], incorrectNumTypesMap,22,26);
+    setNumByTypesMap(jsonResultsArr[2], totalNumTypesMap,18,22);
+}
+
+/**
+ * 
+ * @param {*} totalNumIncorrectString 
+ */
+function setTotalNumIncorrect(totalNumIncorrectString) {
+    totalNumIncorrect = totalNumIncorrectString.substring(23,
+        totalNumIncorrectString.length);
+}
+
+/**
+ * 
+ * @param {*} numByTypeString 
+ * @param {*} numTypesMap 
+ * @param {*} thisCellTypeIndex 
+ * @param {*} imagePathStartIndex 
+ */
+function setNumByTypesMap(numByTypeString, numTypesMap, thisCellTypeIndex, 
+    imagePathStartIndex) {
+var numTypeArr = numByTypeString.split(",");
+for (var i = 0; i < numTypeArr.length; i++) {
+var thisCellType = numTypeArr[i].charAt(thisCellTypeIndex);
+var numType = numTypeArr[i].substring(imagePathStartIndex,
+numTypeArr[i].length);
+numTypesMap.set(thisCellType, Number(numType)); 
+}
 }
 
 /**
@@ -81,22 +168,74 @@ function getJsonContents(incorrectTypeBlocks) {
  * @param {Array} cellType - Stores all the cell type bins
  * @param {Array} incorrectTypeArr - Contains the paths of all incorrectly answered images based on cell type
  */
-function addMissedImagesToDom(cellType, incorrectTypeArr) {
-    if (incorrectTypeArr.length - 1 != 0) {
-        for (var i = 0; i < incorrectTypeArr.length-1; i++) {
-            var imageNum = incorrectTypeArr[i].substring(25,27);
+function addImagesToDom(cellType, typesMap, imageType) {
+    var imagePaths = typesMap.get(cellType);
+    if (imagePaths != undefined) { // avoid getting length of empty imagePaths
+        for (var i = 0; i < imagePaths.length; i++) {
+
             var messageDiv = document.createElement('div');
             messageDiv.className = "message-div";
             messageDiv.id = "messageDiv";
-            messageDiv.innerHTML = "You got image  " + imageNum + " incorrect";
-            document.querySelector("#type" + cellType + "ResultDiv").appendChild(messageDiv);
-            var missedImagePath = incorrectTypeArr[i].substring(0,37);
+    
+            var imageNum = imagePaths[i].substring(25,27);
+            var imagePath = imagePaths[i].substring(0,37);
             var newImg = document.createElement('img');
+            newImg.src = imagePath;
             newImg.id="resultsImg";
-            newImg.src = missedImagePath;
+    
+            if (imageType == "missed") {
+                messageDiv.innerHTML = "You got image  " + imageNum + " incorrect";
+            } else {
+                messageDiv.innerHTML = "Image  " + imageNum;
+            }
+            document.querySelector("#type" + cellType + "ResultDiv").appendChild(messageDiv);
             document.querySelector("#type" + cellType + "ResultDiv").appendChild(newImg);
         }
     }
+}
+
+// Stores the total number of incorrect images per cell type bin
+var incorrectNumTypesMap = new Map();
+
+// Stores the total number of images per cell type bin
+var totalNumTypesMap = new Map();
+
+/**
+ * 
+ */
+function setResults() {
+    var totalCorrect = 50;
+    var totalNumQuestions = 0;
+    var incorrectNumTypesMapKeys = Array.from(incorrectNumTypesMap.keys());
+    var totalNumTypesMapKeys = Array.from(totalNumTypesMap.keys());
+    for (var i = 0; i < incorrectNumTypesMapKeys.length; i++) {
+        var dataMessageDiv = document.createElement('div');
+        dataMessageDiv.className = "data-messages";
+        var incorrectNumThisTypeValue = incorrectNumTypesMap.get(incorrectNumTypesMapKeys[i]);
+        var totalNumThisTypeValue = totalNumTypesMap.get(totalNumTypesMapKeys[i]);
+
+        totalCorrect -= incorrectNumThisTypeValue;
+        totalNumQuestions += totalNumThisTypeValue;
+
+        if (incorrectNumThisTypeValue == 0) {
+            dataMessageDiv.innerHTML = "You missed no images (100%)";
+        } else if (incorrectNumThisTypeValue == 1) {
+            dataMessageDiv.innerHTML = "You missed " + 
+                incorrectNumThisTypeValue + " image (" +
+                    (100 - 100*incorrectNumThisTypeValue/totalNumThisTypeValue) 
+                        +"%)";
+        } else {
+            dataMessageDiv.innerHTML = "You missed " +
+                incorrectNumThisTypeValue + " images (" +
+                    (100 - 100*incorrectNumThisTypeValue/totalNumThisTypeValue) 
+                        + "%)";
+            }
+        document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(dataMessageDiv);
+    }
+    document.querySelector("#overallResults").innerHTML = "Score: " + 
+        100*(totalCorrect/totalNumQuestions) + "% (" + totalCorrect +
+             " out of " + totalNumQuestions + ")";
+
 }
 
 /**
@@ -149,7 +288,7 @@ function querySelectButtons() {
                     showAllButtonsClickNumMap.set(cellType,true);
                 }
                 showButtonsClickNumMap.set(cellType,false);
-                addMissedImagesToDom(cellType,incorrectTypesMap.get(cellType));
+                addImagesToDom(cellType, missedTypesMap, "missed");
             } else { // hide images for show button
                 document.getElementById("type"+cellType+"Button").innerHTML = "Show Missed";
                 document.querySelector("#type"+cellType+"ResultDiv").innerHTML = '';
@@ -170,7 +309,7 @@ function querySelectButtons() {
                     showButtonsClickNumMap.set(cellType,true);
                 }
                 showButtonsClickNumMap.set(cellType,true);
-                addAllImagesToDom();
+                addImagesToDom(cellType, allTypesMap, "all");
             } else { // hide images for show all button
                 document.getElementById("showAllType"+cellType+"Button").innerHTML = "Show All";
                 document.querySelector("#type"+cellType+"ResultDiv").innerHTML = '';

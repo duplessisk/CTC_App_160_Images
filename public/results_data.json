@@ -1,19 +1,15 @@
-[
 {
     "totalIncorrect": 25
-},
-{
+}{
     "numIncorrectTypeA": 5,
     "numIncorrectTypeB": 5,
     "numIncorrectTypeC": 5,
     "numIncorrectTypeD": 5,
     "numIncorrectTypeE": 5
-},
-{
+}{
     "totalNumTypeA": 10,
     "totalNumTypeB": 10,
     "totalNumTypeC": 10,
     "totalNumTypeD": 10,
     "totalNumTypeE": 10
 }
-]

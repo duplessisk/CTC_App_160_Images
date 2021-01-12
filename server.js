@@ -350,12 +350,10 @@ function postResultsData() {
     var totalIncorrectByTypeString = setTotalIncorrectByType();
     var totalIncorrectString = setTotalIncorrect();
     var numImagesByTypeString = setNumImagesByType();
-    fs.writeFile("./public/results_data.json", 
-        "[" + "\n" + 
-            totalIncorrectString + "," + "\n" + 
-            totalIncorrectByTypeString + "," + "\n" + 
-            numImagesByTypeString + "\n" + 
-        "]", function() {
+    fs.writeFile("./public/results_data.json",  
+        totalIncorrectString + 
+        totalIncorrectByTypeString + 
+        numImagesByTypeString , function() {
     });
 }
 
