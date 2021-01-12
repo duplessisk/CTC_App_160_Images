@@ -152,7 +152,7 @@ app.listen(process.env.PORT || 3000);
  * Stores answer key, user responses, and determines missed image paths for
  * each page in the client side form.
  * @param {JS document} answerKeyPage - js document containing all answers with 
- *      "yes" and "no" string values. 
+ *                                      "yes" and "no" string values. 
  * @param {Object} request - holds all http request information from user.
  * @param {number} pageNumber - page number in client side application.
  */
@@ -169,7 +169,7 @@ function driveApp(answerKeyPage,request,pageNumber) {
  * specified answer.
  * This function is not explicitly necessary, but makes following code cleaner.
  * @param {JS document} answerKey - js document containing all the answers with 
- * "yes" and "no" string values.
+ *                                  "yes" and "no" string values.
  * @return - Array containing all answers with boolean values.
  */
 function createAnswerKey(answerKey) {
@@ -210,7 +210,7 @@ function initUserResponses(request) {
  * responses.
  * This function is not explicitly necessary, but makes following code cleaner.
  * @param {Array} userResponses - array containing user responses for all the 
- * cell images.
+ *                                cell images.
  */
 function recordUserResponses(userResponses) {
     for (var i = 0; i < userResponses.length; i++) {
@@ -268,7 +268,7 @@ function setAllImagePaths() {
 /**
  * Writes all image paths to a JSON file to be accessed on the client side. 
  * @param {Map} allImagesByTypeObject - contains all the images organized by 
- * cell type bin.
+ *                                      cell type bin.
  */
 function writeImagePaths(imagesByType,fileName) {
     fs.writeFile("./public/" + fileName + ".json", "", function(){
@@ -298,11 +298,11 @@ function postMissedImagePaths() {
  * Stores (by cell type bin) the image paths of each image the user responded 
  * to incorrectly.
  * @param {Array} answerKey - Array containing boolean values representing 
- * answers for each question.
+ *                            answers for each question.
  * @param {Array} userResponses - Array containing boolean values representing 
- * user responses for each question.
+ *                                user responses for each question.
  * @param {number} pageNumber - Client side page number corresponding with user
- *  response.
+ *                              response.
  */
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
     for (var i = 0; i < 10; i++) {
@@ -320,7 +320,7 @@ function setMissedImagePaths(answerKey,userResponses,pageNumber) {
 /**
  * Gets the cell type for the image the user answered incorrectly
  * @param {String} missedImagePath - Path for image that the user answered 
- * incorrectly
+ *                                   incorrectly
  * @return - cell type bin associated with specific image
  */
 function getThisCellType(imagePath) {
@@ -361,7 +361,7 @@ function postResultsData() {
  * Creates a JSON String representing the total number of incorrect responses
  * by the user.
  * @return - JSON String representing total number of incorrect responses by 
- * the user.
+ *           the user.
  */
 function setTotalIncorrect() {
     totalIncorrectObject = {};
@@ -372,7 +372,7 @@ function setTotalIncorrect() {
 /**
  * Sets the user's total number of incorrect responses by cell type.
  * @return - a string representing the user's total number of incorrect 
- * responses by cell type.
+ *           responses by cell type.
  */
 function setTotalIncorrectByType() {
     var totalIncorrectByTypeObject = {};

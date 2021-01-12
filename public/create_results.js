@@ -30,7 +30,8 @@ for (var i = 0; i < 5; i++) {
     var typeLabel = document.createElement('p');
     typeLabel.innerHTML = "Type "+tempTypes[i]+" Cell Results";
     typeLabel.className = "label-types";
-    document.getElementById("type"+tempTypes[i]+"HeaderDiv").appendChild(typeLabel);
+    document.getElementById("type"+tempTypes[i]+"HeaderDiv")
+        .appendChild(typeLabel);
     // line breaks
     if (i < 4) {
         var lineBreaks = document.createElement('hr');
@@ -39,7 +40,8 @@ for (var i = 0; i < 5; i++) {
     }
 }
 
-// Stores image paths of all incorrect user answers in the appropriate cell type bin
+/* Stores image paths of all incorrect user answers in the appropriate 
+   cell type bin */
 var missedTypesMap = new Map();
 
 // Stores image paths of all images in the appropriate cell type bin
@@ -66,9 +68,6 @@ async function main() {
     querySelectButtons();
 }
 
-// total number of questions the user missed
-var totalNumIncorrect;
-
 // Stores the total number of incorrect responses by the user by cell type bin
 var incorrectNumTypesMap = new Map();
 
@@ -77,7 +76,8 @@ var totalNumTypesMap = new Map();
 
 /**
  * Returns an array containing the data from the specified JSON file
- * @param {Promise} incorrectTypeBlocks - Promise object that needs to be parsed in order to obtain data
+ * @param {Promise} incorrectTypeBlocks - Promise object that needs to be 
+ *                                        parsed in order to obtain data
  */
 function setImagePaths(imagePathsText, typesMap) {
     var imagePathsString = filterString(imagePathsText);
@@ -86,9 +86,10 @@ function setImagePaths(imagePathsText, typesMap) {
 }
 
 /**
- * Creates string representing missed_image_paths.JSON that excludes unnecessary tokens
+ * Creates string representing missed_image_paths.JSON that excludes 
+ * unnecessary tokens
  * @param {String} missedImagePathsText - contents from missed_image_paths.JSON
- * in String form
+ *                                        in String form
  * @return - String containing all missed image paths
  */
 function filterString(imagePathsText) {
@@ -137,8 +138,38 @@ function setResultsMaps(resultsText) {
 }
 
 /**
- * 
- * @param {*} totalNumIncorrectString 
+ * Sets the total number of incorrect responses or total number of questions by
+ * cell bin type 
+ * @param {String} numByTypeString -   
+ * @param {Map<String,Array>} numTypesMap - Map to set either 
+ *                                          incorrectNumsTypeMap 
+ *                                          or totalNumsTypeMap
+ * @param {Number} thisCellTypeIndex - index in numByTypeString that contains 
+ *                                     the proper cell type bin
+ * @param {Number} imagePathStartIndex - index in numByType string that 
+ *                                       contains the start of the image path 
+ *                                       of interest.
+ */
+function setNumByTypesMap(numByTypeString, numTypesMap, thisCellTypeIndex, 
+    imagePathStartIndex) {
+    var numTypeArr = numByTypeString.split(",");
+    for (var i = 0; i < numTypeArr.length; i++) {
+        var thisCellType = numTypeArr[i].charAt(thisCellTypeIndex);
+        var numType = numTypeArr[i].substring(imagePathStartIndex,
+        numTypeArr[i].length);
+        numTypesMap.set(thisCellType, Number(numType)); 
+    }
+}
+
+// total number of questions the user missed
+var totalNumIncorrect;
+
+/**
+ * Sets the total number of incorrect responses by the user 
+ * @param {String} totalNumIncorrectString - String representing data from 
+ *                                           results_data.json. Contains total 
+ *                                           number of incorrect responses by 
+ *                                           the user. 
  */
 function setTotalNumIncorrect(totalNumIncorrectString) {
     totalNumIncorrect = totalNumIncorrectString.substring(23,
@@ -146,27 +177,10 @@ function setTotalNumIncorrect(totalNumIncorrectString) {
 }
 
 /**
- * 
- * @param {*} numByTypeString 
- * @param {*} numTypesMap 
- * @param {*} thisCellTypeIndex 
- * @param {*} imagePathStartIndex 
- */
-function setNumByTypesMap(numByTypeString, numTypesMap, thisCellTypeIndex, 
-    imagePathStartIndex) {
-var numTypeArr = numByTypeString.split(",");
-for (var i = 0; i < numTypeArr.length; i++) {
-var thisCellType = numTypeArr[i].charAt(thisCellTypeIndex);
-var numType = numTypeArr[i].substring(imagePathStartIndex,
-numTypeArr[i].length);
-numTypesMap.set(thisCellType, Number(numType)); 
-}
-}
-
-/**
  * Adds incorrect cell images to DOM
  * @param {Array} cellType - Stores all the cell type bins
- * @param {Array} incorrectTypeArr - Contains the paths of all incorrectly answered images based on cell type
+ * @param {Array} incorrectTypeArr - Contains the paths of all incorrectly 
+ *                                   answered images based on cell type
  */
 function addImagesToDom(cellType, typesMap, imageType) {
     var imagePaths = typesMap.get(cellType);
@@ -184,12 +198,15 @@ function addImagesToDom(cellType, typesMap, imageType) {
             newImg.id="resultsImg";
     
             if (imageType == "missed") {
-                messageDiv.innerHTML = "You got image  " + imageNum + " incorrect";
+                messageDiv.innerHTML = "You got image  " + imageNum + 
+                    " incorrect";
             } else {
                 messageDiv.innerHTML = "Image  " + imageNum;
             }
-            document.querySelector("#type" + cellType + "ResultDiv").appendChild(messageDiv);
-            document.querySelector("#type" + cellType + "ResultDiv").appendChild(newImg);
+            document.querySelector("#type" + cellType + "ResultDiv")
+                .appendChild(messageDiv);
+            document.querySelector("#type" + cellType + "ResultDiv")
+                .appendChild(newImg);
         }
     }
 }
@@ -201,7 +218,8 @@ var incorrectNumTypesMap = new Map();
 var totalNumTypesMap = new Map();
 
 /**
- * 
+ * Uses information stored within totalIncorrect, incorrectNumTypesMap, and 
+ * totalNumTypesMap to add the appropriate user data to the DOM.
  */
 function setResults() {
     var totalCorrect = 50;
@@ -211,8 +229,10 @@ function setResults() {
     for (var i = 0; i < incorrectNumTypesMapKeys.length; i++) {
         var dataMessageDiv = document.createElement('div');
         dataMessageDiv.className = "data-messages";
-        var incorrectNumThisTypeValue = incorrectNumTypesMap.get(incorrectNumTypesMapKeys[i]);
-        var totalNumThisTypeValue = totalNumTypesMap.get(totalNumTypesMapKeys[i]);
+        var incorrectNumThisTypeValue = incorrectNumTypesMap
+            .get(incorrectNumTypesMapKeys[i]);
+        var totalNumThisTypeValue = totalNumTypesMap
+            .get(totalNumTypesMapKeys[i]);
 
         totalCorrect -= incorrectNumThisTypeValue;
         totalNumQuestions += totalNumThisTypeValue;
@@ -230,7 +250,8 @@ function setResults() {
                     (100 - 100*incorrectNumThisTypeValue/totalNumThisTypeValue) 
                         + "%)";
             }
-        document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(dataMessageDiv);
+        document.querySelector("#type"+tempTypes[i]+"HeaderDiv")
+            .appendChild(dataMessageDiv);
     }
     document.querySelector("#overallResults").innerHTML = "Score: " + 
         100*(totalCorrect/totalNumQuestions) + "% (" + totalCorrect +
@@ -246,73 +267,97 @@ function createButtons() {
         var typeButtonDiv = document.createElement('span');
         typeButtonDiv.className = "type-button-divs";
         typeButtonDiv.id = "type"+tempTypes[i]+"ButtonDiv";
-        document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(typeButtonDiv);
+        document.querySelector("#type"+tempTypes[i]+"HeaderDiv")
+            .appendChild(typeButtonDiv);
         var typeButton = document.createElement('button');
         typeButton.innerHTML = "Show Missed";
         typeButton.id = "type"+tempTypes[i]+"Button";
         typeButton.className = "show-type-button";
-        document.querySelector("#type"+tempTypes[i]+"ButtonDiv").appendChild(typeButton);
+        document.querySelector("#type"+tempTypes[i]+"ButtonDiv")
+            .appendChild(typeButton);
 
         var showAllTypeButtonDiv = document.createElement('span');
         showAllTypeButtonDiv.className = "show-all-type-button-divs";
         showAllTypeButtonDiv.id = "showAllType"+tempTypes[i]+"ButtonDiv";
-        document.querySelector("#type"+tempTypes[i]+"HeaderDiv").appendChild(showAllTypeButtonDiv);
+        document.querySelector("#type"+tempTypes[i]+"HeaderDiv")
+            .appendChild(showAllTypeButtonDiv);
         var showAllTypeButton = document.createElement('button');
         showAllTypeButton.innerHTML = "Show All";
         showAllTypeButton.id = "showAllType"+tempTypes[i]+"Button";
         showAllTypeButton.className = "show-all-type-button";
-        document.querySelector("#showAllType"+tempTypes[i]+"ButtonDiv").appendChild(showAllTypeButton);
+        document.querySelector("#showAllType"+tempTypes[i]+"ButtonDiv")
+            .appendChild(showAllTypeButton);
     }
 }
+/*
+  Stores whether or not a particular show button has been clicked (false) 
+  or not (true)
+*/
+var showButtonsClickNumMap = new Map([['A', true], ['B', true], ['C', true], 
+    ['D', true], ['E', true]]);
 
-// Stores whether or not a particular show button has been clicked (false) or not (true)
-var showButtonsClickNumMap = new Map([['A', true], ['B', true], ['C', true], ['D', true], ['E', true]]);
-
-// Stores whether or not a particular show all button has been clicked (false) or not (true)
-var showAllButtonsClickNumMap = new Map([['A', true], ['B', true], ['C', true], ['D', true], ['E', true]]);
+// Stores whether or not a particular show all button has been clicked (false) 
+// or not (true)
+var showAllButtonsClickNumMap = new Map([['A', true], ['B', true], ['C', true], 
+    ['D', true], ['E', true]]);
 
 /**
- * Adds an event listener to all of the show and show all buttons. Contains code allowing for the dynamic content of 
- * these buttons
+ * Adds an event listener to all of the show and show all buttons. Contains 
+ * code allowing for the dynamic content of these buttons.
  */
 function querySelectButtons() {
     for (var i = 0; i < 5; i++) {
-        document.querySelectorAll(".show-type-button")[i].addEventListener('click', function() {
+        document.querySelectorAll(".show-type-button")[i]
+            .addEventListener('click', function() {
             var cellType = this.id.charAt(4);
-            if (showButtonsClickNumMap.get(cellType)) { // show images for show button
-                document.getElementById("type"+cellType+"Button").innerHTML = "Hide Missed";
-                // hide images for show All button
-                if (document.getElementById("showAllType"+cellType+"Button").innerHTML == "Hide All") {
-                    document.getElementById("showAllType"+cellType+"Button").innerHTML = "Show All";
-                    document.querySelector("#type"+cellType+"ResultDiv").innerHTML = '';
+            // show images for show button
+            if (showButtonsClickNumMap.get(cellType)) {
+                document.getElementById("type"+cellType+"Button")
+                    .innerHTML = "Hide Missed";
+                if (document.getElementById("showAllType"+cellType+"Button")
+                        .innerHTML == "Hide All") {
+                    document.getElementById("showAllType"+cellType+"Button").
+                        innerHTML = "Show All";
+                    document.querySelector("#type"+cellType+"ResultDiv")
+                        .innerHTML = '';
                     showAllButtonsClickNumMap.set(cellType,true);
                 }
                 showButtonsClickNumMap.set(cellType,false);
                 addImagesToDom(cellType, missedTypesMap, "missed");
             } else { // hide images for show button
-                document.getElementById("type"+cellType+"Button").innerHTML = "Show Missed";
-                document.querySelector("#type"+cellType+"ResultDiv").innerHTML = '';
+                document.getElementById("type"+cellType+"Button")
+                    .innerHTML = "Show Missed";
+                document.querySelector("#type"+cellType+"ResultDiv")
+                    .innerHTML = '';
                 showButtonsClickNumMap.set(cellType,true);
             }
         });
     }
     for (var i = 0; i < 5; i++) {
-        document.querySelectorAll(".show-all-type-button")[i].addEventListener('click', function() {
+        document.querySelectorAll(".show-all-type-button")[i]
+            .addEventListener('click', function() {
             var cellType = this.id.charAt(11);
-            if (showAllButtonsClickNumMap.get(cellType)) { // show images for show all button
-                document.getElementById("showAllType"+cellType+"Button").innerHTML = "Hide All";
+            // show images for show all button
+            if (showAllButtonsClickNumMap.get(cellType)) { 
+                document.getElementById("showAllType"+cellType+"Button")
+                    .innerHTML = "Hide All";
                 showAllButtonsClickNumMap.set(cellType,false);
                 // hide images for show button
-                if (document.getElementById("type"+cellType+"Button").innerHTML == "Hide Missed") {
-                    document.getElementById("type"+cellType+"Button").innerHTML = "Show Missed";
-                    document.querySelector("#type"+cellType+"ResultDiv").innerHTML = '';
+                if (document.getElementById("type"+cellType+"Button")
+                    .innerHTML == "Hide Missed") {
+                    document.getElementById("type"+cellType+"Button")
+                        .innerHTML = "Show Missed";
+                    document.querySelector("#type"+cellType+"ResultDiv")
+                        .innerHTML = '';
                     showButtonsClickNumMap.set(cellType,true);
                 }
                 showButtonsClickNumMap.set(cellType,true);
                 addImagesToDom(cellType, allTypesMap, "all");
             } else { // hide images for show all button
-                document.getElementById("showAllType"+cellType+"Button").innerHTML = "Show All";
-                document.querySelector("#type"+cellType+"ResultDiv").innerHTML = '';
+                document.getElementById("showAllType"+cellType+"Button")
+                    .innerHTML = "Show All";
+                document.querySelector("#type"+cellType+"ResultDiv")
+                    .innerHTML = '';
                 showAllButtonsClickNumMap.set(cellType,true);
             }
         });
