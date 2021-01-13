@@ -253,9 +253,12 @@ function setResults() {
         document.querySelector("#type"+tempTypes[i]+"HeaderDiv")
             .appendChild(dataMessageDiv);
     }
+    console.log("totalCorrect: " + totalCorrect);
+    console.log("totalNumQuestions: " + totalNumQuestions);
+    console.log(totalCorrect/totalNumQuestions);
     document.querySelector("#overallResults").innerHTML = "Score: " + 
-        100*(totalCorrect/totalNumQuestions) + "% (" + totalCorrect +
-             " out of " + totalNumQuestions + ")";
+        Math.round(100*(totalCorrect/totalNumQuestions)) + "% (" + 
+        totalCorrect + " out of " + totalNumQuestions + ")";
 
 }
 
