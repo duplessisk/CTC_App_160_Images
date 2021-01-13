@@ -9,6 +9,8 @@ const answer_key_page_four = require("./answer_key_page_four");
 const answer_key_page_five = require("./answer_key_page_five");
 const cellTypes = require("./cell_types");
 const { stringify } = require("querystring");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 const app = express();
 
@@ -25,6 +27,22 @@ app.get("/", function(request,response) {
 });
 
 app.post("/welcome_page", function(request,response) {
+    response.redirect('/login_page');
+});
+
+app.get("/login_page", function(request,response) {
+    previouslySubmitted = false;
+    response.sendFile(path.join(__dirname + '/login_page.html'));
+});
+
+var firstName;
+var lastName;
+var email;
+
+app.post("/login_page", function(request,response) {
+    firstName = request.body.firstName;
+    lastName = request.body.lastName;
+    email = request.body.email;
     response.redirect('/instructions_page');
 });
 
@@ -132,6 +150,8 @@ app.post("/review", function(request,response) {
             postAllImagePaths();
             postMissedImagePaths();
             postResultsData();
+            writeResultsFile();
+            sendEmailWithResults();
             response.redirect('/results');
         }
     }
@@ -400,4 +420,48 @@ function setNumImagesByType() {
             thisNumImagesByType;
     }
     return JSON.stringify(numImagesByTypeObject,null,4);
+}
+
+function writeResultsFile() {
+    fs.writeFile("./final_results.txt", "Number Incorrect: " + "\n", 
+                 function(){
+        var keys = Array.from(totalIncorrectByType.keys());
+        for (var i = 0; i < keys.length; i++) {
+            fs.appendFileSync("./final_results.txt",   
+                "Cell Type " + keys[i] + ": " +
+                String(totalIncorrectByType.get(keys[i])) +
+                "\n", 
+                    function(){});
+        }
+    });
+
+}
+
+function sendEmailWithResults() {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user:process.env.EMAIL,
+            pass:process.env.PASSWORD
+        }
+    });
+
+    let mailOptions = {
+        from: 'klduplessis@gmail.com',
+        to: email,
+        subject: 'yep!',
+        text: 'It works',
+        attachments: [{
+            filename: 'final_results.txt',
+            path: './final_results.txt'
+        }]
+    }
+
+    transporter.sendMail(mailOptions, function(error,data) {
+        if (error) {
+            console.log("Error Occurs");
+        } else {
+            console.log("Email sent");
+        }
+    });
 }
