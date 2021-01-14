@@ -1,11 +1,11 @@
 {
-    "totalIncorrect": 50
+    "totalIncorrect": 24
 }{
-    "numIncorrectTypeA": 10,
-    "numIncorrectTypeB": 10,
-    "numIncorrectTypeC": 10,
-    "numIncorrectTypeD": 10,
-    "numIncorrectTypeE": 10
+    "numIncorrectTypeA": 5,
+    "numIncorrectTypeB": 5,
+    "numIncorrectTypeC": 5,
+    "numIncorrectTypeD": 4,
+    "numIncorrectTypeE": 5
 }{
     "totalNumTypeA": 10,
     "totalNumTypeB": 10,

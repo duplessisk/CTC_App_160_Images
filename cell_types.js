@@ -1,70 +1,24 @@
-const csv = require('csv-parser')
 const fs = require('fs');
-const { Stream } = require('stream');
-var cellTypes = [];
 
-fs.createReadStream('./cell_information.csv')
-  .pipe(csv())
-  .on('data', (data) => cellTypes.push(data["ANSWER"]))
-  .on('end', () => {
-    console.log("I'm in");
-    exports.cellTypes = cellTypes;
-  });
+var cellInfo = [];
+var fileContents = fs.readFileSync('./cell_information.csv');
+var rows = fileContents.toString().split('\r\n');
 
-// var cellTypes = 
-//                 [
-// /*0*/ 'A',
-// /*1*/ 'A',
-// /*2*/ 'A',
-// /*3*/ 'A',
-// /*4*/ 'A',             
-// /*5*/ 'A',
-// /*6*/ 'A',
-// /*7*/ 'A',
-// /*8*/ 'A',
-// /*9*/ 'A',
+for (var i = 0; i < rows.length; i++) {
+	cellInfo.push(rows[i].toString().split(','));
+}
 
-// /*10*/ 'B',
-// /*11*/ 'B',
-// /*12*/ 'B',
-// /*13*/ 'B',
-// /*14*/ 'B',             
-// /*15*/ 'B',
-// /*16*/ 'B',
-// /*17*/ 'B',
-// /*18*/ 'B',
-// /*19*/ 'B',
+cellInfo = cellInfo.splice(1,cellInfo.length - 2);
 
-// /*20*/ 'C',
-// /*21*/ 'C',
-// /*22*/ 'C',
-// /*23*/ 'C',
-// /*24*/ 'C',             
-// /*25*/ 'C',
-// /*26*/ 'C',
-// /*27*/ 'C',
-// /*28*/ 'C',
-// /*29*/ 'C',
+cellTypes = [];
+answerKeys = [ [], [], [], [], [] ];
 
-// /*30*/ 'D',
-// /*31*/ 'D',
-// /*32*/ 'D',
-// /*33*/ 'D',
-// /*34*/ 'D',             
-// /*35*/ 'D',
-// /*36*/ 'D',
-// /*37*/ 'D',
-// /*38*/ 'D',
-// /*39*/ 'D',
+//      page:   1    2    3    4    5
+answerKeys = [ [] , [] , [] , [] , [] ];
+for (var i = 0; i < cellInfo.length; i++) {
+    cellTypes.push(cellInfo[i][1]);
+    answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
+}
 
-// /*40*/ 'E',
-// /*41*/ 'E',
-// /*42*/ 'E',
-// /*43*/ 'E',
-// /*44*/ 'E',             
-// /*45*/ 'E',
-// /*46*/ 'E',
-// /*47*/ 'E',
-// /*48*/ 'E',
-// /*49*/ 'E',
-//                 ];
+exports.answerKeys = answerKeys;
+exports.cellTypes = cellTypes;

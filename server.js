@@ -2,11 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
-const answer_key_page_one = require("./answer_key_page_one");
-const answer_key_page_two = require("./answer_key_page_two");
-const answer_key_page_three = require("./answer_key_page_three");
-const answer_key_page_four = require("./answer_key_page_four");
-const answer_key_page_five = require("./answer_key_page_five");
+const answerKeys = require("./cell_types");
 const cellTypes = require("./cell_types");
 const { stringify } = require("querystring");
 const nodemailer = require("nodemailer");
@@ -62,7 +58,9 @@ app.post("/page_one", function(request,response) {
     missedImagesByType.set("A", new Array());
     totalIncorrectByType.set("A", 0);
     numImagesByType.set("A", 0);
-    driveApp(answer_key_page_one,request,1);
+
+    answerKeyPageOne = answerKeys.answerKeys[0];
+    driveApp(answerKeyPageOne,request,1);
     response.redirect('/page_two');
 });
 
@@ -75,7 +73,9 @@ app.post("/page_two", function(request,response) {
     missedImagesByType.set("B", new Array());
     totalIncorrectByType.set("B", 0);
     numImagesByType.set("B", 0);
-    driveApp(answer_key_page_two,request,2);
+
+    answerKeyPageTwo = answerKeys.answerKeys[1];
+    driveApp(answerKeyPageTwo,request,2);
     if (buttonClicked == "Previous") {
         response.redirect('/page_one');
     } else if (buttonClicked == "Next") {
@@ -92,7 +92,9 @@ app.post("/page_three", function(request,response) {
     missedImagesByType.set("C", new Array());
     totalIncorrectByType.set("C", 0);
     numImagesByType.set("C", 0);
-    driveApp(answer_key_page_three,request,3);
+
+    answerKeyPageThree = answerKeys.answerKeys[2];
+    driveApp(answerKeyPageThree,request,3);
     if (buttonClicked == "Previous") {
         response.redirect('/page_two');
     } else if (buttonClicked == "Next") {
@@ -109,7 +111,9 @@ app.post("/page_four", function(request,response) {
     missedImagesByType.set("D", new Array());
     totalIncorrectByType.set("D", 0);
     numImagesByType.set("D", 0);
-    driveApp(answer_key_page_four,request,4);
+    answerKeyPageFour = answerKeys.answerKeys[3];
+
+    driveApp(answerKeyPageFour,request,4);
     if (buttonClicked == "Previous") {
         response.redirect('/page_three');
     } else if (buttonClicked == "Next") {
@@ -126,7 +130,9 @@ app.post("/page_five", function(request,response) {
     missedImagesByType.set("E", new Array());
     totalIncorrectByType.set("E", 0);
     numImagesByType.set("E", 0);
-    driveApp(answer_key_page_five,request,5);
+    answerKeyPageFive = answerKeys.answerKeys[4];
+
+    driveApp(answerKeyPageFive,request,5);
     if (buttonClicked == "Previous") {
         response.redirect('/page_four');
     } else if (buttonClicked == "Continue") {
@@ -193,10 +199,8 @@ function driveApp(answerKeyPage,request,pageNumber) {
  * @return - Array containing all answers with boolean values.
  */
 function createAnswerKey(answerKey) {
-    var ansKey = answerKey.answerKey;
-    var answerKey = [];
-    for (var i = 0; i < ansKey.length; i++) {
-        if (ansKey[i] == "y") {
+    for (var i = 0; i < answerKey.length; i++) {
+        if (answerKey[i] == "y") {
             answerKey[i] = true;
         } else {
             answerKey[i] = false;
@@ -244,12 +248,11 @@ function recordUserResponses(userResponses) {
     }
 }
 
+// Stores path of each image the user answered incorrectly by type 
+var missedImagesByType = new Map();
 
 // stores the cell type bin for each image
 allCellTypes = cellTypes.cellTypes;
-
-// Stores path of each image the user answered incorrectly by type 
-var missedImagesByType = new Map();
 
 /**
  * Writes and posts JSON files (seperate file for each cell type bin) 
