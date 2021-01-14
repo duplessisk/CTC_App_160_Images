@@ -423,18 +423,23 @@ function setNumImagesByType() {
 }
 
 function writeResultsFile() {
-    fs.writeFile("./final_results.txt", "Number Incorrect: " + "\n", 
-                 function(){
+    fs.writeFile("./final_results.txt", firstName + " " + lastName + "\n" + 
+                 "\n", function() {
+        fs.appendFileSync("./final_results.txt", "Number Correct: " + "\n", 
+        function() {});
         var keys = Array.from(totalIncorrectByType.keys());
         for (var i = 0; i < keys.length; i++) {
             fs.appendFileSync("./final_results.txt",   
                 "Cell Type " + keys[i] + ": " +
-                String(totalIncorrectByType.get(keys[i])) +
-                "\n", 
-                    function(){});
+                    String(10 - totalIncorrectByType.get(keys[i])) + " " + "out of " + 
+                        String(numImagesByType.get(keys[i])) + " (" + 
+                            (100 - Math.round(100*totalIncorrectByType.get(keys[i])/numImagesByType.get(keys[i])))  
+                                 + "%)" + "\n", function(){});
         }
+        var time = new Date();
+        fs.appendFileSync("./final_results.txt", "\n" + "Time Stamp: " 
+                          + time.toLocaleString(), function(){});
     });
-
 }
 
 function sendEmailWithResults() {
