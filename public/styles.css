@@ -32,6 +32,33 @@ body {
     z-index: 1;
 }
 
+/* login page */
+#loginFormInstructions {
+    text-align: center;
+}
+
+#loginFormDiv {
+    margin-left: 43.16%;
+}
+
+.login-fields-div {
+    margin-top: 1%;
+}
+
+.login-fields {
+    width: 27.9%;
+    /* background-color: RGBA(180,91,56,0.25); */
+    /* border: 2px solid black; */ /* black */
+    /* border: 2px solid RGB(180,91,56);*/ /* brown */
+    border: 2px solid rgba(100, 98, 98, 0.856); /* grey */ 
+    font-family: Arial;
+}
+
+.login-fields[type=text] {
+    font-family: Arial;
+    color: white;
+}
+
 /*** Page 1 - Page n Row Styling ***/
 
 .new-image-row {
@@ -69,14 +96,14 @@ body {
 
 #progressPageOneDiv {
     margin-top: 0.5%;
-    margin-left: 51.5%;
+    margin-left: 51.7%;
     font-family: Arial;
     font-size: 1.25vw;
 }
 
 #progressPageTwoDiv {
     margin-top: -4%;
-    margin-left: 51.75%;
+    margin-left: 51.25%;
     font-family: Arial;
     font-size: 1.25vw;
 }
@@ -122,6 +149,7 @@ body {
     z-index: 0;
 }
 
+
 /*****Page Button Styling*****/
 
 .button {
@@ -132,8 +160,12 @@ body {
     background: RGB(180,91,56);
     color: white;
     font: bold 1.5vw Arial;
-    height:3vw;
-    width:8vw;
+    height: 3vw;
+    width: 8vw;
+    border-bottom-left-radius: 10%;
+    border-bottom-right-radius: 10%;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
 }
 
 .returnbutton {
@@ -141,73 +173,72 @@ body {
     margin-left: 50%;
 }
 
-#previousButtonDiv {
-    margin-left: 44.35%;
+.right-button {
+    margin-left: 1%;
 }
 
+/* welcome page */
 #beginButton {
     margin-top: 5%;
-    margin-left: 49.5%;
+    margin-left: 50.5%;
 }
 
+
+/* login page */
+#resetLoginButtonDiv {
+    margin-left: 38.75%;
+}
+
+.right-button-div {
+    margin-left: 1%;
+}
+
+#resetLoginButtonDiv, #submitLoginButtonDiv {
+    margin-top: 2%;
+    margin-bottom: 5%;
+    display: inline-block;
+}
+
+
+/* page 1 */
 #nextButton {
     margin-bottom: 1%;
     margin-left: 52.2%;
 }
 
-#continueButtonDiv {
-    margin-left: 0%;
-}
 
-#understandButton {
-    margin-left: 49.5%;
-    font-style: 0.5vw;
+/* pages 2-4 */
+#previousButtonDiv, #nextButtonDiv {
+    display: inline-block;
 }
 
 #previousButton {
     font-size: 1.4vw;
 }
 
+#previousButtonDiv {
+    margin-left: 43.5%;
+}
+
+
+/* page 5 */
 #continueButton {
     font-size: 1.4vw;
 }
-
-#submitButton {
-    font-size: 1.4vw;
-}
-
-#continueButtonDiv {
-    margin-left: 0%;
-}
-
-#submitButtonDiv {
-    margin-left: 0%;
-}
-
-#nextButtonDiv, #previousButtonDiv {
-    margin-top: 4%;
-    margin-bottom: 5%;
-    display: inline-block;
-}
-
 #continueButtonDiv, #previousButtonDiv {
-    margin-top: 4%;
-    margin-bottom: 5%;
     display: inline-block;
 }
 
-#submitButtonDiv, #previousButtonDiv {
+
+/* review page */
+#previousButtonDiv, #submitButtonDiv {
     margin-top: 4%;
     margin-bottom: 5%;
     display: inline-block;
 }
 
 #previousButtonReviewPageDiv {
-    margin-left: 39%;
-}
-
-#submitButtonReviewPageDiv {
-    margin-left: 0%;
+    margin-left: 39.25%;
 }
 
 #submitButtonReviewPageDiv, #previousButtonReviewPageDiv {
@@ -215,6 +246,11 @@ body {
     margin-bottom: 5%;
     display: inline-block;
 }
+
+#submitButton {
+    font-size: 1.4vw;
+}
+
 
 /***Review Page Styling***/
 
@@ -240,6 +276,7 @@ a:visited {
     color: rgb(13, 13, 196);   
 }
 
+
 /***Results Page Styling***/
 
 #pageHeaderDiv {
@@ -247,7 +284,6 @@ a:visited {
     width: 100%;
     top: 0;
     left: 0;    
-    /* background-color: rgba(100, 98, 98, 0.856); */
     background-color: RGB(180,91,56);
 }
 

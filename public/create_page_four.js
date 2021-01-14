@@ -41,6 +41,7 @@ document.querySelector("#previousButtonDiv").appendChild(previousButton);
 
 var nextButtonDiv = document.createElement('div');
 nextButtonDiv.id = "nextButtonDiv";
+nextButtonDiv.className = "right-button";
 document.querySelector("#form").appendChild(nextButtonDiv);
 
 var nextButton = document.createElement('input');

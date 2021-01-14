@@ -12,6 +12,7 @@ document.querySelector("#previousButtonReviewPageDiv").appendChild(previousButto
 
 var submitButtonReviewPageDiv = document.createElement('div');
 submitButtonReviewPageDiv.id = "submitButtonReviewPageDiv";
+submitButtonReviewPageDiv.className = "right-button";
 document.querySelector("#form").appendChild(submitButtonReviewPageDiv);
 
 var submitButtonReviewPage = document.createElement('input');
