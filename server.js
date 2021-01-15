@@ -2,10 +2,13 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
-const answerKeys = require("./cell_types");
-const cellTypes = require("./cell_types");
+// const answerKeys = require("./cell_types");
+// const cellTypes = require("./cell_types");
+const answerKeys = require(path.join(__dirname + '/cell_types'));
+const cellTypes = require(path.join(__dirname + '/cell_types'));
 const nodemailer = require("nodemailer");
 require("dotenv").config();
+path.join(__dirname + '/welcome_page.html')
 
 const app = express();
 
