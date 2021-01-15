@@ -17,7 +17,7 @@ cellInfo = cellInfo.splice(1,cellInfo.length - 2);
 
 cellTypes = [];
 answerKeys = [ [], [], [], [], [] ];
-
+console.log("cellInfo length: " + cellInfo.length);
 //      page:   1    2    3    4    5
 answerKeys = [ [] , [] , [] , [] , [] ];
 for (var i = 0; i < cellInfo.length; i++) {
