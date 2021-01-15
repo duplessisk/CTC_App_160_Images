@@ -18,10 +18,8 @@ answerKeys = [ [], [], [], [], [] ];
 //     page:   1    2    3    4    5
 answerKeys = [ [] , [] , [] , [] , [] ];
 for (var i = 0; i < cellInfo.length; i++) {
-    console.log(cellInfo[i][1]);
-    console.log(cellInfo[i][2]);
     cellTypes.push(cellInfo[i][1]);
-    answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
+    // answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
 
 // answerKeys = [["y","y","y","y","y","y","y","y","y","y"], 
