@@ -22,6 +22,7 @@ answerKeys = [ [], [], [], [], [] ];
 answerKeys = [ [] , [] , [] , [] , [] ];
 for (var i = 0; i < cellInfo.length; i++) {
     console.log(cellInfo[i][1]);
+    console.log(cellInfo[i][2]);
     cellTypes.push(cellInfo[i][1]);
     answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
