@@ -12,16 +12,11 @@ for (var i = 0; i < rows.length; i++) {
 }
 console.log(cellInfo);
 
-cellInfo = cellInfo.splice(1,cellInfo.length - 2);
-
-console.log(cellInfo);
-
-
 cellTypes = [];
 answerKeys = [ [], [], [], [], [] ];
 //     page:   1    2    3    4    5
 answerKeys = [ [] , [] , [] , [] , [] ];
-for (var i = 0; i < cellInfo.length; i++) {
+for (var i = 1; i < 49; i++) {
     console.log(cellInfo[i][1]);
     console.log(cellInfo[i][2]);
     cellTypes.push(cellInfo[i][1]);
