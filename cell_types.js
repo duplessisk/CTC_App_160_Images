@@ -23,16 +23,16 @@ for (var i = 0; i < cellInfo.length; i++) {
     answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
 
-answerKeys = [["y","y","y","y","y","y","y","y","y","y"], 
-               ["y","y","y","y","y","y","y","y","y","y"],
-               ["y","y","y","y","y","y","y","y","y","y"],
-               ["y","y","y","y","y","y","y","y","y","y"],
-               ["y","y","y","y","y","y","y","y","y","y"]];
-cellTypes = ["A","A","A","A","A","A","A","A","A","A",
-             "B","B","B","B","B","B","B","B","B","B",
-             "C","C","C","C","C","C","C","C","C","C",
-             "D","D","D","D","D","D","D","D","D","D",
-             "E","E","E","E","E","E","E","E","E","E",
-            ]
+// answerKeys = [["y","y","y","y","y","y","y","y","y","y"], 
+//                ["y","y","y","y","y","y","y","y","y","y"],
+//                ["y","y","y","y","y","y","y","y","y","y"],
+//                ["y","y","y","y","y","y","y","y","y","y"],
+//                ["y","y","y","y","y","y","y","y","y","y"]];
+// cellTypes = ["A","A","A","A","A","A","A","A","A","A",
+//              "B","B","B","B","B","B","B","B","B","B",
+//              "C","C","C","C","C","C","C","C","C","C",
+//              "D","D","D","D","D","D","D","D","D","D",
+//              "E","E","E","E","E","E","E","E","E","E",
+//             ]
 exports.answerKeys = answerKeys;
 exports.cellTypes = cellTypes;
