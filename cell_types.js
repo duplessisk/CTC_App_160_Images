@@ -33,5 +33,5 @@ cellTypes = ["A","A","A","A","A","A","A","A","A","A",
              "D","D","D","D","D","D","D","D","D","D",
              "E","E","E","E","E","E","E","E","E","E",
             ]
-// exports.answerKeys = answerKeys;
+exports.answerKeys = answerKeys;
 exports.cellTypes = cellTypes;
