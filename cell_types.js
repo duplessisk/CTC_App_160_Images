@@ -9,8 +9,6 @@ var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 var rows = fileContents.toString().split('\r\n');
 
 for (var i = 0; i < rows.length; i++) {
-    console.log("round: " + i);
-    console.log(rows[i]);
     cellInfo.push(rows[i].toString().split(','));
 }
 
@@ -27,6 +25,8 @@ for (var i = 0; i < cellInfo.length; i++) {
     cellTypes.push(cellInfo[i][1]);
     answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
+
+console.log("answerKeys length: " + this.answerKeys.length);
 
 // answerKeys = [["y","y","y","y","y","y","y","y","y","y"], 
 //                ["y","y","y","y","y","y","y","y","y","y"],
