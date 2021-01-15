@@ -1,8 +1,8 @@
 const fs = require('fs');
+const path = require("path");
 
 var cellInfo = [];
-path.join(__dirname + '/cell_information.csv')
-var fileContents = fs.readFileSync(path.join(__dirname + '/cell_information.csv'));
+var fileContents = fs.readFileSync('/cell_information.csv');
 // var fileContents = fs.readFileSync('./cell_information.csv');
 
 var rows = fileContents.toString().split('\r\n');
