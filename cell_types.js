@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 var cellInfo = [];
-var fileContents = fs.readFileSync('cell_information.csv');
+var fileContents = fs.readFileSync('cell_information.CSV');
 var rows = fileContents.toString().split('\r\n');
 
 for (var i = 0; i < rows.length; i++) {
