@@ -30,12 +30,12 @@ for (var i = 0; i < cellInfo.length; i++) {
 //                ["y","y","y","y","y","y","y","y","y","y"],
 //                ["y","y","y","y","y","y","y","y","y","y"],
 //                ["y","y","y","y","y","y","y","y","y","y"]];
-cellTypes = ["A","A","A","A","A","A","A","A","A","A",
-             "B","B","B","B","B","B","B","B","B","B",
-             "C","C","C","C","C","C","C","C","C","C",
-             "D","D","D","D","D","D","D","D","D","D",
-             "E","E","E","E","E","E","E","E","E","E",
-            ]
+// cellTypes = ["A","A","A","A","A","A","A","A","A","A",
+//              "B","B","B","B","B","B","B","B","B","B",
+//              "C","C","C","C","C","C","C","C","C","C",
+//              "D","D","D","D","D","D","D","D","D","D",
+//              "E","E","E","E","E","E","E","E","E","E",
+//             ]
 console.log("answerKeys length: " + answerKeys.length);
 console.log("cellTypes length: " + cellTypes.length);
 exports.answerKeys = answerKeys;
