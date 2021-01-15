@@ -9,9 +9,9 @@ var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 var rows = fileContents.toString().split('\r\n');
 
 for (var i = 0; i < rows.length; i++) {
+    console.log("round: " + i);
     console.log(rows[i]);
     cellInfo.push(rows[i].toString().split(','));
-    console.log("cellInfo" + cellInfo);
 }
 
 cellInfo = cellInfo.splice(1,cellInfo.length - 2);
