@@ -12,7 +12,7 @@ for (var i = 0; i < rows.length; i++) {
     cellInfo.push(rows[i].toString().split(','));
 }
 
-cellInfo = cellInfo.splice(1,cellInfo.length - 2);
+// cellInfo = cellInfo.splice(1,cellInfo.length - 2);
 
 cellTypes = [];
 answerKeys = [ [], [], [], [], [] ];
