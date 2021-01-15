@@ -26,7 +26,7 @@ for (var i = 0; i < cellInfo.length; i++) {
     answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
 
-console.log("answerKeys length: " + this.answerKeys.length);
+console.log("answerKeys length: " + answerKeys.length);
 
 // answerKeys = [["y","y","y","y","y","y","y","y","y","y"], 
 //                ["y","y","y","y","y","y","y","y","y","y"],
