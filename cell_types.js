@@ -10,8 +10,10 @@ var rows = fileContents.toString().split('\r\n');
 for (var i = 0; i < rows.length; i++) {
     cellInfo.push(rows[i].toString().split(','));
 }
-console.log(cellInfo);
 cellInfo = cellInfo.splice(1,cellInfo.length - 2);
+
+console.log(cellInfo);
+
 
 cellTypes = [];
 answerKeys = [ [], [], [], [], [] ];
