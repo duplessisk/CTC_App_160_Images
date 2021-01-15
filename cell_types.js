@@ -10,7 +10,8 @@ var rows = fileContents.toString().split('\r\n');
 
 for (var i = 0; i < rows.length; i++) {
     console.log(rows[i]);
-	cellInfo.push(rows[i].toString().split(','));
+    cellInfo.push(rows[i].toString().split(','));
+    console.log("cellInfo" + cellInfo);
 }
 
 cellInfo = cellInfo.splice(1,cellInfo.length - 2);
