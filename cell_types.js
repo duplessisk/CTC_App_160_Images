@@ -20,7 +20,7 @@ answerKeys = [ [], [], [], [], [] ];
 //      page:   1    2    3    4    5
 answerKeys = [ [] , [] , [] , [] , [] ];
 for (var i = 0; i < cellInfo.length; i++) {
-    console.log("cellType: " + cellInfo[i])
+    console.log("cellType: " + cellInfo[i][1]);
     cellTypes.push(cellInfo[i][1]);
     answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
