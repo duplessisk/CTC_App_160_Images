@@ -22,11 +22,14 @@ for (var i = 0; i < cellInfo.length; i++) {
     answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
 
-// answerKeys = [["y","y","y","y","y","y","y","y","y","y"], 
-//                ["y","y","y","y","y","y","y","y","y","y"],
-//                ["y","y","y","y","y","y","y","y","y","y"],
-//                ["y","y","y","y","y","y","y","y","y","y"],
-//                ["y","y","y","y","y","y","y","y","y","y"]];
+console.log(answerKeys.length);
+console.log(cellTypes.length);
+
+answerKeys = [["y","y","y","y","y","y","y","y","y","y"], 
+               ["y","y","y","y","y","y","y","y","y","y"],
+               ["y","y","y","y","y","y","y","y","y","y"],
+               ["y","y","y","y","y","y","y","y","y","y"],
+               ["y","y","y","y","y","y","y","y","y","y"]];
 cellTypes = ["A","A","A","A","A","A","A","A","A","A",
              "B","B","B","B","B","B","B","B","B","B",
              "C","C","C","C","C","C","C","C","C","C",
