@@ -7,7 +7,7 @@ var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 // var fileContents = fs.readFileSync('./cell_information.csv');
 console
 var rows = fileContents.toString().split('\r\n');
-
+console.log("rows: " + rows);
 for (var i = 0; i < rows.length; i++) {
     cellInfo.push(rows[i].toString().split(','));
 }
@@ -16,7 +16,7 @@ cellInfo = cellInfo.splice(1,cellInfo.length - 2);
 
 cellTypes = [];
 answerKeys = [ [], [], [], [], [] ];
-//      page:   1    2    3    4    5
+//     page:   1    2    3    4    5
 answerKeys = [ [] , [] , [] , [] , [] ];
 for (var i = 0; i < cellInfo.length; i++) {
     console.log(cellInfo[i][1]);
