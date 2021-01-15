@@ -38,7 +38,7 @@ for (var i = 0; i < cellInfo.length; i++) {
 //              "D","D","D","D","D","D","D","D","D","D",
 //              "E","E","E","E","E","E","E","E","E","E",
 //             ]
-console.log("in cellTypes: " + answerKeys.length);
-console.log("in cellTypes: " + cellTypes.length);
+console.log("answerKeys length: " + answerKeys.length);
+console.log("cellTypes length: " + cellTypes.length);
 exports.answerKeys = answerKeys;
 exports.cellTypes = cellTypes;
