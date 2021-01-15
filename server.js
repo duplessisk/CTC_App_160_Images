@@ -9,6 +9,8 @@ require("dotenv").config();
 
 const app = express();
 
+console.log("server starting...");
+
 app.set('view engine', 'ejs');
 
 app.use('/static', express.static('public'));
