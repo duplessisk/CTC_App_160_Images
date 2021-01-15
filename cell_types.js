@@ -1,6 +1,4 @@
 const fs = require('fs');
-const logger = require('heroku-logger')
-logger.info('message', { key: 'value' })
 
 var cellInfo = [];
 // var fileContents = fs.readFileSync(path.join(__dirname + '/cell_information.csv'));
@@ -11,7 +9,6 @@ var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 var rows = fileContents.toString().split('\r\n');
 
 for (var i = 0; i < rows.length; i++) {
-    // logger.info(rows[i], { key: 'value' });
     console.log(rows[i]);
 	cellInfo.push(rows[i].toString().split(','));
 }
