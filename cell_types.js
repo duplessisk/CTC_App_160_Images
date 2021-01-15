@@ -1,8 +1,5 @@
 const fs = require('fs');
 
-const logger = require('heroku-logger');
-logger.info('message', { key: 'value' });
-
 var cellInfo = [];
 // var fileContents = fs.readFileSync(path.join(__dirname + '/cell_information.csv'));
 var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
@@ -12,7 +9,7 @@ var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 var rows = fileContents.toString().split('\r\n');
 
 for (var i = 0; i < rows.length; i++) {
-    console.log(logger.info(i, { key: 'value' }));
+    console.log(rows[i]);
 	cellInfo.push(rows[i].toString().split(','));
 }
 
@@ -39,7 +36,5 @@ for (var i = 0; i < cellInfo.length; i++) {
 //              "D","D","D","D","D","D","D","D","D","D",
 //              "E","E","E","E","E","E","E","E","E","E",
 //             ]
-console.log("answerKeys length: " + answerKeys.length);
-console.log("cellTypes length: " + cellTypes.length);
 exports.answerKeys = answerKeys;
 exports.cellTypes = cellTypes;
