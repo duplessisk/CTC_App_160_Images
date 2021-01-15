@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 var cellInfo = [];
-var fileContents = fs.readFileSync('cell_information.CSV');
+var fileContents = fs.readFileSync('./cell_information.CSV');
 var rows = fileContents.toString().split('\r\n');
 
 for (var i = 0; i < rows.length; i++) {
@@ -20,5 +20,16 @@ for (var i = 0; i < cellInfo.length; i++) {
     answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
 
+answerKeys = [ ["y","y","y","y","y","y","y","y","y","y"], 
+               ["y","y","y","y","y","y","y","y","y","y"],
+               ["y","y","y","y","y","y","y","y","y","y"],
+               ["y","y","y","y","y","y","y","y","y","y"],
+               ["y","y","y","y","y","y","y","y","y","y"]];
+cellTypes = [["A","A","A","A","A","A","A","A","A","A"],
+             ["B","B","B","B","B","B","B","B","B","B"],
+             ["C","C","C","C","C","C","C","C","C","C"],
+             ["D","D","D","D","D","D","D","D","D","D"],
+             ["E","E","E","E","E","E","E","E","E","E"],
+            ]
 exports.answerKeys = answerKeys;
 exports.cellTypes = cellTypes;
