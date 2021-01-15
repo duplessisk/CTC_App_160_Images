@@ -12,7 +12,7 @@ for (var i = 0; i < rows.length; i++) {
 }
 
 cellInfo = cellInfo.splice(1,cellInfo.length - 2);
-
+console.log(cellInfo);
 cellTypes = [];
 answerKeys = [ [], [], [], [], [] ];
 //     page:   1    2    3    4    5
