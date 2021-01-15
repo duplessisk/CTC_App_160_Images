@@ -19,7 +19,7 @@ answerKeys = [ [], [], [], [], [] ];
 answerKeys = [ [] , [] , [] , [] , [] ];
 for (var i = 0; i < cellInfo.length; i++) {
     cellTypes.push(cellInfo[i][1]);
-    // answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
+    answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
 
 // answerKeys = [["y","y","y","y","y","y","y","y","y","y"], 

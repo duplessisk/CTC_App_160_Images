@@ -1,10 +1,10 @@
 Kyle Duplessis
 
 Number Correct: 
-Cell Type A: 0 out of 10 (0%)
+Cell Type A: 1 out of 10 (10%)
 Cell Type B: 0 out of 10 (0%)
 Cell Type C: 0 out of 10 (0%)
 Cell Type D: 0 out of 10 (0%)
 Cell Type E: 0 out of 10 (0%)
 
-Time Stamp: 1/15/2021, 8:16:52 AM
+Time Stamp: 1/15/2021, 12:45:19 PM
