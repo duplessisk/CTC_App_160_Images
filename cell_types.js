@@ -2,7 +2,15 @@ const fs = require('fs');
 
 var cellInfo = [];
 var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
-console.log(fileContents.toString());
+var fileContentsString = fileContents.toString('utf-8');
+var rows = fileContentsString.toString().split('\r\n');
+
+console.log(rows);
+
+cellInformationContents = [];
+for (var i = 0; i < fileContentsString.length; i++) {
+    cellInformationContents.push(fileContentsString.charAt(i));
+}
 var rows = fileContents.toString().split('\r\n');
 
 
