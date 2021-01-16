@@ -5,14 +5,20 @@ var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 var rows = fileContents.toString().split('\r\n');
 
 var newRows = rows[0].substring(16,rows[0].length);
-console.log("newRows");
-console.log(newRows);
-console.log("newRows.charAt(0)");
-console.log(newRows.charAt(5));
-console.log("newRows.charAt(5)");
-console.log(newRows.charAt(11));
-console.log("newRows.charAt(10)");
-console.log(newRows.charAt(17));
+
+var newNewRows = newRows.split(" ");
+console.log("newNewRows:");
+console.log(newNewRows);
+console.log("newNewRows.length");
+console.log(newNewRows.length);
+// console.log("newRows");
+// console.log(newRows);
+// console.log("newRows.charAt(0)");
+// console.log(newRows.charAt(5));
+// console.log("newRows.charAt(5)");
+// console.log(newRows.charAt(11));
+// console.log("newRows.charAt(10)");
+// console.log(newRows.charAt(17));
 
 
 for (var i = 0; i < rows.length; i++) {
