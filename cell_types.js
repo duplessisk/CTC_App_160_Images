@@ -4,7 +4,7 @@ var cellInfo = [];
 var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 
 var rows = fileContents.toString().split('\r\n');
-console.log("rows length");
+console.log("rows length: " + rows.length);
 console.log(rows.length);
 for (var i = 0; i < rows.length; i++) {
     cellInfo.push(rows[i].toString().split(','));
