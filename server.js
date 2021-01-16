@@ -309,7 +309,7 @@ function setAllImagePaths() {
 // }
 
 function writeImagePaths(imagesByType,fileName) {
-    fs.writeFile("/static/" + fileName + ".json", "", function(){
+    fs.writeFile(__dirname + "/static/" + fileName + ".json", "", function(){
         var imagesByTypeKeys = Array.from(imagesByType.keys());
         for (var i = 0; i < imagesByTypeKeys.length; i++) {
             for (var j = 0; 
