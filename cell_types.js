@@ -17,10 +17,8 @@ answerKeys = [ [], [], [], [], [] ];
 answerKeys = [ [] , [] , [] , [] , [] ];
 for (var i = 0; i < cellInfo.length; i++) {
     cellTypes.push(cellInfo[i][1]);
-    answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
+    answerKeys[Math.floor(i/10)].push(cellInfo[i][2] == "y");
 }
 
-console.log("answerKeys in cellTypes:");
-console.log(answerKeys);
 exports.answerKeys = answerKeys;
 exports.cellTypes = cellTypes;

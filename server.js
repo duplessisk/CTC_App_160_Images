@@ -58,9 +58,8 @@ app.post("/page_one", function(request,response) {
     missedImagesByType.set("A", new Array());
     totalIncorrectByType.set("A", 0);
     numImagesByType.set("A", 0);
-    
+
     answerKeyPageOne = answerKeys.answerKeys[0];
-    console.log("pageOne:");
     console.log("answerKeyPageOne");
     console.log(answerKeyPageOne);
     driveApp(answerKeyPageOne,request,1);
@@ -186,10 +185,10 @@ app.listen(process.env.PORT || 3000);
  * @param {number} pageNumber - page number in client side application.
  */
 function driveApp(answerKeyPage,request,pageNumber) {
-    var answerKey = createAnswerKey(answerKeyPage);
+    // var answerKey = createAnswerKey(answerKeyPage);
     var userResponses = initUserResponses(request);
     recordUserResponses(userResponses);
-    setMissedImagePaths(answerKey, userResponses, pageNumber);
+    setMissedImagePaths(answerKeyPage, userResponses, pageNumber);
 }
 
 /**
@@ -200,16 +199,16 @@ function driveApp(answerKeyPage,request,pageNumber) {
  *                                  "yes" and "no" string values.
  * @return - Array containing all answers with boolean values.
  */
-function createAnswerKey(answerKey) {
-    for (var i = 0; i < answerKey.length; i++) {
-        if (answerKey[i] == "y" || answerKey[i]) {
-            answerKey[i] = true;
-        } else {
-            answerKey[i] = false;
-        }
-    }
-    return answerKey;
-}
+// function createAnswerKey(answerKey) {
+//     for (var i = 0; i < answerKey.length; i++) {
+//         if (answerKey[i] == "y" || answerKey[i]) {
+//             answerKey[i] = true;
+//         } else {
+//             answerKey[i] = false;
+//         }
+//     }
+//     return answerKey;
+// }
 
 /**
  * Consumes and stores user responses from client side.
@@ -261,10 +260,6 @@ function recordUserResponses(userResponses) {
  *                              response.
  */
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
-    console.log("answerKey: ");
-    console.log(answerKey);
-    console.log("userResponses: ")
-    console.log(userResponses);
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
             var imagePath = '/static/cell_answers/cell' + 
