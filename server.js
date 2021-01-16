@@ -259,6 +259,12 @@ function recordUserResponses(userResponses) {
  *                              response.
  */
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
+    if (pageNumber == 1) {
+        console.log("answerKey: ");
+        console.log(answerKey);
+        console.log("userResponses: ")
+        console.log(userResponses);
+    }
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
             var imagePath = '/static/cell_answers/cell' + 
