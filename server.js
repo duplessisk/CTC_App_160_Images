@@ -288,7 +288,7 @@ function setAllImagePaths() {
 }
 
 function writeImagePaths(imagesByType,fileName) {
-    fs.writeFile("/static/" + fileName + ".json", "", function(){
+    fs.writeFile("./public/" + fileName + ".json", "", function(){
         var imagesByTypeKeys = Array.from(imagesByType.keys());
         for (var i = 0; i < imagesByTypeKeys.length; i++) {
             for (var j = 0; 
@@ -296,7 +296,7 @@ function writeImagePaths(imagesByType,fileName) {
                     var thisImageObject = {};
                     thisImageObject[imagesByTypeKeys[i]] =
                     imagesByType.get(imagesByTypeKeys[i])[j];
-                    fs.appendFileSync("/static/" + fileName + ".json", 
+                    fs.appendFileSync("./public/" + fileName + ".json", 
                         JSON.stringify(thisImageObject, null, 4), function(){});
             }
         }
