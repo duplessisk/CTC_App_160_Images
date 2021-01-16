@@ -268,6 +268,8 @@ function setMissedImagePaths(answerKey,userResponses,pageNumber) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
             var imagePath = '/static/cell_answers/cell' + 
                 String(pageNumber - 1) + String(i) + 'answer.JPG';
+            console.log("Missed Image Path: ");
+            console.log(missedImagePath);
             var thisCellType = getThisCellType(imagePath);
             missedImagesByType.get(thisCellType).push(imagePath);
             totalIncorrectByType.set(thisCellType, 
