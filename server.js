@@ -2,8 +2,9 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
-const answerKeys = require(path.join(__dirname + '/cell_types'));
-const cellTypes = require(path.join(__dirname + '/cell_types'));
+const answerKeys = require("./cell_types");
+const cellTypes = require("./cell_types");
+const { stringify } = require("querystring");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
@@ -287,6 +288,11 @@ function setAllImagePaths() {
     return allImagesByType;
 }
 
+/**
+ * Writes all image paths to a JSON file to be accessed on the client side. 
+ * @param {Map} allImagesByTypeObject - contains all the images organized by 
+ *                                      cell type bin.
+ */
 function writeImagePaths(imagesByType,fileName) {
     fs.writeFile("./public/" + fileName + ".json", "", function(){
         var imagesByTypeKeys = Array.from(imagesByType.keys());
@@ -330,8 +336,6 @@ function setMissedImagePaths(answerKey,userResponses,pageNumber) {
             missedImagesByType.get(thisCellType).push(imagePath);
             totalIncorrectByType.set(thisCellType, 
                 totalIncorrectByType.get(thisCellType) + 1);
-        } else {
-            console.log("Missed Question on Page " + pageNumber);
         }
     }
 }
@@ -366,12 +370,10 @@ var numImagesByType = new Map();
  * type on the exam. 
  */
 function postResultsData() {
-    console.log("total incorrect");
-    console.log(totalIncorrect);
     var totalIncorrectByTypeString = setTotalIncorrectByType();
     var totalIncorrectString = setTotalIncorrect();
     var numImagesByTypeString = setNumImagesByType();
-    fs.writeFile("/static/results_data.json",  
+    fs.writeFile("./public/results_data.json",  
         totalIncorrectString + 
         totalIncorrectByTypeString + 
         numImagesByTypeString , function() {
@@ -424,13 +426,13 @@ function setNumImagesByType() {
 }
 
 function writeResultsFile() {
-    fs.writeFile("/final_results.txt", firstName + " " + lastName + "\n" + 
+    fs.writeFile("./final_results.txt", firstName + " " + lastName + "\n" + 
                  "\n", function() {
-        fs.appendFileSync(__dirname + "/final_results.txt", "Number Correct: " + "\n", 
+        fs.appendFileSync("./final_results.txt", "Number Correct: " + "\n", 
         function() {});
         var keys = Array.from(totalIncorrectByType.keys());
         for (var i = 0; i < keys.length; i++) {
-            fs.appendFileSync(__dirname + "/final_results.txt",   
+            fs.appendFileSync("./final_results.txt",   
                 "Cell Type " + keys[i] + ": " +
                     String(10 - totalIncorrectByType.get(keys[i])) + " " + "out of " + 
                         String(numImagesByType.get(keys[i])) + " (" + 
@@ -438,7 +440,7 @@ function writeResultsFile() {
                                  + "%)" + "\n", function(){});
         }
         var time = new Date();
-        fs.appendFileSync("/final_results.txt", "\n" + "Time Stamp: " 
+        fs.appendFileSync("./final_results.txt", "\n" + "Time Stamp: " 
                           + time.toLocaleString(), function(){});
     });
 }
