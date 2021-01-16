@@ -3,6 +3,8 @@ var cellInfo = [];
 // var fileContents = fs.readFileSync(path.join(__dirname + '/cell_information.csv'));
 var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 
+console.log(fileContents.toString());
+
 var rows = fileContents.toString().split('\r');
 console.log("rows length: " + rows.length);
 for (var i = 0; i < rows.length; i++) {
