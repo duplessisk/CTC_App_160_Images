@@ -3,11 +3,13 @@ const fs = require('fs');
 var cellInfo = [];
 // var fileContents = fs.readFileSync(path.join(__dirname + '/cell_information.csv'));
 var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
-console.log(fileContents.toString());
 
 // var fileContents = fs.readFileSync('./cell_information.csv');
 
 var rows = fileContents.toString().split('\r\n');
+
+console.log(rows);
+
 for (var i = 0; i < rows.length; i++) {
     cellInfo.push(rows[i].toString().split(','));
 }
@@ -33,5 +35,5 @@ for (var i = 0; i < cellInfo.length; i++) {
 //              "D","D","D","D","D","D","D","D","D","D",
 //              "E","E","E","E","E","E","E","E","E","E",
 //             ]
-exports.answerKeys = answerKeys;
-exports.cellTypes = cellTypes;
+// exports.answerKeys = answerKeys;
+// exports.cellTypes = cellTypes;
