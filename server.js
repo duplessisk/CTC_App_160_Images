@@ -59,8 +59,6 @@ app.post("/page_one", function(request,response) {
     numImagesByType.set("A", 0);
 
     answerKeyPageOne = answerKeys.answerKeys[0];
-    console.log("answerKeyPageOne:");
-    console.log(answerKeyPageOne);
     driveApp(answerKeyPageOne,request,1);
     response.redirect('/page_two');
 });
@@ -329,6 +327,10 @@ function postMissedImagePaths() {
  *                              response.
  */
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
+    console.log("answerKey:");
+    console.log(answerKey);
+    console.log("userResponses:");
+    console.log(userResponses);
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
             var imagePath = '/static/cell_answers/cell' + 
