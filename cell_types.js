@@ -4,9 +4,8 @@ var cellInfo = [];
 var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 var rows = fileContents.toString().split('\r\n');
 
-console.log(rows);
-console.log("rows length: " + rows.length);
 var cellInfoUpdate = rows[0].split("+");
+console.log("cellInfoUpdate: ");
 console.log(cellInfoUpdate);
 
 for (var i = 0; i < rows.length; i++) {
