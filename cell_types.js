@@ -13,6 +13,9 @@ for (var i = 0; i < rows.length; i++) {
 
 cellInfo = cellInfo.splice(1,cellInfo.length - 2);
 
+console.log("cellInfo");
+console.log(cellInfo);
+
 cellTypes = [];
 answerKeys = [ [], [], [], [], [] ];
 
