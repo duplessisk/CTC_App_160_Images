@@ -2,7 +2,7 @@ const fs = require('fs');
 cell_information.csv
 var cellInfo = [];
 // var fileContents = fs.readFileSync(path.join(__dirname + '/cell_information.csv'));
-// var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
+var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 
 var rows = fileContents.toString().split('\r\n');
 
