@@ -20,11 +20,5 @@ for (var i = 0; i < cellInfo.length; i++) {
     answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
 
-console.log("answerKeys: ");
-console.log(answerKeys);
-
-console.log("cellTypes:");
-console.log(cellTypes);
-
-// exports.answerKeys = answerKeys;
+exports.answerKeys = answerKeys;
 exports.cellTypes = cellTypes;

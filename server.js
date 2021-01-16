@@ -2,8 +2,6 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
-// const answerKeys = require("./cell_types");
-// const cellTypes = require("./cell_types");
 const answerKeys = require(path.join(__dirname + '/cell_types'));
 const cellTypes = require(path.join(__dirname + '/cell_types'));
 const nodemailer = require("nodemailer");
@@ -60,6 +58,9 @@ app.post("/page_one", function(request,response) {
     totalIncorrectByType.set("A", 0);
     numImagesByType.set("A", 0);
 
+    answerKey = answerKeys.answerKeys;
+    console.log("answerKey:");
+    console.log(answerKey);
     answerKeyPageOne = answerKeys.answerKeys[0];
     driveApp(answerKeyPageOne,request,1);
     response.redirect('/page_two');
