@@ -5,7 +5,7 @@ var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 var fileContentsString = fileContents.toString('utf-8');
 var rows = fileContentsString.toString().split('\r\n');
 
-console.log(rows);
+console.log(rows[0]);
 
 cellInformationContents = [];
 for (var i = 0; i < fileContentsString.length; i++) {
