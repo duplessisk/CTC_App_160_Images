@@ -277,6 +277,7 @@ function setMissedImagePaths(answerKey,userResponses,pageNumber) {
     }
 }
 
+
 // Stores path of each image the user answered incorrectly by type 
 var missedImagesByType = new Map();
 
