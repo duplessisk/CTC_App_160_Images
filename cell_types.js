@@ -2,12 +2,7 @@ const fs = require('fs');
 
 var cellInfo = [];
 var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
-console.log(fileContents.toString());
 var rows = fileContents.toString('utf-8').split('\n');
-
-console.log("rows:");
-console.log(rows);
-console.log(rows.length);
 
 for (var i = 0; i < rows.length; i++) {
 	cellInfo.push(rows[i].toString().split(','));
@@ -25,5 +20,8 @@ for (var i = 0; i < cellInfo.length; i++) {
     answerKeys[Math.floor(i/10)].push(cellInfo[i][2]);
 }
 
-exports.answerKeys = answerKeys;
+console.log("cellTypes:");
+console.log(cellTypes);
+
+// exports.answerKeys = answerKeys;
 exports.cellTypes = cellTypes;
