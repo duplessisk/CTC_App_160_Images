@@ -8,9 +8,9 @@ console.log("rows[0]");
 console.log(rows[0]);
 console.log("rows[0] update: ");
 var newRows = rows[0].substring(16,rows[0].length));
-console.log(newRows[0]);
-console.log(newRows[5]);
-console.log(newRows[10]);
+console.log(newRows.charAt(0));
+console.log(newRows.charAt(5));
+console.log(newRows.charAt(10));
 
 
 for (var i = 0; i < rows.length; i++) {
