@@ -292,8 +292,24 @@ function setAllImagePaths() {
  * @param {Map} allImagesByTypeObject - contains all the images organized by 
  *                                      cell type bin.
  */
+// function writeImagePaths(imagesByType,fileName) {
+//     fs.writeFile("./public/" + fileName + ".json", "", function(){
+//         var imagesByTypeKeys = Array.from(imagesByType.keys());
+//         for (var i = 0; i < imagesByTypeKeys.length; i++) {
+//             for (var j = 0; 
+//                 j < imagesByType.get(imagesByTypeKeys[i]).length; j++) {
+//                     var thisImageObject = {};
+//                     thisImageObject[imagesByTypeKeys[i]] =
+//                     imagesByType.get(imagesByTypeKeys[i])[j];
+//                     fs.appendFileSync("./public/" + fileName + ".json", 
+//                         JSON.stringify(thisImageObject, null, 4), function(){});
+//             }
+//         }
+//     });
+// }
+
 function writeImagePaths(imagesByType,fileName) {
-    fs.writeFile("./public/" + fileName + ".json", "", function(){
+    fs.writeFile("/static/" + fileName + ".json", "", function(){
         var imagesByTypeKeys = Array.from(imagesByType.keys());
         for (var i = 0; i < imagesByTypeKeys.length; i++) {
             for (var j = 0; 
@@ -301,7 +317,7 @@ function writeImagePaths(imagesByType,fileName) {
                     var thisImageObject = {};
                     thisImageObject[imagesByTypeKeys[i]] =
                     imagesByType.get(imagesByTypeKeys[i])[j];
-                    fs.appendFileSync("./public/" + fileName + ".json", 
+                    fs.appendFileSync("/static/" + fileName + ".json", 
                         JSON.stringify(thisImageObject, null, 4), function(){});
             }
         }
