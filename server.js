@@ -327,6 +327,7 @@ function postMissedImagePaths() {
  *                              response.
  */
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
+    console.log("page number: " + pageNumber);
     console.log("answerKey:");
     console.log(answerKey);
     console.log("userResponses:");
