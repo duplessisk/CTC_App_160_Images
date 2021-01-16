@@ -1,4 +1,6 @@
 {
+    "A": "/static/cell_answers/cell01answer.JPG"
+}{
     "A": "/static/cell_answers/cell02answer.JPG"
 }{
     "A": "/static/cell_answers/cell03answer.JPG"
@@ -14,6 +16,10 @@
     "A": "/static/cell_answers/cell08answer.JPG"
 }{
     "A": "/static/cell_answers/cell09answer.JPG"
+}{
+    "B": "/static/cell_answers/cell10answer.JPG"
+}{
+    "B": "/static/cell_answers/cell11answer.JPG"
 }{
     "B": "/static/cell_answers/cell12answer.JPG"
 }{
@@ -31,6 +37,10 @@
 }{
     "B": "/static/cell_answers/cell19answer.JPG"
 }{
+    "C": "/static/cell_answers/cell20answer.JPG"
+}{
+    "C": "/static/cell_answers/cell21answer.JPG"
+}{
     "C": "/static/cell_answers/cell22answer.JPG"
 }{
     "C": "/static/cell_answers/cell23answer.JPG"
@@ -47,6 +57,10 @@
 }{
     "C": "/static/cell_answers/cell29answer.JPG"
 }{
+    "D": "/static/cell_answers/cell30answer.JPG"
+}{
+    "D": "/static/cell_answers/cell31answer.JPG"
+}{
     "D": "/static/cell_answers/cell32answer.JPG"
 }{
     "D": "/static/cell_answers/cell33answer.JPG"
@@ -62,6 +76,10 @@
     "D": "/static/cell_answers/cell38answer.JPG"
 }{
     "D": "/static/cell_answers/cell39answer.JPG"
+}{
+    "E": "/static/cell_answers/cell40answer.JPG"
+}{
+    "E": "/static/cell_answers/cell41answer.JPG"
 }{
     "E": "/static/cell_answers/cell42answer.JPG"
 }{
