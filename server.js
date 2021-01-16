@@ -202,7 +202,7 @@ function driveApp(answerKeyPage,request,pageNumber) {
  */
 function createAnswerKey(answerKey) {
     for (var i = 0; i < answerKey.length; i++) {
-        if (answerKey[i] == "y") {
+        if (answerKey[i] == "y" || answerKey[i]) {
             answerKey[i] = true;
         } else {
             answerKey[i] = false;
