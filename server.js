@@ -58,8 +58,11 @@ app.post("/page_one", function(request,response) {
     missedImagesByType.set("A", new Array());
     totalIncorrectByType.set("A", 0);
     numImagesByType.set("A", 0);
-
+    
     answerKeyPageOne = answerKeys.answerKeys[0];
+    console.log("pageOne:");
+    console.log("answerKeyPageOne");
+    console.log(answerKeyPageOne);
     driveApp(answerKeyPageOne,request,1);
     response.redirect('/page_two');
 });
