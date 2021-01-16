@@ -260,16 +260,12 @@ function recordUserResponses(userResponses) {
  */
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
     console.log("page number " + pageNumber);
-    console.log("answerKey: ");
-    console.log(answerKey);
-    console.log("userResponses: ");
-    console.log(userResponses);
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
             var imagePath = '/static/cell_answers/cell' + 
                 String(pageNumber - 1) + String(i) + 'answer.JPG';
             console.log("Missed Image Path: ");
-            console.log(missedImagePath);
+            console.log(imagePath);
             var thisCellType = getThisCellType(imagePath);
             missedImagesByType.get(thisCellType).push(imagePath);
             totalIncorrectByType.set(thisCellType, 
