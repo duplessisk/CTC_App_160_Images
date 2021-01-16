@@ -11,8 +11,6 @@ require("dotenv").config();
 
 const app = express();
 
-console.log("server starting...");
-
 app.set('view engine', 'ejs');
 
 app.use('/static', express.static('public'));
@@ -63,8 +61,6 @@ app.post("/page_one", function(request,response) {
     numImagesByType.set("A", 0);
 
     answerKeyPageOne = answerKeys.answerKeys[0];
-    console.log("answerKeyPageOne");
-    console.log(answerKeyPageOne);
     driveApp(answerKeyPageOne,request,1);
     response.redirect('/page_two');
 });
