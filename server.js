@@ -183,30 +183,10 @@ app.listen(process.env.PORT || 3000);
  * @param {number} pageNumber - page number in client side application.
  */
 function driveApp(answerKeyPage,request,pageNumber) {
-    // var answerKey = createAnswerKey(answerKeyPage);
     var userResponses = initUserResponses(request);
     recordUserResponses(userResponses);
     setMissedImagePaths(answerKeyPage, userResponses, pageNumber);
 }
-
-/**
- * Replaces all answers with boolean and null values equivalent to the 
- * specified answer.
- * This function is not explicitly necessary, but makes following code cleaner.
- * @param {JS document} answerKey - js document containing all the answers with 
- *                                  "yes" and "no" string values.
- * @return - Array containing all answers with boolean values.
- */
-// function createAnswerKey(answerKey) {
-//     for (var i = 0; i < answerKey.length; i++) {
-//         if (answerKey[i] == "y" || answerKey[i]) {
-//             answerKey[i] = true;
-//         } else {
-//             answerKey[i] = false;
-//         }
-//     }
-//     return answerKey;
-// }
 
 /**
  * Consumes and stores user responses from client side.
@@ -449,8 +429,8 @@ function sendEmailWithResults() {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user:process.env.EMAIL,
-            pass:process.env.PASSWORD
+            user:'klduplessis@gmail.com',
+            pass:'@Omallard2007'
         }
     });
 
