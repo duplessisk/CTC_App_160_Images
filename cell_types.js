@@ -5,11 +5,11 @@ var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 
 // var rows = fileContents.toString().split('\r');
 var rows = fileContents.toString().split(',');
+rows.splice(2,rows.length);
 console.log("rows: ");
 console.log(rows);
 for (var i = 0; i < rows.length; i++) {
     cellInfo.push(rows[i].toString().split(','));
-    console.log(i);
 }
 
 cellInfo = cellInfo.splice(1,cellInfo.length - 2);
