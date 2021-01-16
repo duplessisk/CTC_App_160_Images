@@ -7,7 +7,7 @@ var rows = fileContents.toString().split('\r\n');
 console.log("rows[0]");
 console.log(rows[0]);
 console.log("rows[0] update: ");
-console.log(rows[0].substring(20,rows[0].length));
+console.log(rows[0].substring(15,rows[0].length));
 
 for (var i = 0; i < rows.length; i++) {
 	cellInfo.push(rows[i].toString().split(','));
