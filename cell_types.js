@@ -6,7 +6,8 @@ var rows = fileContents.toString().split('\r\n');
 
 console.log(rows);
 console.log("rows length: " + rows.length);
-console.log(rows[0].charAt(5));
+cellInfoUpdate = cellInfo.split("+");
+console.log(cellInfoUpdate);
 
 for (var i = 0; i < rows.length; i++) {
 	cellInfo.push(rows[i].toString().split(','));
