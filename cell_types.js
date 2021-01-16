@@ -6,7 +6,7 @@ var rows = fileContents.toString().split('\r\n');
 
 console.log(rows);
 console.log("rows length: " + rows.length);
-cellInfoUpdate = cellInfo[0].split("+");
+var cellInfoUpdate = cellInfo[0].split("+");
 console.log(cellInfoUpdate);
 
 for (var i = 0; i < rows.length; i++) {
