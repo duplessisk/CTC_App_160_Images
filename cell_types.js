@@ -13,6 +13,7 @@ for (var i = 0; i < rows.length; i++) {
     cellInfo.push(rows[i].toString().split(','));
 }
 
+cellInfo.splice(3,49);
 console.log("cellInfo");
 console.log(cellInfo);
 
