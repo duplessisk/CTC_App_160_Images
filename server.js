@@ -344,8 +344,6 @@ function writeImagePaths(imagesByType,fileName) {
  * into the appropriate cell type bins.
  */
 function postMissedImagePaths() {
-    console.log("missedImagesByType: ");
-    console.log(missedImagesByType);
     writeImagePaths(missedImagesByType, "missed_image_paths");
 }
 
