@@ -259,13 +259,10 @@ function recordUserResponses(userResponses) {
  *                              response.
  */
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
-    console.log("page number " + pageNumber);
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
             var imagePath = '/static/cell_answers/cell' + 
                 String(pageNumber - 1) + String(i) + 'answer.JPG';
-            console.log("Missed Image Path: ");
-            console.log(imagePath);
             var thisCellType = getThisCellType(imagePath);
             missedImagesByType.get(thisCellType).push(imagePath);
             totalIncorrectByType.set(thisCellType, 
@@ -340,6 +337,8 @@ function writeImagePaths(imagesByType,fileName) {
  * into the appropriate cell type bins.
  */
 function postMissedImagePaths() {
+    console.log("missedImagesByType: ");
+    console.log(missedImagesByType);
     writeImagePaths(missedImagesByType, "missed_image_paths");
 }
 
