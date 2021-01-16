@@ -248,6 +248,34 @@ function recordUserResponses(userResponses) {
     }
 }
 
+/**
+ * Stores (by cell type bin) the image paths of each image the user responded 
+ * to incorrectly.
+ * @param {Array} answerKey - Array containing boolean values representing 
+ *                            answers for each question.
+ * @param {Array} userResponses - Array containing boolean values representing 
+ *                                user responses for each question.
+ * @param {number} pageNumber - Client side page number corresponding with user
+ *                              response.
+ */
+function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
+    console.log("page number " + pageNumber);
+    console.log("answerKey: ");
+    console.log(answerKey);
+    console.log("userResponses: ");
+    console.log(userResponses);
+    for (var i = 0; i < 10; i++) {
+        if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
+            var imagePath = '/static/cell_answers/cell' + 
+                String(pageNumber - 1) + String(i) + 'answer.JPG';
+            var thisCellType = getThisCellType(imagePath);
+            missedImagesByType.get(thisCellType).push(imagePath);
+            totalIncorrectByType.set(thisCellType, 
+                totalIncorrectByType.get(thisCellType) + 1);
+        }
+    }
+}
+
 // Stores path of each image the user answered incorrectly by type 
 var missedImagesByType = new Map();
 
@@ -315,34 +343,6 @@ function writeImagePaths(imagesByType,fileName) {
  */
 function postMissedImagePaths() {
     writeImagePaths(missedImagesByType, "missed_image_paths");
-}
-
-/**
- * Stores (by cell type bin) the image paths of each image the user responded 
- * to incorrectly.
- * @param {Array} answerKey - Array containing boolean values representing 
- *                            answers for each question.
- * @param {Array} userResponses - Array containing boolean values representing 
- *                                user responses for each question.
- * @param {number} pageNumber - Client side page number corresponding with user
- *                              response.
- */
-function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
-    for (var i = 0; i < 10; i++) {
-        console.log("page number " + pageNumber);
-        console.log("answerKey: ");
-        console.log(answerKey);
-        console.log("userResponses: ");
-        console.log(userResponses);
-        if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
-            var imagePath = '/static/cell_answers/cell' + 
-                String(pageNumber - 1) + String(i) + 'answer.JPG';
-            var thisCellType = getThisCellType(imagePath);
-            missedImagesByType.get(thisCellType).push(imagePath);
-            totalIncorrectByType.set(thisCellType, 
-                totalIncorrectByType.get(thisCellType) + 1);
-        }
-    }
 }
 
 /**
