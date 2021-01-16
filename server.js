@@ -329,6 +329,11 @@ function postMissedImagePaths() {
  */
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
     for (var i = 0; i < 10; i++) {
+        console.log("page number " + pageNumber);
+        console.log("answerKey: ");
+        console.log(answerKey);
+        console.log("userResponses: ");
+        console.log(userResponses);
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
             var imagePath = '/static/cell_answers/cell' + 
                 String(pageNumber - 1) + String(i) + 'answer.JPG';
