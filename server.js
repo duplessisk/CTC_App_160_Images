@@ -64,6 +64,7 @@ app.post("/page_one", function(request,response) {
     numImagesByType.set("A", 0);
 
     answerKeyPageOne = answerKeys.answerKeys[0];
+    console.log("answerKeyPageOne");
     console.log(answerKeyPageOne);
     driveApp(answerKeyPageOne,request,1);
     response.redirect('/page_two');
