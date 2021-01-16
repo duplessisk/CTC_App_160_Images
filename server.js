@@ -317,7 +317,7 @@ function writeImagePaths(imagesByType,fileName) {
                     var thisImageObject = {};
                     thisImageObject[imagesByTypeKeys[i]] =
                     imagesByType.get(imagesByTypeKeys[i])[j];
-                    fs.appendFileSync("/static/" + fileName + ".json", 
+                    fs.appendFileSync(__dirname + "/static/" + fileName + ".json", 
                         JSON.stringify(thisImageObject, null, 4), function(){});
             }
         }
