@@ -287,29 +287,8 @@ function setAllImagePaths() {
     return allImagesByType;
 }
 
-/**
- * Writes all image paths to a JSON file to be accessed on the client side. 
- * @param {Map} allImagesByTypeObject - contains all the images organized by 
- *                                      cell type bin.
- */
-// function writeImagePaths(imagesByType,fileName) {
-//     fs.writeFile("./public/" + fileName + ".json", "", function(){
-//         var imagesByTypeKeys = Array.from(imagesByType.keys());
-//         for (var i = 0; i < imagesByTypeKeys.length; i++) {
-//             for (var j = 0; 
-//                 j < imagesByType.get(imagesByTypeKeys[i]).length; j++) {
-//                     var thisImageObject = {};
-//                     thisImageObject[imagesByTypeKeys[i]] =
-//                     imagesByType.get(imagesByTypeKeys[i])[j];
-//                     fs.appendFileSync("./public/" + fileName + ".json", 
-//                         JSON.stringify(thisImageObject, null, 4), function(){});
-//             }
-//         }
-//     });
-// }
-
 function writeImagePaths(imagesByType,fileName) {
-    fs.writeFile(__dirname + "/static/" + fileName + ".json", "", function(){
+    fs.writeFile("/static/" + fileName + ".json", "", function(){
         var imagesByTypeKeys = Array.from(imagesByType.keys());
         for (var i = 0; i < imagesByTypeKeys.length; i++) {
             for (var j = 0; 
@@ -317,7 +296,7 @@ function writeImagePaths(imagesByType,fileName) {
                     var thisImageObject = {};
                     thisImageObject[imagesByTypeKeys[i]] =
                     imagesByType.get(imagesByTypeKeys[i])[j];
-                    fs.appendFileSync(__dirname + "/static/" + fileName + ".json", 
+                    fs.appendFileSync("/static/" + fileName + ".json", 
                         JSON.stringify(thisImageObject, null, 4), function(){});
             }
         }
@@ -351,6 +330,8 @@ function setMissedImagePaths(answerKey,userResponses,pageNumber) {
             missedImagesByType.get(thisCellType).push(imagePath);
             totalIncorrectByType.set(thisCellType, 
                 totalIncorrectByType.get(thisCellType) + 1);
+        } else {
+            console.log("Missed Question on Page " + pageNumber);
         }
     }
 }
@@ -443,7 +424,7 @@ function setNumImagesByType() {
 }
 
 function writeResultsFile() {
-    fs.writeFile(__dirname + "/final_results.txt", firstName + " " + lastName + "\n" + 
+    fs.writeFile("/final_results.txt", firstName + " " + lastName + "\n" + 
                  "\n", function() {
         fs.appendFileSync(__dirname + "/final_results.txt", "Number Correct: " + "\n", 
         function() {});
@@ -457,7 +438,7 @@ function writeResultsFile() {
                                  + "%)" + "\n", function(){});
         }
         var time = new Date();
-        fs.appendFileSync(__dirname + "/final_results.txt", "\n" + "Time Stamp: " 
+        fs.appendFileSync("/final_results.txt", "\n" + "Time Stamp: " 
                           + time.toLocaleString(), function(){});
     });
 }
