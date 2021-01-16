@@ -35,5 +35,5 @@ for (var i = 0; i < cellInfo.length; i++) {
 //              "D","D","D","D","D","D","D","D","D","D",
 //              "E","E","E","E","E","E","E","E","E","E",
 //             ]
-// exports.answerKeys = answerKeys;
-// exports.cellTypes = cellTypes;
+exports.answerKeys = answerKeys;
+exports.cellTypes = cellTypes;
