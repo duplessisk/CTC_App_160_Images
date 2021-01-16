@@ -3,14 +3,12 @@ cell_information.csv
 var cellInfo = [];
 // var fileContents = fs.readFileSync(path.join(__dirname + '/cell_information.csv'));
 // var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
-var fileContents = fs.readFileSync('cell_information.csv');
-
-// var fileContents = fs.readFileSync('./cell_information.csv');
 
 var rows = fileContents.toString().split('\r\n');
 
 for (var i = 0; i < rows.length; i++) {
     cellInfo.push(rows[i].toString().split(','));
+    cellInfo.push("A");
     console.log(cellInfo);
 }
 
