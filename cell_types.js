@@ -1,16 +1,20 @@
 const fs = require('fs');
-var cellInfo = [];
 // var fileContents = fs.readFileSync(path.join(__dirname + '/cell_information.csv'));
 var fileContents = fs.readFileSync(__dirname + '/cell_information.csv');
 
 // var rows = fileContents.toString().split('\r');
 var rows = fileContents.toString().split(',');
-rows.splice(2,rows.length);
 console.log("rows: ");
 console.log(rows);
+
+var cellInfo = [];
+
 for (var i = 0; i < rows.length; i++) {
     cellInfo.push(rows[i].toString().split(','));
 }
+
+console.log("cellInfo");
+console.log(cellInfo);
 
 cellInfo = cellInfo.splice(1,cellInfo.length - 2);
 cellTypes = [];
