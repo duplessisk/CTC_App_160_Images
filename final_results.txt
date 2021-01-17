@@ -1,10 +1,22 @@
-Kyle Duplessis
+Test Taker: Kyle Duplessis
+
+Company: Rarecyte
 
 Number Correct: 
-Cell Type A: 1 out of 10 (10%)
-Cell Type B: 0 out of 10 (0%)
-Cell Type C: 0 out of 10 (0%)
-Cell Type D: 0 out of 10 (0%)
-Cell Type E: 0 out of 10 (0%)
 
-Time Stamp: 1/16/2021, 11:02:36 AM
+Cell Type A: 5 out of 10 (50%)
+Images Missed: 01, 03, 05, 07, 09
+
+Cell Type B: 5 out of 10 (50%)
+Images Missed: 11, 13, 15, 17, 19
+
+Cell Type C: 5 out of 10 (50%)
+Images Missed: 21, 23, 25, 27, 29
+
+Cell Type D: 5 out of 10 (50%)
+Images Missed: 31, 33, 35, 37, 39
+
+Cell Type E: 5 out of 10 (50%)
+Images Missed: 41, 43, 45, 47, 49
+
+Time Stamp: 1/17/2021, 3:29:54 PM

@@ -33,12 +33,12 @@ app.get("/login_page", function(request,response) {
 
 var firstName;
 var lastName;
-var email;
+var company;
 
 app.post("/login_page", function(request,response) {
     firstName = request.body.firstName;
     lastName = request.body.lastName;
-    email = request.body.email;
+    company = request.body.company;
     response.redirect('/instructions_page');
 });
 
@@ -406,23 +406,38 @@ function setNumImagesByType() {
 }
 
 function writeResultsFile() {
-    fs.writeFile("./final_results.txt", firstName + " " + lastName + "\n" + 
-                 "\n", function() {
+    fs.writeFile("./final_results.txt", "Test Taker: " + firstName + " " + 
+        lastName + "\n" + "\n" + "Company: " + company + "\n" + "\n", 
+            function() {
         fs.appendFileSync("./final_results.txt", "Number Correct: " + "\n", 
         function() {});
         var keys = Array.from(totalIncorrectByType.keys());
         for (var i = 0; i < keys.length; i++) {
-            fs.appendFileSync("./final_results.txt",   
-                "Cell Type " + keys[i] + ": " +
-                    String(10 - totalIncorrectByType.get(keys[i])) + " " + "out of " + 
-                        String(numImagesByType.get(keys[i])) + " (" + 
-                            (100 - Math.round(100*totalIncorrectByType.get(keys[i])/numImagesByType.get(keys[i])))  
-                                 + "%)" + "\n", function(){});
+            fs.appendFileSync("./final_results.txt", "\n" + fileContents(keys[i]), 
+                function(){});
         }
         var time = new Date();
         fs.appendFileSync("./final_results.txt", "\n" + "Time Stamp: " 
                           + time.toLocaleString(), function(){});
     });
+}
+
+function fileContents(cellType) {
+    var percentageIncorrect = 100*totalIncorrectByType.get(cellType)/
+        numImagesByType.get(cellType);
+    var percentageCorrect = (100 - Math.round(percentageIncorrect));
+    var globalMessage = "Cell Type " + cellType + ": " + 
+        totalIncorrectByType.get(cellType) + " out of " + 
+            numImagesByType.get(cellType) + " (" + percentageCorrect + "%)" + "\n";
+    var granularMessage = "Images Missed: ";
+    for (var i = 0; i < missedImagesByType.get(cellType).length; i++) {
+        if (i != 0) {
+            granularMessage += ", "
+        }
+        granularMessage += missedImagesByType.get(cellType)[i].substring(25,27);
+    }
+    granularMessage += "\n";
+    return globalMessage + granularMessage;
 }
 
 function sendEmailWithResults() {
@@ -436,7 +451,7 @@ function sendEmailWithResults() {
 
     let mailOptions = {
         from: 'klduplessis@gmail.com',
-        to: email,
+        to: 'klduplessis@gmail.com',
         subject: 'yep!',
         text: 'It works',
         attachments: [{
