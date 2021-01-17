@@ -430,7 +430,7 @@ function sendEmailWithResults() {
         service: 'gmail',
         auth: {
             user:'klduplessis@gmail.com',
-            pass:'@Omallard2007'
+            pass:'gdliyxusctinnsia'
         }
     });
 
