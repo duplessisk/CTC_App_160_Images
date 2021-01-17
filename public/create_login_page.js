@@ -3,7 +3,7 @@ resetLoginButtonDiv.id = "resetLoginButtonDiv";
 document.querySelector("#form").appendChild(resetLoginButtonDiv);
 
 var resetLoginButton = document.createElement('input');
-resetLoginButton.type = "submit";
+resetLoginButton.type = "reset";
 resetLoginButton.className = "button";
 resetLoginButton.id = "resetLoginButton";
 resetLoginButton.name = "button";
