@@ -417,6 +417,7 @@ function writeResultsFile() {
                 function(){});
         }
         var time = new Date();
+        time.setUTCHours(time.getUTCHours() - 8);
         fs.appendFileSync("./final_results.txt", "\n" + "Time Stamp: " 
                           + time.toLocaleString(), function(){});
     });
