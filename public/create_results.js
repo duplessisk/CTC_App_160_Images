@@ -112,7 +112,7 @@ function setTypesMap(imagePathsString, typesMap) {
     var jsonObjectArr = imagePathsString.split("}");
     for (var i = 0; i < jsonObjectArr.length; i++) {
         var thisCellType = jsonObjectArr[i].charAt(6);
-        var imagePath = jsonObjectArr[i].substring(11,48);
+        var imagePath = jsonObjectArr[i].substring(11,jsonObjectArr[i].length - 2);
         if (typesMap.has(thisCellType)) {
             typesMap.get(thisCellType).push(imagePath);
         } else {
@@ -191,8 +191,9 @@ function addImagesToDom(cellType, typesMap, imageType) {
             messageDiv.className = "message-div";
             messageDiv.id = "messageDiv";
     
-            var imageNum = imagePaths[i].substring(25,27);
-            var imagePath = imagePaths[i].substring(0,37);
+            var imageNum = imagePaths[i].substring(29,31);
+            var imagePath = imagePaths[i];
+
             var newImg = document.createElement('img');
             newImg.src = imagePath;
             newImg.id="resultsImg";
@@ -253,9 +254,6 @@ function setResults() {
         document.querySelector("#type"+tempTypes[i]+"HeaderDiv")
             .appendChild(dataMessageDiv);
     }
-    console.log("totalCorrect: " + totalCorrect);
-    console.log("totalNumQuestions: " + totalNumQuestions);
-    console.log(totalCorrect/totalNumQuestions);
     document.querySelector("#overallResults").innerHTML = "Score: " + 
         Math.round(100*(totalCorrect/totalNumQuestions)) + "% (" + 
         totalCorrect + " out of " + totalNumQuestions + ")";

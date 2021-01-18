@@ -241,7 +241,7 @@ function setMissedImagePaths(answerKey,userResponses,pageNumber) {
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
             var imagePath = '/static/object_answers/object' + 
-                String(pageNumber - 1) + String(i) + 'answer.JPG';
+                String(pageNumber - 1) + String(i) + 'answer.PNG';
             var thisCellType = getThisCellType(imagePath);
             missedImagesByType.get(thisCellType).push(imagePath);
             totalIncorrectByType.set(thisCellType, 
@@ -249,7 +249,6 @@ function setMissedImagePaths(answerKey,userResponses,pageNumber) {
         }
     }
 }
-
 
 // Stores path of each image the user answered incorrectly by type 
 var missedImagesByType = new Map();
@@ -274,7 +273,7 @@ function setAllImagePaths() {
     for (var i = 0; i < allCellTypes.length/10; i++) {
         for (var j = 0; j < 10; j++) {
             var imagePath = '/static/object_answers/object' + String(i) + String(j)
-                + 'answer.JPG';
+                + 'answer.PNG';
             var thisCellType = getThisCellType(imagePath); 
             if (allImagesByType.has(thisCellType)) {
                 allImagesByType.get(thisCellType).push(imagePath);
@@ -327,7 +326,7 @@ function postMissedImagePaths() {
  * @return - cell type bin associated with specific image
  */
 function getThisCellType(imagePath) {
-    var imageNum = imagePath.substring(25,27);
+    var imageNum = imagePath.substring(29,31);
     if (Number(imageNum.charAt(0) == 0)) {
         var num = Number(imageNum.charAt(1));
         return allCellTypes[num];
@@ -435,7 +434,7 @@ function fileContents(cellType) {
         if (i != 0) {
             granularMessage += ", "
         }
-        granularMessage += missedImagesByType.get(cellType)[i].substring(25,27);
+        granularMessage += missedImagesByType.get(cellType)[i].substring(29,31);
     }
     granularMessage += "\n";
     return globalMessage + granularMessage;
