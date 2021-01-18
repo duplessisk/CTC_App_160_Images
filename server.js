@@ -240,7 +240,7 @@ function recordUserResponses(userResponses) {
 function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
-            var imagePath = '/static/cell_answers/cell' + 
+            var imagePath = '/static/object_answers/object' + 
                 String(pageNumber - 1) + String(i) + 'answer.JPG';
             var thisCellType = getThisCellType(imagePath);
             missedImagesByType.get(thisCellType).push(imagePath);
@@ -273,7 +273,7 @@ function setAllImagePaths() {
     var allImagesByType = new Map();
     for (var i = 0; i < allCellTypes.length/10; i++) {
         for (var j = 0; j < 10; j++) {
-            var imagePath = '/static/cell_answers/cell' + String(i) + String(j)
+            var imagePath = '/static/object_answers/object' + String(i) + String(j)
                 + 'answer.JPG';
             var thisCellType = getThisCellType(imagePath); 
             if (allImagesByType.has(thisCellType)) {
