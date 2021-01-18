@@ -35,10 +35,12 @@ body {
 /* login page */
 #loginFormInstructions {
     text-align: center;
+    font-family: "Arial";
+    font-size: 1.5vw;
 }
 
 #loginFormDiv {
-    margin-left: 43.16%;
+    margin-left: 41.16%;
 }
 
 .login-fields-div {
@@ -186,7 +188,7 @@ body {
 
 /* login page */
 #resetLoginButtonDiv {
-    margin-left: 38.75%;
+    margin-left: 36.75%;
 }
 
 .right-button-div {
