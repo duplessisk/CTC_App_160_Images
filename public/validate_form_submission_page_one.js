@@ -34,7 +34,6 @@ for (var i = 0; i < yesCheckBoxes.length; i++) {
             userResponses[2*idNum] = true;
             userResponses[2*idNum + 1] = false;
         }
-        console.log(userResponses);
     });
 }
 
@@ -45,7 +44,6 @@ for (var i = 0; i < noCheckBoxes.length; i++) {
             userResponses[2*idNum + 1] = true;
             userResponses[2*idNum] = false;
         }
-        console.log(userResponses);
     });
 }
 

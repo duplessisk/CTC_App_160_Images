@@ -3,10 +3,8 @@ var yesCheckBoxes = document.querySelectorAll('.yes_check_boxes');
 var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 
 var userResponses = [];
-console.log("cached answers: " + localStorage.getItem('pageFourSaved'));
 
 if (localStorage.getItem('pageFourAlreadyVisited') == null) {
-    console.log("page not visited before");
     for (var i = 0; i < 20; i++) {
         userResponses[i] = "null";
     }
@@ -24,7 +22,6 @@ if (localStorage.getItem('pageFourAlreadyVisited') == null) {
 }
 
 for (var i = 0; i < userResponses.length; i++) {
-    console.log("userResponses: " + userResponses);
     if (userResponses[i] != "null" && userResponses[i]) {
         allCheckBoxes[i].checked = true
     } 
@@ -37,7 +34,6 @@ for (var i = 0; i < yesCheckBoxes.length; i++) {
             userResponses[2*idNum] = true;
             userResponses[2*idNum + 1] = false;
         }
-        console.log(userResponses);
     });
 }
 
@@ -48,7 +44,6 @@ for (var i = 0; i < noCheckBoxes.length; i++) {
             userResponses[2*idNum + 1] = true;
             userResponses[2*idNum] = false;
         }
-        console.log(userResponses);
     });
 }
 
