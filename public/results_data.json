@@ -1,15 +1,17 @@
 {
-    "totalIncorrect": 25
+    "totalIncorrect": 50
 }{
-    "numIncorrectTypeA": 5,
-    "numIncorrectTypeB": 5,
-    "numIncorrectTypeC": 5,
-    "numIncorrectTypeD": 5,
-    "numIncorrectTypeE": 5
+    "numIncorrectTypeCTC": 19,
+    "numIncorrectTypeUnidentified Cell": 3,
+    "numIncorrectTypeFluorescent Artifact": 3,
+    "numIncorrectTypeCK/EpCAM Foci": 4,
+    "numIncorrectTypeWhite Blood Cell": 6,
+    "numIncorrectTypeApoptotic CTC": 15
 }{
-    "totalNumTypeA": 10,
-    "totalNumTypeB": 10,
-    "totalNumTypeC": 10,
-    "totalNumTypeD": 10,
-    "totalNumTypeE": 10
+    "totalNumTypeCTC": 19,
+    "totalNumTypeUnidentified Cell": 3,
+    "totalNumTypeFluorescent Artifact": 3,
+    "totalNumTypeCK/EpCAM Foci": 4,
+    "totalNumTypeWhite Blood Cell": 6,
+    "totalNumTypeApoptotic CTC": 15
 }

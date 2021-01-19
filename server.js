@@ -2,8 +2,8 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
-const answerKeys = require("./cell_types");
-const cellTypes = require("./cell_types");
+const answerKeys = require("./object_types");
+const objectTypes = require("./object_types");
 const { stringify } = require("querystring");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
@@ -55,10 +55,7 @@ app.get("/page_one", function(request,response) {
 });
 
 app.post("/page_one", function(request,response) {
-    missedImagesByType.set("A", new Array());
-    totalIncorrectByType.set("A", 0);
-    numImagesByType.set("A", 0);
-
+    missedImagesByPage[0] = [];
     answerKeyPageOne = answerKeys.answerKeys[0];
     driveApp(answerKeyPageOne,request,1);
     response.redirect('/page_two');
@@ -70,10 +67,7 @@ app.get("/page_two", function(request,response) {
 
 app.post("/page_two", function(request,response) {
     var buttonClicked = request.body.button;
-    missedImagesByType.set("B", new Array());
-    totalIncorrectByType.set("B", 0);
-    numImagesByType.set("B", 0);
-
+    missedImagesByPage[1] = [];
     answerKeyPageTwo = answerKeys.answerKeys[1];
     driveApp(answerKeyPageTwo,request,2);
     if (buttonClicked == "Previous") {
@@ -89,10 +83,7 @@ app.get("/page_three", function(request,response) {
 
 app.post("/page_three", function(request,response) {
     var buttonClicked = request.body.button;
-    missedImagesByType.set("C", new Array());
-    totalIncorrectByType.set("C", 0);
-    numImagesByType.set("C", 0);
-
+    missedImagesByPage[2] = [];
     answerKeyPageThree = answerKeys.answerKeys[2];
     driveApp(answerKeyPageThree,request,3);
     if (buttonClicked == "Previous") {
@@ -108,11 +99,8 @@ app.get("/page_four", function(request,response) {
 
 app.post("/page_four", function(request,response) {
     var buttonClicked = request.body.button;
-    missedImagesByType.set("D", new Array());
-    totalIncorrectByType.set("D", 0);
-    numImagesByType.set("D", 0);
+    missedImagesByPage[3] = [];
     answerKeyPageFour = answerKeys.answerKeys[3];
-
     driveApp(answerKeyPageFour,request,4);
     if (buttonClicked == "Previous") {
         response.redirect('/page_three');
@@ -127,11 +115,8 @@ app.get("/page_five", function(request,response) {
 
 app.post("/page_five", function(request,response) {
     var buttonClicked = request.body.button;
-    missedImagesByType.set("E", new Array());
-    totalIncorrectByType.set("E", 0);
-    numImagesByType.set("E", 0);
+    missedImagesByPage[4] = [];
     answerKeyPageFive = answerKeys.answerKeys[4];
-
     driveApp(answerKeyPageFive,request,5);
     if (buttonClicked == "Previous") {
         response.redirect('/page_four');
@@ -153,11 +138,12 @@ app.post("/review", function(request,response) {
             response.redirect('/page_five');
         } else {
             previouslySubmitted = true;
+            initByTypeMaps();
             postAllImagePaths();
             postMissedImagePaths();
             postResultsData();
             writeResultsFile();
-            sendEmailWithResults();
+            // sendEmailWithResults();
             response.redirect('/results');
         }
     }
@@ -174,6 +160,38 @@ app.get("/form_already_submitted_page", function(request,response) {
 
 app.listen(process.env.PORT || 3000);
 
+
+// stores the object type bin for each image
+allObjectTypes = objectTypes.objectTypes;
+
+// Stores path of each image the user answered incorrectly by page (1-5)
+//                 page:   1   2   3   4   5   
+var missedImagesByPage = [ [], [], [], [], [] ];
+
+// Stores path of each image the user answered incorrectly by type 
+var missedImagesByType = new Map();
+
+// Stores path of all images by type
+var allImagesByType = new Map();
+
+// total number of incorrect user responses by object type bin
+var totalIncorrectByType = new Map();
+
+// total number of images by object bin type
+var numImagesByType = new Map();
+
+/**
+ * Initializes all the by type maps with the appropriate object type 
+ */
+function initByTypeMaps() {
+    for (var i = 0; i < allObjectTypes.length; i++) {
+        var objectType = allObjectTypes[i];
+        missedImagesByType.set(objectType, new Array());
+        totalIncorrectByType.set(objectType, 0);
+        numImagesByType.set(objectType, 0);
+    }
+}
+
 /**
  * Stores answer key, user responses, and determines missed image paths for
  * each page in the client side form.
@@ -185,7 +203,7 @@ app.listen(process.env.PORT || 3000);
 function driveApp(answerKeyPage,request,pageNumber) {
     var userResponses = initUserResponses(request);
     recordUserResponses(userResponses);
-    setMissedImagePaths(answerKeyPage, userResponses, pageNumber);
+    setMissedImagesByPage(answerKeyPage, userResponses, pageNumber - 1);
 }
 
 /**
@@ -213,7 +231,7 @@ function initUserResponses(request) {
  * responses.
  * This function is not explicitly necessary, but makes following code cleaner.
  * @param {Array} userResponses - array containing user responses for all the 
- *                                cell images.
+ *                                object images.
  */
 function recordUserResponses(userResponses) {
     for (var i = 0; i < userResponses.length; i++) {
@@ -228,7 +246,7 @@ function recordUserResponses(userResponses) {
 }
 
 /**
- * Stores (by cell type bin) the image paths of each image the user responded 
+ * Stores (by object type bin) the image paths of each image the user responded 
  * to incorrectly.
  * @param {Array} answerKey - Array containing boolean values representing 
  *                            answers for each question.
@@ -237,31 +255,21 @@ function recordUserResponses(userResponses) {
  * @param {number} pageNumber - Client side page number corresponding with user
  *                              response.
  */
-function setMissedImagePaths(answerKey,userResponses,pageNumber) { 
+function setMissedImagesByPage(answerKey,userResponses,pageNumber) { 
     for (var i = 0; i < 10; i++) {
         if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
-            var imagePath = '/static/object_answers/object' + 
-                String(pageNumber - 1) + String(i) + 'answer.PNG';
-            var thisCellType = getThisCellType(imagePath);
-            missedImagesByType.get(thisCellType).push(imagePath);
-            totalIncorrectByType.set(thisCellType, 
-                totalIncorrectByType.get(thisCellType) + 1);
+            var imageNumber = String(pageNumber) + String(i);
+            missedImagesByPage[pageNumber].push(imageNumber);
         }
     }
 }
 
-// Stores path of each image the user answered incorrectly by type 
-var missedImagesByType = new Map();
-
-// stores the cell type bin for each image
-allCellTypes = cellTypes.cellTypes;
-
 /**
- * Writes and posts JSON files (seperate file for each cell type bin) 
+ * Writes and posts JSON files (seperate file for each object type bin) 
  * containing the user's incorrect answers.
  */
 function postAllImagePaths() {
-    var allImagesByType = setAllImagePaths();
+    setAllImagePaths();
     writeImagePaths(allImagesByType, "all_image_paths");
 }
 
@@ -269,38 +277,37 @@ function postAllImagePaths() {
  * Sets all image paths and missed iamge paths. 
  */
 function setAllImagePaths() {
-    var allImagesByType = new Map();
-    for (var i = 0; i < allCellTypes.length/10; i++) {
+    for (var i = 0; i < allObjectTypes.length/10; i++) {
         for (var j = 0; j < 10; j++) {
-            var imagePath = '/static/object_answers/object' + String(i) + String(j)
+            var imageNum = String(i) + String(j);
+            var imagePath = '/static/object_answers/object' + imageNum 
                 + 'answer.PNG';
-            var thisCellType = getThisCellType(imagePath); 
-            if (allImagesByType.has(thisCellType)) {
-                allImagesByType.get(thisCellType).push(imagePath);
-                // increment total number images for this cell type
-                numImagesByType.set(thisCellType, 
-                    numImagesByType.get(thisCellType) + 1);
+            var thisObjectType = allObjectTypes[Number(imageNum)];
+            if (allImagesByType.has(thisObjectType)) {
+                allImagesByType.get(thisObjectType).push(imagePath);
+                // increment total number images for this Object type
+                numImagesByType.set(thisObjectType, 
+                    numImagesByType.get(thisObjectType) + 1);
             } else {
-                allImagesByType.set(thisCellType, new Array(imagePath)); 
-                // init total number images for this cell type
-                numImagesByType.set(thisCellType, 1);
+                allImagesByType.set(thisObjectType, new Array(imagePath)); 
+                // init total number images for this Object type
+                numImagesByType.set(thisObjectType, 1);
             }
         }
     }
-    return allImagesByType;
 }
 
 /**
  * Writes all image paths to a JSON file to be accessed on the client side. 
  * @param {Map} allImagesByTypeObject - contains all the images organized by 
- *                                      cell type bin.
+ *                                      Object type bin.
  */
 function writeImagePaths(imagesByType,fileName) {
     fs.writeFile("./public/" + fileName + ".json", "", function(){
         var imagesByTypeKeys = Array.from(imagesByType.keys());
         for (var i = 0; i < imagesByTypeKeys.length; i++) {
-            for (var j = 0; 
-                j < imagesByType.get(imagesByTypeKeys[i]).length; j++) {
+            for (var j = 0; j < imagesByType.get(imagesByTypeKeys[i]).length; 
+                j++) {
                     var thisImageObject = {};
                     thisImageObject[imagesByTypeKeys[i]] =
                     imagesByType.get(imagesByTypeKeys[i])[j];
@@ -313,39 +320,51 @@ function writeImagePaths(imagesByType,fileName) {
 
 /**
  * Organizes and posts image paths associated with an incorrect user answer 
- * into the appropriate cell type bins.
+ * into the appropriate Object type bins.
  */
 function postMissedImagePaths() {
+    setMissedImagesByType();
     writeImagePaths(missedImagesByType, "missed_image_paths");
 }
 
 /**
- * Gets the cell type for the image the user answered incorrectly
+ * Stores (by Object type bin) the image paths of each image the user responded 
+ * to incorrectly.
+ */
+function setMissedImagesByType() { 
+    for (var i = 0; i < 5; i++) {
+        for (var j = 0; j < missedImagesByPage[i].length; j++) {
+            var imageNum = missedImagesByPage[i][j];
+            var imagePath = '/static/object_answers/object' + imageNum + 
+                'answer.PNG';
+            var thisObjectType = getThisObjectType(imageNum);
+            missedImagesByType.get(thisObjectType).push(imagePath);
+            totalIncorrectByType.set(thisObjectType, 
+                totalIncorrectByType.get(thisObjectType) + 1);
+        }
+    }
+}
+
+/**
+ * Gets the Object type for the image the user answered incorrectly
  * @param {String} missedImagePath - Path for image that the user answered 
  *                                   incorrectly
- * @return - cell type bin associated with specific image
+ * @return - Object type bin associated with specific image
  */
-function getThisCellType(imagePath) {
-    var imageNum = imagePath.substring(29,31);
+function getThisObjectType(imageNum) {
     if (Number(imageNum.charAt(0) == 0)) {
         var num = Number(imageNum.charAt(1));
-        return allCellTypes[num];
+        return allObjectTypes[num];
     } else {
-        return allCellTypes[Number(imageNum)];
+        return allObjectTypes[Number(imageNum)];
     }
 }
 
 // total number of incorrect user responses
 var totalIncorrect = 0;
 
-// total number of incorrect user responses by cell type bin
-var totalIncorrectByType = new Map();
-
-// total number of images by cell bin type
-var numImagesByType = new Map();
-
 /**
- * Posts a breakdown of the user's performance overall and within each cell 
+ * Posts a breakdown of the user's performance overall and within each Object 
  * type on the exam. 
  */
 function postResultsData() {
@@ -372,9 +391,9 @@ function setTotalIncorrect() {
 }
 
 /**
- * Sets the user's total number of incorrect responses by cell type.
+ * Sets the user's total number of incorrect responses by Object type.
  * @return - a string representing the user's total number of incorrect 
- *           responses by cell type.
+ *           responses by Object type.
  */
 function setTotalIncorrectByType() {
     var totalIncorrectByTypeObject = {};
@@ -390,8 +409,8 @@ function setTotalIncorrectByType() {
 }
 
 /**
- * Sets the total number of questions for each cell type.
- * @return - a string representing the total number of images by cell type.
+ * Sets the total number of questions for each Object type.
+ * @return - a string representing the total number of images by Object type.
  */
 function setNumImagesByType() {
     var numImagesByTypeObject = {};
@@ -422,19 +441,19 @@ function writeResultsFile() {
     });
 }
 
-function fileContents(cellType) {
-    var percentageIncorrect = 100*totalIncorrectByType.get(cellType)/
-        numImagesByType.get(cellType);
+function fileContents(objectType) {
+    var percentageIncorrect = 100*totalIncorrectByType.get(objectType)/
+        numImagesByType.get(objectType);
     var percentageCorrect = (100 - Math.round(percentageIncorrect));
-    var globalMessage = "Cell Type " + cellType + ": " + 
-        totalIncorrectByType.get(cellType) + " out of " + 
-            numImagesByType.get(cellType) + " (" + percentageCorrect + "%)" + "\n";
+    var globalMessage = "object Type " + objectType + ": " + 
+        totalIncorrectByType.get(objectType) + " out of " + 
+            numImagesByType.get(objectType) + " (" + percentageCorrect + "%)" + "\n";
     var granularMessage = "Images Missed: ";
-    for (var i = 0; i < missedImagesByType.get(cellType).length; i++) {
+    for (var i = 0; i < missedImagesByType.get(objectType).length; i++) {
         if (i != 0) {
-            granularMessage += ", "
+            granularMessage += ", ";
         }
-        granularMessage += missedImagesByType.get(cellType)[i].substring(29,31);
+        granularMessage += missedImagesByType.get(objectType)[i].substring(29,31);
     }
     granularMessage += "\n";
     return globalMessage + granularMessage;
