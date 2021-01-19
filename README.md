@@ -1,3 +1,14 @@
-Node.js CTC test application.
-Link to application: https://vast-plateau-02992.herokuapp.com/ (this isn't the current version of the application)
-The current version of the app is being worked on in the edits branch and hasn't been pushed to heroku's servers.
+# CTC testing application 
+
+## Overview 
+Web based application that administers a CTC identification test.
+Note: This project hasn't been completed yet (go to edits branch for most up to date code).
+
+## Front End 
+HTML, CSS, JS
+
+## Backend
+Express/Node
+
+## Running this Project
+This application has the following url: https://vast-plateau-02992.herokuapp.com/
