@@ -1,17 +1,17 @@
 {
-    "totalIncorrect": 50
+    "totalIncorrect": 45
 }{
-    "numIncorrectTypeCTC": 19,
-    "numIncorrectTypeUnidentified Cell": 3,
-    "numIncorrectTypeFluorescent Artifact": 3,
-    "numIncorrectTypeCK/EpCAM Foci": 4,
-    "numIncorrectTypeWhite Blood Cell": 6,
-    "numIncorrectTypeApoptotic CTC": 15
+    "CTC": 17,
+    "Unidentified Cell": 2,
+    "Fluorescent Artifact": 3,
+    "CK/EpCAM Foci": 4,
+    "White Blood Cell": 6,
+    "Apoptotic CTC": 13
 }{
-    "totalNumTypeCTC": 19,
-    "totalNumTypeUnidentified Cell": 3,
-    "totalNumTypeFluorescent Artifact": 3,
-    "totalNumTypeCK/EpCAM Foci": 4,
-    "totalNumTypeWhite Blood Cell": 6,
-    "totalNumTypeApoptotic CTC": 15
+    "CTC": 19,
+    "Unidentified Cell": 3,
+    "Fluorescent Artifact": 3,
+    "CK/EpCAM Foci": 4,
+    "White Blood Cell": 6,
+    "Apoptotic CTC": 15
 }

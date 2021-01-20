@@ -401,8 +401,7 @@ function setTotalIncorrectByType() {
     for (var i = 0; i < totalIncorrectByTypeKeys.length; i++) {
         var thisTypeTotalIncorrect = 
             totalIncorrectByType.get(totalIncorrectByTypeKeys[i]);
-        totalIncorrectByTypeObject["numIncorrectType" + 
-            totalIncorrectByTypeKeys[i] + ""] = thisTypeTotalIncorrect;
+        totalIncorrectByTypeObject[totalIncorrectByTypeKeys[i]] = thisTypeTotalIncorrect;
         totalIncorrect += thisTypeTotalIncorrect;
     }
     return JSON.stringify(totalIncorrectByTypeObject,null,4);
@@ -417,7 +416,7 @@ function setNumImagesByType() {
     var numImagesByTypeKeys = Array.from(numImagesByType.keys());
     for (var i = 0; i < numImagesByTypeKeys.length; i++) {
         var thisNumImagesByType = numImagesByType.get(numImagesByTypeKeys[i]);
-        numImagesByTypeObject["totalNumType" + numImagesByTypeKeys[i] + ""] = 
+        numImagesByTypeObject[numImagesByTypeKeys[i]] = 
             thisNumImagesByType;
     }
     return JSON.stringify(numImagesByTypeObject,null,4);

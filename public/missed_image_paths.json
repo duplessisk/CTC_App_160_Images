@@ -1,6 +1,4 @@
 {
-    "CTC": "/static/object_answers/object00answer.PNG"
-}{
     "CTC": "/static/object_answers/object13answer.PNG"
 }{
     "CTC": "/static/object_answers/object14answer.PNG"
@@ -8,8 +6,6 @@
     "CTC": "/static/object_answers/object16answer.PNG"
 }{
     "CTC": "/static/object_answers/object19answer.PNG"
-}{
-    "CTC": "/static/object_answers/object20answer.PNG"
 }{
     "CTC": "/static/object_answers/object22answer.PNG"
 }{
@@ -40,8 +36,6 @@
     "Unidentified Cell": "/static/object_answers/object01answer.PNG"
 }{
     "Unidentified Cell": "/static/object_answers/object02answer.PNG"
-}{
-    "Unidentified Cell": "/static/object_answers/object10answer.PNG"
 }{
     "Fluorescent Artifact": "/static/object_answers/object03answer.PNG"
 }{
@@ -85,13 +79,9 @@
 }{
     "Apoptotic CTC": "/static/object_answers/object27answer.PNG"
 }{
-    "Apoptotic CTC": "/static/object_answers/object30answer.PNG"
-}{
     "Apoptotic CTC": "/static/object_answers/object31answer.PNG"
 }{
     "Apoptotic CTC": "/static/object_answers/object36answer.PNG"
-}{
-    "Apoptotic CTC": "/static/object_answers/object40answer.PNG"
 }{
     "Apoptotic CTC": "/static/object_answers/object41answer.PNG"
 }{
