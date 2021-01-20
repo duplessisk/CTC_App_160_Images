@@ -10,9 +10,10 @@ for (var i = 0; i < rows.length; i++) {
 
 objectInfo = objectInfo.splice(1,objectInfo.length - 2);
 
-// cellTypes = [ [], [], [], [], [] ];
 objectTypes = [];
 answerKeys = [ [], [], [], [], [] ];
+
+console.log("im in");
 
 //      page:   1    2    3    4    5
 answerKeys = [ [] , [] , [] , [] , [] ];
