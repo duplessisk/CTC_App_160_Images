@@ -291,7 +291,7 @@ function createBtns() {
         showTypeBtn.innerHTML = "Show Missed";
         showTypeBtn.id = "showType" + i + "Btn";
         showTypeBtn.className = "show-type-btn";
-        document.querySelector("#showType" + i + "BtnDiv")
+        document.querySelector("#showType"+ i + "BtnDiv")
             .appendChild(showTypeBtn);
 
         var showAllTypeBtnDiv = document.createElement('span');

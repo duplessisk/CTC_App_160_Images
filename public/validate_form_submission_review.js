@@ -40,6 +40,7 @@ if (pageOneHasNull == "true" || pageTwoHasNull == "true" ||
     pageThreeHasNull == "true" || pageFourHasNull == "true" || pageFiveHasNull == "true") {
     var skippedPages = document.createElement('p');
     skippedPages.innerHTML = "You didn't answer questions on the following page(s): ";
+    skippedPages.className = "review-page-messages";
     document.querySelector("#reviewMessageResultsDiv").appendChild(skippedPages);
     document.querySelector('#reviewMessageResultsDiv').appendChild(initBuffer);
 }
