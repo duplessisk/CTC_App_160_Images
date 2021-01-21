@@ -433,8 +433,11 @@ function writeResultsFile() {
                 function(){});
         }
         var time = new Date();
-        // time.setUTCHours(time.getUTCHours() - 8);
-        time.setUTCHours(time.getUTCHours());
+        if (time.getHours >= 12) {
+            time.setUTCHours(time.getUTCHours() - 8);
+        } else {
+            time.setUTCHours(time.getUTCHours());
+        }
         fs.appendFileSync("./final_results.txt", "\n" + "Time Stamp: " 
                           + (time.toLocaleString()), function(){});
     });
