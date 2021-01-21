@@ -14,9 +14,12 @@ bufferDiv.id = "bufferDiv";
 document.body.appendChild(bufferDiv);
 
 // create results DIV for each different cell type  
-var objectTypes = ["CTC","Unidentified Cell","Fluorescent Artifact",
+var objTypes = ["CTC","Unidentified Cell","Fluorescent Artifact",
     "CK/EpCAM Foci","White Blood Cell","Apoptotic CTC"];
-for (var i = 0; i < 6; i++) {
+
+var numObjTypes = objTypes.length;
+
+for (var i = 0; i < objTypes.length; i++) {
     // typeHeader DIVs
     typeHeaderDiv = document.createElement('div');
     typeHeaderDiv.className = "header-divs"
@@ -29,12 +32,12 @@ for (var i = 0; i < 6; i++) {
     document.body.appendChild(typeResultsDiv);
     // typeLabel
     var typeLabel = document.createElement('p');
-    typeLabel.innerHTML = objectTypes[i] + " Results";
+    typeLabel.innerHTML = objTypes[i] + " Results";
     typeLabel.className = "label-types";
     document.getElementById("type"+ i +"HeaderDiv")
         .appendChild(typeLabel);
     // line breaks
-    if (i < 5) {
+    if (i < numObjTypes - 1) {
         var lineBreaks = document.createElement('hr');
         lineBreaks.className = "line-breaks";
         document.body.append(lineBreaks);
@@ -77,7 +80,7 @@ var totalNumTypesMap = new Map();
 
 /**
  * Returns an array containing the data from the specified JSON file
- * @param {Promise} incorrectTypeBlocks - Promise object that needs to be 
+ * @param {Promise} incorrectTypeBlocks - Promise obj that needs to be 
  *                                        parsed in order to obtain data
  */
 function setImagePaths(imagePathsText, typesMap) {
@@ -110,18 +113,21 @@ function filterString(imagePathsText) {
  * @param {String} imagePathsString - String containing all missed image paths.
  */
 function setTypesMap(imagePathsString, typesMap) {
-    var jsonObjectArr = imagePathsString.split("}");
-    for (var i = 0; i < jsonObjectArr.length; i++) {
-        var jsonObjectSubArr = jsonObjectArr[i].split(":");
-        var thisCellType = jsonObjectSubArr[0].replaceAll('"','');
-        thisCellType = thisCellType.replaceAll(' ','');
-        thisCellType = thisCellType.replace('\n','');
-        var imagePath = jsonObjectSubArr[1].replaceAll('"','');
-        if (typesMap.has(thisCellType)) {
-            typesMap.get(thisCellType).push(imagePath);
-        } else {
-            typesMap.set(thisCellType, new Array(imagePath)); 
-        }    
+    var jsonObjArr = imagePathsString.split("}");
+    // execute if block IF user missed one or more images
+    if (jsonObjArr[0].length != 0) { 
+        for (var i = 0; i < jsonObjArr.length; i++) {
+            var jsonObjSubArr = jsonObjArr[i].split(":");
+            var thisCellType = jsonObjSubArr[0].replaceAll('"','');
+            thisCellType = thisCellType.replaceAll(' ','');
+            thisCellType = thisCellType.replace('\n','');
+            var imagePath = jsonObjSubArr[1].replaceAll('"','');
+            if (typesMap.has(thisCellType)) {
+                typesMap.get(thisCellType).push(imagePath);
+            } else {
+                typesMap.set(thisCellType, new Array(imagePath)); 
+            }    
+        }
     }
 }
 
@@ -184,9 +190,9 @@ function setTotalNumIncorrect(totalNumIncorrectString) {
  * @param {Array} incorrectTypeArr - Contains the paths of all incorrectly 
  *                                   answered images based on cell type
  */
-function addImagesToDom(objectNum, typesMap, imageType) {
-    var objectType = objectTypes[objectNum].replaceAll(' ','');
-    var imagePaths = typesMap.get(objectType);
+function addImagesToDom(objNum, typesMap, imageType) {
+    var objType = objTypes[objNum].replaceAll(' ','');
+    var imagePaths = typesMap.get(objType);
 
     if (imagePaths != undefined) { // avoid getting length of empty imagePaths
         for (var i = 0; i < imagePaths.length; i++) {
@@ -208,9 +214,9 @@ function addImagesToDom(objectNum, typesMap, imageType) {
             } else {
                 messageDiv.innerHTML = "Image  " + imageNum;
             }
-            document.querySelector("#type" + objectNum + "ResultDiv")
+            document.querySelector("#type" + objNum + "ResultDiv")
                 .appendChild(messageDiv);
-            document.querySelector("#type" + objectNum + "ResultDiv")
+            document.querySelector("#type" + objNum + "ResultDiv")
                 .appendChild(newImg);
         }
     }
@@ -231,7 +237,7 @@ function setResults() {
     var totalNumQuestions = 0;
     var incorrectNumTypesMapKeys = Array.from(incorrectNumTypesMap.keys());
     var totalNumTypesMapKeys = Array.from(totalNumTypesMap.keys());
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < numObjTypes; i++) {
         var dataMessageDiv = document.createElement('div');
         dataMessageDiv.className = "data-messages";
         var incorrectNumThisTypeValue = incorrectNumTypesMap
@@ -267,7 +273,7 @@ function setResults() {
  * Creates button elements and adds them to the DOM
  */
 function createButtons() {
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < numObjTypes; i++) {
         var typeButtonDiv = document.createElement('span');
         typeButtonDiv.className = "type-button-divs";
         typeButtonDiv.id = "type" + i + "ButtonDiv";
@@ -309,61 +315,61 @@ var showAllButtonsClicked = [true,true,true,true,true,true];
  * code allowing for the dynamic content of these buttons.
  */
 function querySelectButtons() {
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < numObjTypes; i++) {
         document.querySelectorAll(".show-type-button")[i]
             .addEventListener('click', function() {
-            var objectNum = Number(this.id.charAt(4));
-            var clicked = showButtonsClicked[objectNum];
+            var objNum = Number(this.id.charAt(4));
+            var clicked = showButtonsClicked[objNum];
             // show images for show button
             if (clicked) {
-                document.getElementById("type"+objectNum+"Button")
+                document.getElementById("type"+objNum+"Button")
                     .innerHTML = "Hide Missed";
-                if (document.getElementById("showAllType"+objectNum+"Button")
+                if (document.getElementById("showAllType"+objNum+"Button")
                         .innerHTML == "Hide All") {
-                    document.getElementById("showAllType"+objectNum+"Button").
+                    document.getElementById("showAllType"+objNum+"Button").
                         innerHTML = "Show All";
-                    document.querySelector("#type"+objectNum+"ResultDiv")
+                    document.querySelector("#type"+objNum+"ResultDiv")
                         .innerHTML = '';
-                    showAllButtonsClicked[objectNum] = true;
+                    showAllButtonsClicked[objNum] = true;
                 }
-                showButtonsClicked[objectNum] = false;
-                addImagesToDom(objectNum, missedTypesMap, "missed");
+                showButtonsClicked[objNum] = false;
+                addImagesToDom(objNum, missedTypesMap, "missed");
             } else { // hide images for show button
-                document.getElementById("type"+objectNum+"Button")
+                document.getElementById("type"+objNum+"Button")
                     .innerHTML = "Show Missed";
-                document.querySelector("#type"+objectNum+"ResultDiv")
+                document.querySelector("#type"+objNum+"ResultDiv")
                     .innerHTML = '';
-                    showButtonsClicked[objectNum] = true;
+                    showButtonsClicked[objNum] = true;
             }
         });
     }
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < objTypesLen; i++) {
         document.querySelectorAll(".show-all-type-button")[i]
             .addEventListener('click', function() {
-            var objectNum = Number(this.id.charAt(11));
-            var clicked = showAllButtonsClicked[objectNum];
+            var objNum = Number(this.id.charAt(11));
+            var clicked = showAllButtonsClicked[objNum];
             // show images for show all button
             if (clicked) { 
-                document.getElementById("showAllType"+objectNum+"Button")
+                document.getElementById("showAllType"+objNum+"Button")
                     .innerHTML = "Hide All";
-                showAllButtonsClicked[objectNum] = false;
+                showAllButtonsClicked[objNum] = false;
                 // hide images for show button
-                if (document.getElementById("type"+objectNum+"Button")
+                if (document.getElementById("type"+objNum+"Button")
                     .innerHTML == "Hide Missed") {
-                    document.getElementById("type"+objectNum+"Button")
+                    document.getElementById("type"+objNum+"Button")
                         .innerHTML = "Show Missed";
-                    document.querySelector("#type"+objectNum+"ResultDiv")
+                    document.querySelector("#type"+objNum+"ResultDiv")
                         .innerHTML = '';
-                    showButtonsClicked[objectNum] = true;
+                    showButtonsClicked[objNum] = true;
                 }
-                showButtonsClicked[objectNum] = true;
-                addImagesToDom(objectNum, allTypesMap, "all");
+                showButtonsClicked[objNum] = true;
+                addImagesToDom(objNum, allTypesMap, "all");
             } else { // hide images for show all button
-                document.getElementById("showAllType"+objectNum+"Button")
+                document.getElementById("showAllType"+objNum+"Button")
                     .innerHTML = "Show All";
-                document.querySelector("#type"+objectNum+"ResultDiv")
+                document.querySelector("#type"+objNum+"ResultDiv")
                     .innerHTML = '';
-                showAllButtonsClicked[objectNum] = true;
+                showAllButtonsClicked[objNum] = true;
             }
         });
     }

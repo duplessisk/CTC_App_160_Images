@@ -13,12 +13,10 @@ objectInfo = objectInfo.splice(1,objectInfo.length - 2);
 objectTypes = [];
 answerKeys = [ [], [], [], [], [] ];
 
-console.log("im in");
-
 //      page:   1    2    3    4    5
 answerKeys = [ [] , [] , [] , [] , [] ];
 for (var i = 0; i < objectInfo.length; i++) {
-    answerKeys[Math.floor(i/10)].push(objectInfo[i][2] == "Cell");
+    answerKeys[Math.floor(i/10)].push(objectInfo[i][3] == "Cell");
     objectTypes.push(objectInfo[i][4]);
 }
 
