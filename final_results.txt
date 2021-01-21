@@ -4,8 +4,8 @@ Company: Rarecyte
 
 Number Correct: 
 
-object Type CTC: 9 out of 19 (53%)
-Images Missed: 13, 19, 29, 33, 35, 37, 39, 43, 45
+object Type CTC: 19 out of 19 (0%)
+Images Missed: 00, 13, 14, 16, 19, 20, 22, 24, 28, 29, 32, 33, 34, 35, 37, 38, 39, 43, 45
 
 object Type Unidentified Cell: 3 out of 3 (0%)
 Images Missed: 01, 02, 10
@@ -22,4 +22,4 @@ Images Missed: 09, 25, 46, 47, 48, 49
 object Type Apoptotic CTC: 15 out of 15 (0%)
 Images Missed: 11, 15, 17, 18, 21, 23, 26, 27, 30, 31, 36, 40, 41, 42, 44
 
-Time Stamp: 1/20/2021, 10:18:46 AM
+Time Stamp: 1/20/2021, 11:25:18 AM
