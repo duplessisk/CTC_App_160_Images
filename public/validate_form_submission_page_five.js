@@ -1,4 +1,4 @@
-var allCheckBoxes = document.querySelectorAll('.default-radio-buttons');
+var allCheckBoxes = document.querySelectorAll('.default-radio-btns');
 var yesCheckBoxes = document.querySelectorAll('.yes_check_boxes');
 var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 
@@ -47,7 +47,7 @@ for (var i = 0; i < noCheckBoxes.length; i++) {
     });
 }
 
-document.querySelector('#previousButton').addEventListener('click', function() {
+document.querySelector('#previousBtn').addEventListener('click', function() {
     userResponsesLocal = "";
     localStorage.setItem('pageFiveAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
@@ -62,7 +62,7 @@ document.querySelector('#previousButton').addEventListener('click', function() {
     localStorage.setItem('pageFiveSaved', userResponsesLocal);
 });
 
-document.querySelector('#continueButton').addEventListener('click', function() {
+document.querySelector('#continueBtn').addEventListener('click', function() {
     userResponsesLocal = "";
     localStorage.setItem('pageFiveAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {

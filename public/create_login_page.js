@@ -1,24 +1,24 @@
-var resetLoginButtonDiv = document.createElement('div');
-resetLoginButtonDiv.id = "resetLoginButtonDiv";
-document.querySelector("#form").appendChild(resetLoginButtonDiv);
+var resetLoginBtnDiv = document.createElement('div');
+resetLoginBtnDiv.id = "resetLoginBtnDiv";
+document.querySelector("#form").appendChild(resetLoginBtnDiv);
 
-var resetLoginButton = document.createElement('input');
-resetLoginButton.type = "reset";
-resetLoginButton.className = "button";
-resetLoginButton.id = "resetLoginButton";
-resetLoginButton.name = "button";
-resetLoginButton.value = "Reset";
-document.querySelector("#resetLoginButtonDiv").appendChild(resetLoginButton);
+var resetLoginBtn = document.createElement('input');
+resetLoginBtn.type = "reset";
+resetLoginBtn.className = "btn";
+resetLoginBtn.id = "resetLoginBtn";
+resetLoginBtn.name = "btn";
+resetLoginBtn.value = "Reset";
+document.querySelector("#resetLoginBtnDiv").appendChild(resetLoginBtn);
 
-var submitLoginButtonDiv = document.createElement('div');
-submitLoginButtonDiv.id = "submitLoginButtonDiv";
-submitLoginButtonDiv.className = "right-button-div"
-document.querySelector("#form").appendChild(submitLoginButtonDiv);
+var submitLoginBtnDiv = document.createElement('div');
+submitLoginBtnDiv.id = "submitLoginBtnDiv";
+submitLoginBtnDiv.className = "right-btn-div"
+document.querySelector("#form").appendChild(submitLoginBtnDiv);
 
-var submitLoginButton = document.createElement('input');
-submitLoginButton.type = "submit";
-submitLoginButton.className = "button";
-submitLoginButton.id = "submitLoginButton";
-submitLoginButton.name = "button";
-submitLoginButton.value = "Submit";
-document.querySelector("#submitLoginButtonDiv").appendChild(submitLoginButton);
+var submitLoginBtn = document.createElement('input');
+submitLoginBtn.type = "submit";
+submitLoginBtn.className = "btn";
+submitLoginBtn.id = "submitLoginBtn";
+submitLoginBtn.name = "btn";
+submitLoginBtn.value = "Submit";
+document.querySelector("#submitLoginBtnDiv").appendChild(submitLoginBtn);

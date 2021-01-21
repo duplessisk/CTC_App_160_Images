@@ -66,13 +66,13 @@ app.get("/page_two", function(request,response) {
 });
 
 app.post("/page_two", function(request,response) {
-    var buttonClicked = request.body.button;
+    var btnClicked = request.body.btn;
     missedImagesByPage[1] = [];
     answerKeyPageTwo = answerKeys.answerKeys[1];
     driveApp(answerKeyPageTwo,request,2);
-    if (buttonClicked == "Previous") {
+    if (btnClicked == "Previous") {
         response.redirect('/page_one');
-    } else if (buttonClicked == "Next") {
+    } else if (btnClicked == "Next") {
         response.redirect('/page_three');
     }
 });
@@ -82,13 +82,13 @@ app.get("/page_three", function(request,response) {
 });
 
 app.post("/page_three", function(request,response) {
-    var buttonClicked = request.body.button;
+    var btnClicked = request.body.btn;
     missedImagesByPage[2] = [];
     answerKeyPageThree = answerKeys.answerKeys[2];
     driveApp(answerKeyPageThree,request,3);
-    if (buttonClicked == "Previous") {
+    if (btnClicked == "Previous") {
         response.redirect('/page_two');
-    } else if (buttonClicked == "Next") {
+    } else if (btnClicked == "Next") {
         response.redirect('/page_four');
     }
 });
@@ -98,13 +98,13 @@ app.get("/page_four", function(request,response) {
 });
 
 app.post("/page_four", function(request,response) {
-    var buttonClicked = request.body.button;
+    var btnClicked = request.body.btn;
     missedImagesByPage[3] = [];
     answerKeyPageFour = answerKeys.answerKeys[3];
     driveApp(answerKeyPageFour,request,4);
-    if (buttonClicked == "Previous") {
+    if (btnClicked == "Previous") {
         response.redirect('/page_three');
-    } else if (buttonClicked == "Next") {
+    } else if (btnClicked == "Next") {
         response.redirect('/page_five');
     }
 });
@@ -114,13 +114,13 @@ app.get("/page_five", function(request,response) {
 });
 
 app.post("/page_five", function(request,response) {
-    var buttonClicked = request.body.button;
+    var btnClicked = request.body.btn;
     missedImagesByPage[4] = [];
     answerKeyPageFive = answerKeys.answerKeys[4];
     driveApp(answerKeyPageFive,request,5);
-    if (buttonClicked == "Previous") {
+    if (btnClicked == "Previous") {
         response.redirect('/page_four');
-    } else if (buttonClicked == "Continue") {
+    } else if (btnClicked == "Continue") {
         response.redirect('/review');
     }
 });
@@ -133,8 +133,8 @@ app.post("/review", function(request,response) {
     if (previouslySubmitted) {
         response.redirect('/form_already_submitted_page');
     } else {
-        var buttonClicked = request.body.button;
-        if (buttonClicked == "Previous") {
+        var btnClicked = request.body.btn;
+        if (btnClicked == "Previous") {
             response.redirect('/page_five');
         } else {
             previouslySubmitted = true;
@@ -143,7 +143,7 @@ app.post("/review", function(request,response) {
             postMissedImagePaths();
             postResultsData();
             writeResultsFile();
-            // sendEmailWithResults();
+            sendEmailWithResults();
             response.redirect('/results');
         }
     }
@@ -426,7 +426,7 @@ function writeResultsFile() {
     fs.writeFile("./final_results.txt", "Test Taker: " + firstName + " " + 
         lastName + "\n" + "\n" + "Company: " + company + "\n" + "\n", 
             function() {
-        fs.appendFileSync("./final_results.txt", "Number Correct: " + "\n", 
+        fs.appendFileSync("./final_results.txt", "Breakdown: " + "\n", 
         function() {});
         var keys = Array.from(totalIncorrectByType.keys());
         for (var i = 0; i < keys.length; i++) {
@@ -434,9 +434,10 @@ function writeResultsFile() {
                 function(){});
         }
         var time = new Date();
-        time.setUTCHours(time.getUTCHours() - 8);
+        // time.setUTCHours(time.getUTCHours() - 8);
+        time.setUTCHours(time.getUTCHours());
         fs.appendFileSync("./final_results.txt", "\n" + "Time Stamp: " 
-                          + time.toLocaleString(), function(){});
+                          + (time.toLocaleString()), function(){});
     });
 }
 
@@ -444,7 +445,7 @@ function fileContents(objectType) {
     var percentageIncorrect = 100*totalIncorrectByType.get(objectType)/
         numImagesByType.get(objectType);
     var percentageCorrect = (100 - Math.round(percentageIncorrect));
-    var globalMessage = "object Type " + objectType + ": " + 
+    var globalMessage = "object Type " + objectType + ": Missed " + 
         totalIncorrectByType.get(objectType) + " out of " + 
             numImagesByType.get(objectType) + " (" + percentageCorrect + "%)" + "\n";
     var granularMessage = "Images Missed: ";
@@ -470,7 +471,7 @@ function sendEmailWithResults() {
     let mailOptions = {
         from: 'klduplessis@gmail.com',
         to: 'klduplessis@gmail.com',
-        subject: 'yep!',
+        subject: 'CTC Test Results',
         text: 'It works',
         attachments: [{
             filename: 'final_results.txt',

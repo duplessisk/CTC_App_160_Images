@@ -1,24 +1,24 @@
-var previousButtonReviewPageDiv = document.createElement('div');
-previousButtonReviewPageDiv.id = "previousButtonReviewPageDiv";
-document.querySelector("#form").appendChild(previousButtonReviewPageDiv);
+var previousBtnReviewPageDiv = document.createElement('div');
+previousBtnReviewPageDiv.id = "previousBtnReviewPageDiv";
+document.querySelector("#form").appendChild(previousBtnReviewPageDiv);
 
-var previousButtonReviewPage = document.createElement('input');
-previousButtonReviewPage.type = "submit";
-previousButtonReviewPage.className = "button";
-previousButtonReviewPage.id = "previousButtonReviewPage";
-previousButtonReviewPage.name = "button";
-previousButtonReviewPage.value = "Previous";
-document.querySelector("#previousButtonReviewPageDiv").appendChild(previousButtonReviewPage);
+var previousBtnReviewPage = document.createElement('input');
+previousBtnReviewPage.type = "submit";
+previousBtnReviewPage.className = "btn";
+previousBtnReviewPage.id = "previousBtnReviewPage";
+previousBtnReviewPage.name = "btn";
+previousBtnReviewPage.value = "Previous";
+document.querySelector("#previousBtnReviewPageDiv").appendChild(previousBtnReviewPage);
 
-var submitButtonReviewPageDiv = document.createElement('div');
-submitButtonReviewPageDiv.id = "submitButtonReviewPageDiv";
-submitButtonReviewPageDiv.className = "right-button";
-document.querySelector("#form").appendChild(submitButtonReviewPageDiv);
+var submitBtnReviewPageDiv = document.createElement('div');
+submitBtnReviewPageDiv.id = "submitBtnReviewPageDiv";
+submitBtnReviewPageDiv.className = "right-btn";
+document.querySelector("#form").appendChild(submitBtnReviewPageDiv);
 
-var submitButtonReviewPage = document.createElement('input');
-submitButtonReviewPage.type = "submit";
-submitButtonReviewPage.className = "button";
-submitButtonReviewPage.id = "submitButtonReviewPage";
-submitButtonReviewPage.name = "button";
-submitButtonReviewPage.value = "Submit";
-document.querySelector("#submitButtonReviewPageDiv").appendChild(submitButtonReviewPage);
+var submitBtnReviewPage = document.createElement('input');
+submitBtnReviewPage.type = "submit";
+submitBtnReviewPage.className = "btn";
+submitBtnReviewPage.id = "submitBtnReviewPage";
+submitBtnReviewPage.name = "btn";
+submitBtnReviewPage.value = "Submit";
+document.querySelector("#submitBtnReviewPageDiv").appendChild(submitBtnReviewPage);

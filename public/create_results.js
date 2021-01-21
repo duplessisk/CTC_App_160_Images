@@ -260,14 +260,14 @@ function setResults() {
             dataMessageDiv.innerHTML = "You missed no images (100%)";
         } else if (incorrectNumThisTypeValue == 1) {
             dataMessageDiv.innerHTML = "You missed " + 
-                incorrectNumThisTypeValue + " image (" +
-                    Math.round((100 - 100*incorrectNumThisTypeValue/totalNumThisTypeValue)) 
+                incorrectNumThisTypeValue + " (out of " + totalNumThisTypeValue + ")"
+                + " image (" + Math.round((100 - 100*incorrectNumThisTypeValue/totalNumThisTypeValue)) 
                         +"%)";
         } else {
-            dataMessageDiv.innerHTML = "You missed " +
-                incorrectNumThisTypeValue + " images (" +
-                    Math.round((100 - 100*incorrectNumThisTypeValue/totalNumThisTypeValue))
-                        + "%)";
+            dataMessageDiv.innerHTML = "You missed " + 
+                incorrectNumThisTypeValue + " (out of " + totalNumThisTypeValue + ")"
+                + " images (" + Math.round((100 - 100*incorrectNumThisTypeValue/totalNumThisTypeValue)) 
+                        +"%)";
             }
         document.querySelector("#type" + i + "HeaderDiv")
             .appendChild(dataMessageDiv);

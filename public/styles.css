@@ -110,7 +110,7 @@ body {
     font-size: 1.25vw;
 }
 
-/*****Radio Button Styling*****/
+/*****Radio Btn Styling*****/
 
 .radio-btn-labels {
     cursor: pointer;
@@ -152,7 +152,7 @@ body {
 }
 
 
-/*****Page Button Styling*****/
+/*****Page Btn Styling*****/
 
 .btn {
     cursor: pointer;
@@ -180,14 +180,14 @@ body {
 }
 
 /* welcome page */
-#beginButton {
+#beginBtn {
     margin-top: 5%;
     margin-left: 50.5%;
 }
 
 
 /* login page */
-#resetLoginButtonDiv {
+#resetLoginBtnDiv {
     margin-left: 36.75%;
 }
 
@@ -195,7 +195,7 @@ body {
     margin-left: 1%;
 }
 
-#resetLoginButtonDiv, #submitLoginButtonDiv {
+#resetLoginBtnDiv, #submitLoginBtnDiv {
     margin-top: 2%;
     margin-bottom: 5%;
     display: inline-block;
@@ -203,53 +203,53 @@ body {
 
 
 /* page 1 */
-#nextButton {
+#nextBtn {
     margin-bottom: 1%;
     margin-left: 52.2%;
 }
 
 
 /* pages 2-4 */
-#previousButtonDiv, #nextButtonDiv {
+#previousBtnDiv, #nextBtnDiv {
     display: inline-block;
 }
 
-#previousButton {
+#previousBtn {
     font-size: 1.4vw;
 }
 
-#previousButtonDiv {
+#previousBtnDiv {
     margin-left: 43.5%;
 }
 
 
 /* page 5 */
-#continueButton {
+#continueBtn {
     font-size: 1.4vw;
 }
-#continueButtonDiv, #previousButtonDiv {
+#continueBtnDiv, #previousBtnDiv {
     display: inline-block;
 }
 
 
 /* review page */
-#previousButtonDiv, #submitButtonDiv {
+#previousBtnDiv, #submitBtnDiv {
     margin-top: 4%;
     margin-bottom: 5%;
     display: inline-block;
 }
 
-#previousButtonReviewPageDiv {
+#previousBtnReviewPageDiv {
     margin-left: 39.25%;
 }
 
-#submitButtonReviewPageDiv, #previousButtonReviewPageDiv {
+#submitBtnReviewPageDiv, #previousBtnReviewPageDiv {
     margin-top: 4%;
     margin-bottom: 5%;
     display: inline-block;
 }
 
-#submitButton {
+#submitBtn {
     font-size: 1.4vw;
 }
 
