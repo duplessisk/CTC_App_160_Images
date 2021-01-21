@@ -4,7 +4,6 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const answerKeys = require("./object_types");
 const objectTypes = require("./object_types");
-const { stringify } = require("querystring");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
@@ -16,7 +15,7 @@ app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 var previouslySubmitted = false;
-
+ 
 app.get("/", function(request,response) {
     previouslySubmitted = false;
     response.sendFile(path.join(__dirname + '/welcome_page.html'));
