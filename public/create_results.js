@@ -69,11 +69,12 @@ async function main() {
 
     setResults();
     createBtns();
-    // init showBtns
+
+    // init showBtns functionality
     querySelectBtns(".show-type-btn", "showType", "Show Missed", "Hide Missed", 
                     "showAllType", "Show All", "Hide All", 8, showBtnsClicked,
                      showAllBtnsClicked, missedTypesMap, "missed");
-    // init showAllBtns
+    // init showAllBtns functionaily
     querySelectBtns(".show-all-type-btn", "showAllType", "Show All", "Hide All", 
                     "showType", "Show Missed", "Hide Missed", 11, showAllBtnsClicked,
                     showBtnsClicked, allTypesMap, "all");
@@ -320,6 +321,28 @@ var showAllBtnsClicked = [true,true,true,true,true,true];
 /**
  * Adds an event listener to all of the show and show all btns. Contains 
  * code allowing for the dynamic content of these btns.
+ * @param {String} thisBtnClass - this button's class.
+ * @param {String} thisBtnId - this button's id.
+ * @param {String} thisShowMsg - message button shows when it's not activated
+ * @param {String} thisHideMsg - message button shows when it's activated
+ * @param {String} otherBtnId - other button's id (e.g. if button is show
+ *                              missed button, opposite button is the show 
+ *                              all button).
+ * @param {String} otherShowMsg - message that other button shows when activated
+ * @param {String} otherHideMsg -  message that other button shows when 
+ *                                 deactivated
+ * @param {Number} thisIdIndex - index providing the button's id num (the id
+ *                               num is a number 1-6 and was assigned when 
+ *                               button was created to differentiate between 
+ *                               the 6 buttons of each class). 
+ * @param {Array} thisBtnsClicked - Keeps track of whether the button is 
+ *                                  activated (show or hide mode) or not.
+ * @param {*} otherBtnsClicked - Keeps track of whether the other button is 
+ *                               is activated (show or hide mode) or not.
+ * @param {Map} typesMap - map containing all the image paths (either missed 
+ *                       image or all image paths).
+ * @param {String} imgType - differentiates between the missedTypesMap and 
+ *                           allTypesMap. 
  */
 function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg, 
                          otherBtnId, otherShowMsg, otherHideMsg, thisIdIndex, 
@@ -327,7 +350,6 @@ function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg,
     for (var i = 0; i < numObjTypes; i++) {
         document.querySelectorAll(thisBtnClass)[i].addEventListener('click',
              function() {
-                // var objNum = Number(this.id.charAt(thisIdIndex));
                 var objNum = Number(this.id.charAt(thisIdIndex));
                 var clicked = thisBtnsClicked[objNum];
                 // show images for show btn
