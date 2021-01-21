@@ -1,12 +1,10 @@
-var allCheckBoxes = document.querySelectorAll('.default-radio-buttons');
+var allCheckBoxes = document.querySelectorAll('.default-radio-btns');
 var yesCheckBoxes = document.querySelectorAll('.yes_check_boxes');
 var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 
 var userResponses = [];
-console.log("cached answers: " + localStorage.getItem('pageThreeSaved'));
 
 if (localStorage.getItem('pageThreeAlreadyVisited') == null) {
-    console.log("page not visited before");
     for (var i = 0; i < 20; i++) {
         userResponses[i] = "null";
     }
@@ -24,7 +22,6 @@ if (localStorage.getItem('pageThreeAlreadyVisited') == null) {
 }
 
 for (var i = 0; i < userResponses.length; i++) {
-    console.log("userResponses: " + userResponses);
     if (userResponses[i] != "null" && userResponses[i]) {
         allCheckBoxes[i].checked = true
     } 
@@ -37,7 +34,6 @@ for (var i = 0; i < yesCheckBoxes.length; i++) {
             userResponses[2*idNum] = true;
             userResponses[2*idNum + 1] = false;
         }
-        console.log(userResponses);
     });
 }
 
@@ -48,11 +44,10 @@ for (var i = 0; i < noCheckBoxes.length; i++) {
             userResponses[2*idNum + 1] = true;
             userResponses[2*idNum] = false;
         }
-        console.log(userResponses);
     });
 }
 
-document.querySelector('#previousButton').addEventListener('click', function() {
+document.querySelector('#previousBtn').addEventListener('click', function() {
     userResponsesLocal = "";
     localStorage.setItem('pageThreeAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
@@ -67,7 +62,7 @@ document.querySelector('#previousButton').addEventListener('click', function() {
     localStorage.setItem('pageThreeSaved', userResponsesLocal);
 });
 
-document.querySelector('#nextButton').addEventListener('click', function() {
+document.querySelector('#nextBtn').addEventListener('click', function() {
     userResponsesLocal = "";
     localStorage.setItem('pageThreeAlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {

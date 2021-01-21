@@ -2,21 +2,24 @@ Test Taker: Kyle Duplessis
 
 Company: Rarecyte
 
-Number Correct: 
+Breakdown: 
 
-Cell Type A: 5 out of 10 (50%)
-Images Missed: 01, 03, 05, 07, 09
+object Type CTC: Missed 9 out of 19 (53%)
+Images Missed: 13, 19, 29, 33, 35, 37, 39, 43, 45
 
-Cell Type B: 5 out of 10 (50%)
-Images Missed: 11, 13, 15, 17, 19
+object Type Unidentified Cell: Missed 3 out of 3 (0%)
+Images Missed: 01, 02, 10
 
-Cell Type C: 5 out of 10 (50%)
-Images Missed: 21, 23, 25, 27, 29
+object Type Fluorescent Artifact: Missed 3 out of 3 (0%)
+Images Missed: 03, 06, 12
 
-Cell Type D: 5 out of 10 (50%)
-Images Missed: 31, 33, 35, 37, 39
+object Type CK/EpCAM Foci: Missed 4 out of 4 (0%)
+Images Missed: 04, 05, 07, 08
 
-Cell Type E: 5 out of 10 (50%)
-Images Missed: 41, 43, 45, 47, 49
+object Type White Blood Cell: Missed 6 out of 6 (0%)
+Images Missed: 09, 25, 46, 47, 48, 49
 
-Time Stamp: 1/18/2021, 5:52:34 AM
+object Type Apoptotic CTC: Missed 15 out of 15 (0%)
+Images Missed: 11, 15, 17, 18, 21, 23, 26, 27, 30, 31, 36, 40, 41, 42, 44
+
+Time Stamp: 1/21/2021, 7:37:57 AM
