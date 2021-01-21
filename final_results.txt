@@ -22,4 +22,4 @@ Images Missed: 09, 25, 46, 47, 48, 49
 object Type Apoptotic CTC: Missed 15 out of 15 (0%)
 Images Missed: 11, 15, 17, 18, 21, 23, 26, 27, 30, 31, 36, 40, 41, 42, 44
 
-Time Stamp: 1/21/2021, 11:22:47 AM
+Time Stamp: 1/21/2021, 11:42:59 AM
