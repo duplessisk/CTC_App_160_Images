@@ -343,9 +343,9 @@ a:visited {
     font: bold 1vw Arial;
     margin-left: 41.5%;
     width: 8vw;
+    padding-left: 0.5vw;
     white-space: nowrap;
     overflow: hidden;
-    /* width: 8%; */
 }
 
 .show-all-type-btn {
@@ -355,9 +355,9 @@ a:visited {
     font: bold 1vw Arial;
     margin-left: 1%;
     width: 8vw;
+    padding-left: 0.5vw;
     white-space: nowrap;
     overflow: hidden;
-    /* width: 8%; */
 }
 
 .header-divs {
