@@ -21,7 +21,7 @@ for (var i = 0; i < 10; i++) {
             "</div>" + 
                 "</div>" +
                 "<div class= 'cell-image-row-container'>" + 
-                    "<img src='/static/object_images/object1"+i+".PNG' alt='This image was originally intended to display a row of cell images' id='cellImage'>" + 
+                    "<img src='/static/object_images/object1"+i+".png' alt='This image was originally intended to display a row of cell images' id='cellImage'>" + 
                 "</div>" + 
             "</div>" + 
         "</div>"

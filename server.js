@@ -280,7 +280,7 @@ function setAllImagePaths() {
         for (var j = 0; j < 10; j++) {
             var imageNum = String(i) + String(j);
             var imagePath = '/static/object_answers/object' + imageNum 
-                + 'answer.PNG';
+                + 'answer.png';
             var thisObjectType = allObjectTypes[Number(imageNum)];
             if (allImagesByType.has(thisObjectType)) {
                 allImagesByType.get(thisObjectType).push(imagePath);
@@ -335,7 +335,7 @@ function setMissedImagesByType() {
         for (var j = 0; j < missedImagesByPage[i].length; j++) {
             var imageNum = missedImagesByPage[i][j];
             var imagePath = '/static/object_answers/object' + imageNum + 
-                'answer.PNG';
+                'answer.png';
             var thisObjectType = getThisObjectType(imageNum);
             missedImagesByType.get(thisObjectType).push(imagePath);
             totalIncorrectByType.set(thisObjectType, 
