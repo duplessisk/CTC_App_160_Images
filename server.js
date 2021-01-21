@@ -129,9 +129,9 @@ app.get("/review", function(request,response) {
 });
 
 app.post("/review", function(request,response) {
-    if (previouslySubmitted) {
-        response.redirect('/form_already_submitted_page');
-    } else {
+    // if (previouslySubmitted) {
+    //     response.redirect('/form_already_submitted_page');
+    // } else {
         var btnClicked = request.body.btn;
         if (btnClicked == "Previous") {
             response.redirect('/page_five');
@@ -145,7 +145,7 @@ app.post("/review", function(request,response) {
             sendEmailWithResults();
             response.redirect('/results');
         }
-    }
+    // }
 });
 
 app.get("/results", function(request,response) {
