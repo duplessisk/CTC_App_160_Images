@@ -337,7 +337,7 @@ var showAllBtnsClicked = [true,true,true,true,true,true];
  *                               the 6 buttons of each class). 
  * @param {Array} thisBtnsClicked - Keeps track of whether the button is 
  *                                  activated (show or hide mode) or not.
- * @param {*} otherBtnsClicked - Keeps track of whether the other button is 
+ * @param {Array} otherBtnsClicked - Keeps track of whether the other button is 
  *                               is activated (show or hide mode) or not.
  * @param {Map} typesMap - map containing all the image paths (either missed 
  *                       image or all image paths).
