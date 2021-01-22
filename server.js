@@ -19,7 +19,7 @@ app.use(session({
 }));  
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
-
+// in main
 var previouslySubmitted = false;
  
 app.get("/", function(request,response) {
@@ -136,7 +136,7 @@ app.get("/review", function(request,response) {
 });
 
 app.post("/review", function(request,response) {
-    if (false) {
+    if (previouslySubmitted) {
         response.redirect('/form_already_submitted_page');
     } else {
         var btnClicked = request.body.btn;
