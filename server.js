@@ -1,5 +1,4 @@
 const express = require("express");
-const session = require('express-session');
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
@@ -12,11 +11,6 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-app.use(session({
-    'secret': 'secret-key',
-    resave: false,
-    saveUninitialized: false
-}));  
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 // in main
