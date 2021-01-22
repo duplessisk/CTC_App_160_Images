@@ -137,7 +137,7 @@ app.get("/review", function(request,response) {
 });
 
 app.post("/review", function(request,response) {
-    if (previouslySubmitted) {
+    if (false) {
         response.redirect('/form_already_submitted_page');
     } else {
         var btnClicked = request.body.btn;
