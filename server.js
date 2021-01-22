@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require('express-session');
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
@@ -11,12 +12,19 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
+app.use(session({
+    'secret': '343ji43j4n3jn4jk3n',
+    resave: true,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }))  
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 var previouslySubmitted = false;
  
 app.get("/", function(request,response) {
+    console.log(request.session);
     previouslySubmitted = false;
     response.sendFile(path.join(__dirname + '/welcome_page.html'));
 });
@@ -433,7 +441,7 @@ function writeResultsFile() {
                 function(){});
         }
         var time = new Date();
-        if (time.getHours >=) {
+        if (time.getHours >= 12) {
             time.setUTCHours(time.getUTCHours() - 8);
         } else {
             time.setUTCHours(time.getUTCHours());
