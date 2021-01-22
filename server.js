@@ -16,7 +16,7 @@ app.use(session({
     'secret': 'secret-key',
     resave: false,
     saveUninitialized: false
-  }))  
+}));  
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
