@@ -19,7 +19,7 @@ app.use(session({
 }));  
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
-
+// in main
 var previouslySubmitted = false;
  
 app.get("/", function(request,response) {
