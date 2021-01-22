@@ -1,25 +1,25 @@
-Test Taker: undefined undefined
+Test Taker: Kyle Duplessis
 
-Company: undefined
+Company: Rarecyte
 
 Breakdown: 
 
-object Type CTC: Missed 0 out of 19 (100%)
-Images Missed: 
+object Type CTC: Missed 19 out of 19 (0%)
+Images Missed: 00, 13, 14, 16, 19, 20, 22, 24, 28, 29, 32, 33, 34, 35, 37, 38, 39, 43, 45
 
-object Type Unidentified Cell: Missed 0 out of 3 (100%)
-Images Missed: 
+object Type Unidentified Cell: Missed 3 out of 3 (0%)
+Images Missed: 01, 02, 10
 
-object Type Fluorescent Artifact: Missed 0 out of 3 (100%)
-Images Missed: 
+object Type Fluorescent Artifact: Missed 3 out of 3 (0%)
+Images Missed: 03, 06, 12
 
-object Type CK/EpCAM Foci: Missed 0 out of 4 (100%)
-Images Missed: 
+object Type CK/EpCAM Foci: Missed 4 out of 4 (0%)
+Images Missed: 04, 05, 07, 08
 
-object Type White Blood Cell: Missed 0 out of 6 (100%)
-Images Missed: 
+object Type White Blood Cell: Missed 6 out of 6 (0%)
+Images Missed: 09, 25, 46, 47, 48, 49
 
-object Type Apoptotic CTC: Missed 0 out of 15 (100%)
-Images Missed: 
+object Type Apoptotic CTC: Missed 15 out of 15 (0%)
+Images Missed: 11, 15, 17, 18, 21, 23, 26, 27, 30, 31, 36, 40, 41, 42, 44
 
-Time Stamp: 1/22/2021, 10:09:39 AM
+Time Stamp: 1/22/2021, 12:37:45 PM

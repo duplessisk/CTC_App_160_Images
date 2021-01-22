@@ -2,11 +2,13 @@
 pageHeaderDiv = document.createElement('div');
 pageHeaderDiv.id = "pageHeaderDiv";
 document.body.appendChild(pageHeaderDiv);
-overallResults = document.createElement('div');
-overallResults.id = "overallResults";
-document.querySelector("#pageHeaderDiv").appendChild(overallResults);
+overallScore = document.createElement('div');
+overallScore.id = "overallScore";
+overallAnsweredCorrect = document.createElement('div');
+overallAnsweredCorrect.id = "overallAnsweredCorrect";
 document.body.appendChild(pageHeaderDiv);
-document.querySelector("#pageHeaderDiv").appendChild(overallResults);
+document.querySelector("#pageHeaderDiv").appendChild(overallScore);
+document.querySelector("#pageHeaderDiv").appendChild(overallAnsweredCorrect);
 
 // buffer to allow for gap between pageHeader and rest of page 
 bufferDiv = document.createElement('div');
@@ -22,7 +24,9 @@ var numObjTypes = objTypes.length;
 for (var i = 0; i < objTypes.length; i++) {
     // typeHeader DIVs
     typeHeaderDiv = document.createElement('div');
-    typeHeaderDiv.className = "header-divs"
+    if (i == 0) {
+        typeHeaderDiv.className = "header-divs"
+    }
     typeHeaderDiv.id = "type"+ i +"HeaderDiv";
     document.body.appendChild(typeHeaderDiv);
     // typeResult DIVs
@@ -272,9 +276,10 @@ function setResults() {
         document.querySelector("#type" + i + "HeaderDiv")
             .appendChild(dataMessageDiv);
     }
-    document.querySelector("#overallResults").innerHTML = "Score: " + 
-        Math.round(100*(totalCorrect/totalNumQuestions)) + "% (" + 
-        totalCorrect + " out of " + totalNumQuestions + ")";
+    document.querySelector("#overallScore").innerHTML = "Score: " + 
+        Math.round(100*(totalCorrect/totalNumQuestions)) + "%";
+    document.querySelector("#overallAnsweredCorrect").innerHTML = totalCorrect +
+        " out of " + totalNumQuestions;
 }
 
 /**
