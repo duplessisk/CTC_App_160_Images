@@ -21,7 +21,7 @@ app.use(session({
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-var previouslySubmitted = false;
+// var previouslySubmitted = false;
  
 app.get("/", function(request,response) {
     console.log(request.session);
