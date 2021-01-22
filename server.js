@@ -13,15 +13,14 @@ const app = express();
 app.set('view engine', 'ejs');
 
 app.use(session({
-    'secret': '343ji43j4n3jn4jk3n',
-    resave: true,
-    saveUninitialized: true,
-    cookie: { secure: true }
+    'secret': 'secret-key',
+    resave: false,
+    saveUninitialized: false
   }))  
 app.use('/static', express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-// var previouslySubmitted = false;
+var previouslySubmitted = false;
  
 app.get("/", function(request,response) {
     console.log(request.session);
