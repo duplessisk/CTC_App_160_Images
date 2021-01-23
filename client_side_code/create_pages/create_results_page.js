@@ -13,8 +13,9 @@ bufferDiv.id = "bufferDiv";
 document.body.appendChild(bufferDiv);
 
 // create results DIV for each different cell type  
-var objTypes = ["Cell: CTC - ","Non-Cell: Uncharacterized Object - ", "Non-Cell: Fluorescent Artifact - ",
+var objLabels = ["Cell: CTC - ","Non-Cell: Uncharacterized Object - ", "Non-Cell: Fluorescent Artifact - ",
     "Non-Cell: CK/EpCAM Foci - ","Non-Cell: White Blood Cell - ","Non-Cell: Apoptotic Object - "];
+var objTypes = ["CTC", "Unidentified Cell", "Fluorescent Artifact", "CK/EpCAM Foci", "White Blood Cell", "Apoptotic CTC"];
 
 var numObjTypes = objTypes.length;
 
@@ -37,7 +38,7 @@ for (var i = 0; i < objTypes.length; i++) {
     // object type 
     var objectTypeLabel = document.createElement('div');
     objectTypeLabel.id = "objectLabel" + i + "Div";
-    objectTypeLabel.innerHTML = objTypes[i];
+    objectTypeLabel.innerHTML = objLabels[i];
     objectTypeLabel.className = "object-type-labels";
     document.getElementById("objectInfo"+ i +"Div")
         .appendChild(objectTypeLabel);
@@ -200,7 +201,6 @@ function setTotalNumIncorrect(totalNumIncorrectString) {
 function addImagesToDom(objNum, typesMap, imageType) {
     var objType = objTypes[objNum].replaceAll(' ','');
     var imagePaths = typesMap.get(objType);
-
     if (imagePaths != undefined) { // avoid getting length of empty imagePaths
         for (var i = 0; i < imagePaths.length; i++) {
 
