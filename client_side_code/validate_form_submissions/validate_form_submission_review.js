@@ -28,7 +28,6 @@ var pageThreeHasNull = localStorage.getItem('pageThreeHasNull');
 var pageFourHasNull = localStorage.getItem('pageFourHasNull');
 var pageFiveHasNull = localStorage.getItem('pageFiveHasNull');
 
-
 var initBuffer = document.createElement('div');
 var buffer1 = document.createElement('div');
 var buffer2 = document.createElement('div');
@@ -47,7 +46,7 @@ if (pageOneHasNull == "true" || pageTwoHasNull == "true" ||
 
 if (pageOneHasNull == "true") {
     var pageOneNullMessage = document.createElement('a');
-    pageOneNullMessage.href = "./page_one";
+    pageOneNullMessage.href = "./page_1";
     pageOneNullMessage.innerHTML = "Page One";
     document.querySelector("#reviewMessagePagesDiv").appendChild(pageOneNullMessage);
     document.querySelector('#reviewMessagePagesDiv').appendChild(buffer1);
@@ -55,7 +54,7 @@ if (pageOneHasNull == "true") {
 
 if (pageTwoHasNull == "true") {
     var pageTwoNullMessage = document.createElement('a');
-    pageTwoNullMessage.href = "./page_two";
+    pageTwoNullMessage.href = "./page_2";
     pageTwoNullMessage.innerHTML = "Page Two";
     document.querySelector("#reviewMessagePagesDiv").appendChild(pageTwoNullMessage);
     document.querySelector('#reviewMessagePagesDiv').appendChild(buffer2);
@@ -63,7 +62,7 @@ if (pageTwoHasNull == "true") {
 
 if (pageThreeHasNull == "true") {
     var pageThreeNullMessage = document.createElement('a');
-    pageThreeNullMessage.href = "./page_three";
+    pageThreeNullMessage.href = "./page_3";
     pageThreeNullMessage.innerHTML = "Page Three";
     document.querySelector("#reviewMessagePagesDiv").appendChild(pageThreeNullMessage);
     document.querySelector('#reviewMessagePagesDiv').appendChild(buffer3);
@@ -71,7 +70,7 @@ if (pageThreeHasNull == "true") {
 
 if (pageFourHasNull == "true") {
     var pageFourNullMessage = document.createElement('a');
-    pageFourNullMessage.href = "./page_four";
+    pageFourNullMessage.href = "./page_4";
     pageFourNullMessage.innerHTML = "Page Four";
     document.querySelector("#reviewMessagePagesDiv").appendChild(pageFourNullMessage);
     document.querySelector('#reviewMessagePagesDiv').appendChild(buffer4);
@@ -79,7 +78,7 @@ if (pageFourHasNull == "true") {
 
 if (pageFiveHasNull == "true") {
     var pageFiveNullMessage = document.createElement('a');
-    pageFiveNullMessage.href = "./page_five";
+    pageFiveNullMessage.href = "./page_5";
     pageFiveNullMessage.innerHTML = "Page Five";
     document.querySelector("#reviewMessagePagesDiv").appendChild(pageFiveNullMessage);
 } 

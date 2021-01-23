@@ -4,7 +4,6 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const answerKeys = require("./object_types");
 const objectTypes = require("./object_types");
-const { stringify } = require("querystring");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
@@ -12,130 +11,130 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-app.use('/static', express.static('public'));
+app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 var previouslySubmitted = false;
-
+ 
 app.get("/", function(request,response) {
     previouslySubmitted = false;
-    response.sendFile(path.join(__dirname + '/welcome_page.html'));
+    response.sendFile(path.join(__dirname + '/html_pages/welcome_page.html'));
 });
 
-app.post("/welcome_page", function(request,response) {
-    response.redirect('/login_page');
+app.post("/html_pages/welcome_page", function(request,response) {
+    response.redirect('/html_pages/login_page');
 });
 
-app.get("/login_page", function(request,response) {
+app.get("/html_pages/login_page", function(request,response) {
     previouslySubmitted = false;
-    response.sendFile(path.join(__dirname + '/login_page.html'));
+    response.sendFile(path.join(__dirname + '/html_pages/login_page.html'));
 });
 
 var firstName;
 var lastName;
 var company;
 
-app.post("/login_page", function(request,response) {
+app.post("/html_pages/login_page", function(request,response) {
     firstName = request.body.firstName;
     lastName = request.body.lastName;
     company = request.body.company;
-    response.redirect('/instructions_page');
+    response.redirect('/html_pages/instructions_page');
 });
 
-app.get("/instructions_page", function(request,response) {
-    response.sendFile(path.join(__dirname + '/instructions_page.html'));
+app.get("/html_pages/instructions_page", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/instructions_page.html'));
 });
 
-app.post("/instructions_page", function(request,response) {
-    response.redirect('/page_one');
+app.post("/html_pages/instructions_page", function(request,response) {
+    response.redirect('/html_pages/page_1');
 });
 
-app.get("/page_one", function(request,response) {
-    response.sendFile(path.join(__dirname + '/page_one.html'));
+app.get("/html_pages/page_1", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/page_1.html'));
 });
 
-app.post("/page_one", function(request,response) {
+app.post("/html_pages/page_1", function(request,response) {
     missedImagesByPage[0] = [];
     answerKeyPageOne = answerKeys.answerKeys[0];
     driveApp(answerKeyPageOne,request,1);
-    response.redirect('/page_two');
+    response.redirect('/html_pages/page_2');
 });
 
-app.get("/page_two", function(request,response) {
-    response.sendFile(path.join(__dirname + '/page_two.html'));
+app.get("/html_pages/page_2", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/page_2.html'));
 });
 
-app.post("/page_two", function(request,response) {
+app.post("/html_pages/page_2", function(request,response) {
     var btnClicked = request.body.btn;
     missedImagesByPage[1] = [];
     answerKeyPageTwo = answerKeys.answerKeys[1];
     driveApp(answerKeyPageTwo,request,2);
     if (btnClicked == "Previous") {
-        response.redirect('/page_one');
+        response.redirect('/page_1');
     } else if (btnClicked == "Next") {
-        response.redirect('/page_three');
+        response.redirect('/html_pages/page_3');
     }
 });
 
-app.get("/page_three", function(request,response) {
-    response.sendFile(path.join(__dirname + '/page_three.html'));
+app.get("/html_pages/page_3", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/page_3.html'));
 });
 
-app.post("/page_three", function(request,response) {
+app.post("/html_pages/page_3", function(request,response) {
     var btnClicked = request.body.btn;
     missedImagesByPage[2] = [];
     answerKeyPageThree = answerKeys.answerKeys[2];
     driveApp(answerKeyPageThree,request,3);
     if (btnClicked == "Previous") {
-        response.redirect('/page_two');
+        response.redirect('/html_pages/page_2');
     } else if (btnClicked == "Next") {
-        response.redirect('/page_four');
+        response.redirect('/html_pages/page_4');
     }
 });
 
-app.get("/page_four", function(request,response) {
-    response.sendFile(path.join(__dirname + '/page_four.html'));
+app.get("/html_pages/page_4", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/page_4.html'));
 });
 
-app.post("/page_four", function(request,response) {
+app.post("/html_pages/page_4", function(request,response) {
     var btnClicked = request.body.btn;
     missedImagesByPage[3] = [];
     answerKeyPageFour = answerKeys.answerKeys[3];
     driveApp(answerKeyPageFour,request,4);
     if (btnClicked == "Previous") {
-        response.redirect('/page_three');
+        response.redirect('/html_pages/page_3');
     } else if (btnClicked == "Next") {
-        response.redirect('/page_five');
+        response.redirect('/html_pages/page_5');
     }
 });
 
-app.get("/page_five", function(request,response) {
-    response.sendFile(path.join(__dirname + '/page_five.html'));
+app.get("/html_pages/page_5", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/page_5.html'));
 });
 
-app.post("/page_five", function(request,response) {
+app.post("/html_pages/page_5", function(request,response) {
     var btnClicked = request.body.btn;
     missedImagesByPage[4] = [];
     answerKeyPageFive = answerKeys.answerKeys[4];
     driveApp(answerKeyPageFive,request,5);
     if (btnClicked == "Previous") {
-        response.redirect('/page_four');
+        response.redirect('/html_pages/page_4');
     } else if (btnClicked == "Continue") {
-        response.redirect('/review');
+        response.redirect('/html_pages/review');
     }
 });
 
-app.get("/review", function(request,response) {
-    response.sendFile(path.join(__dirname + '/review.html'));
+app.get("/html_pages/review", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/review.html'));
 });
 
-app.post("/review", function(request,response) {
+app.post("/html_pages/review", function(request,response) {
     if (previouslySubmitted) {
-        response.redirect('/form_already_submitted_page');
+        response.redirect('/html_pages/form_already_submitted_page');
     } else {
         var btnClicked = request.body.btn;
         if (btnClicked == "Previous") {
-            response.redirect('/page_five');
+            response.redirect('/html_pages/page_5');
         } else {
             previouslySubmitted = true;
             initByTypeMaps();
@@ -144,18 +143,18 @@ app.post("/review", function(request,response) {
             postResultsData();
             writeResultsFile();
             sendEmailWithResults();
-            response.redirect('/results');
+            response.redirect('/html_pages/results');
         }
     }
 });
 
-app.get("/results", function(request,response) {
-    response.sendFile(path.join(__dirname + '/results.html'));
+app.get("/html_pages/results", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/results.html'));
 });
 
-app.get("/form_already_submitted_page", function(request,response) {
+app.get("/html_pages/form_already_submitted_page", function(request,response) {
     response.sendFile(path.join(__dirname + 
-        '/form_already_submitted_page.html'));
+        '/html_pages/form_already_submitted_page.html'));
 });
 
 app.listen(process.env.PORT || 3000);
@@ -281,7 +280,7 @@ function setAllImagePaths() {
         for (var j = 0; j < 10; j++) {
             var imageNum = String(i) + String(j);
             var imagePath = '/static/object_answers/object' + imageNum 
-                + 'answer.PNG';
+                + 'answer.png';
             var thisObjectType = allObjectTypes[Number(imageNum)];
             if (allImagesByType.has(thisObjectType)) {
                 allImagesByType.get(thisObjectType).push(imagePath);
@@ -303,7 +302,7 @@ function setAllImagePaths() {
  *                                      Object type bin.
  */
 function writeImagePaths(imagesByType,fileName) {
-    fs.writeFile("./public/" + fileName + ".json", "", function(){
+    fs.writeFile("./client_side_code/" + fileName + ".json", "", function(){
         var imagesByTypeKeys = Array.from(imagesByType.keys());
         for (var i = 0; i < imagesByTypeKeys.length; i++) {
             for (var j = 0; j < imagesByType.get(imagesByTypeKeys[i]).length; 
@@ -311,7 +310,7 @@ function writeImagePaths(imagesByType,fileName) {
                     var thisImageObject = {};
                     thisImageObject[imagesByTypeKeys[i]] =
                     imagesByType.get(imagesByTypeKeys[i])[j];
-                    fs.appendFileSync("./public/" + fileName + ".json", 
+                    fs.appendFileSync("./client_side_code/" + fileName + ".json", 
                         JSON.stringify(thisImageObject, null, 4), function(){});
             }
         }
@@ -336,7 +335,7 @@ function setMissedImagesByType() {
         for (var j = 0; j < missedImagesByPage[i].length; j++) {
             var imageNum = missedImagesByPage[i][j];
             var imagePath = '/static/object_answers/object' + imageNum + 
-                'answer.PNG';
+                'answer.png';
             var thisObjectType = getThisObjectType(imageNum);
             missedImagesByType.get(thisObjectType).push(imagePath);
             totalIncorrectByType.set(thisObjectType, 
@@ -434,8 +433,11 @@ function writeResultsFile() {
                 function(){});
         }
         var time = new Date();
-        // time.setUTCHours(time.getUTCHours() - 8);
-        time.setUTCHours(time.getUTCHours());
+        if (time.getHours >= 12) {
+            time.setUTCHours(time.getUTCHours() - 8);
+        } else {
+            time.setUTCHours(time.getUTCHours());
+        }
         fs.appendFileSync("./final_results.txt", "\n" + "Time Stamp: " 
                           + (time.toLocaleString()), function(){});
     });
