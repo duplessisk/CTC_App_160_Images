@@ -362,36 +362,15 @@ a:visited {
 
 .object-info-div {
     display: flex;
+    justify-content: center;
 }
 
 .object-header-divs {
-    margin-left: 43vw;
     margin-bottom: 1vw;
 }
 
 .object-type-labels, .data-message-divs {
     display: inline-flex;
-}
-
-.data-message-divs {
-    margin-left: 0.4vw;
-}
-
-.types {
-    font-size: 1vw;
-    font-weight: 0;
-}
-
-/* .label-types {
-    text-align: center;
-    font-size: 1.925vw;
-} */
-
-.data-messages {
-    text-align: center;
-    font-size: 1.335vw;
-    margin-top: -1%;
-    margin-bottom: 1%;
 }
 
 .show-all-type-btn, .show-type-btn {
