@@ -13,8 +13,8 @@ bufferDiv.id = "bufferDiv";
 document.body.appendChild(bufferDiv);
 
 // create results DIV for each different cell type  
-var objTypes = ["CTC","Unidentified Cell","Fluorescent Artifact",
-    "CK/EpCAM Foci","White Blood Cell","Apoptotic CTC"];
+var objTypes = ["Cell: CTC - ","Non-Cell: Uncharacterized Object - ", "Non-Cell: Fluorescent Artifact - ",
+    "Non-Cell: CK/EpCAM Foci - ","Non-Cell: White Blood Cell - ","Non-Cell: Apoptotic Object - "];
 
 var numObjTypes = objTypes.length;
 
@@ -36,6 +36,7 @@ for (var i = 0; i < objTypes.length; i++) {
 
     // object type 
     var objectTypeLabel = document.createElement('div');
+    objectTypeLabel.id = "objectLabel" + i + "Div";
     objectTypeLabel.innerHTML = objTypes[i];
     objectTypeLabel.className = "object-type-labels";
     document.getElementById("objectInfo"+ i +"Div")
@@ -245,6 +246,7 @@ function setResults() {
     var totalNumTypesMapKeys = Array.from(totalNumTypesMap.keys());
     for (var i = 0; i < numObjTypes; i++) {
         var dataMessageDiv = document.createElement('div');
+        dataMessageDiv.id = "dataMessage" + i + "Div"; 
         dataMessageDiv.className = "data-message-divs";
         var incorrectNumThisTypeValue = incorrectNumTypesMap
             .get(incorrectNumTypesMapKeys[i]);

@@ -357,16 +357,55 @@ a:visited {
 
 #objectsDiv {
     font-family: Arial;
+    font-size: 1.15vw;
     margin-top: 15vw;
 }
 
-.object-info-div {
-    display: flex;
-    justify-content: center;
+.object-header-divs {
+    margin-bottom: 0.75vw;
 }
 
-.object-header-divs {
-    margin-bottom: 1vw;
+#objectLabel0Div {
+    margin-left: 41.75vw;
+}
+#dataMessage0Div {
+    margin-left: 2vw;
+}
+
+#objectLabel1Div {
+    margin-left: 29.6vw;
+}
+#dataMessage1Div {
+    margin-left: 3.25vw;
+}
+
+
+#objectLabel2Div {
+    margin-left: 31.75vw;
+}
+#dataMessage2Div {
+    margin-left: 3.35vw;
+}
+
+#objectLabel3Div {
+    margin-left: 33.25vw;
+}
+#dataMessage3Div {
+    margin-left: 3.3vw;
+}
+
+#objectLabel4Div {
+    margin-left: 33.1vw;
+}
+#dataMessage4Div {
+    margin-left: 3.4vw;
+}
+
+#objectLabel5Div {
+    margin-left: 33.3vw;
+}
+#dataMessage5Div {
+    margin-left: 2.0vw;
 }
 
 .object-type-labels, .data-message-divs {
