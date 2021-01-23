@@ -303,14 +303,9 @@ a:visited {
     margin-top: 1.75vw;
 }
 
-#overallAnsweredCorrect {
-    /* margin-top: 2vw; */
-} 
-
 #resultsMessage {
     text-align: center;
     color: black;
-    /* font-size: 1.5vw; */
 }
 
 #bufferDiv {
@@ -328,11 +323,6 @@ a:visited {
 
 .cell-type {
     text-align: center;
-}
-
-.types {
-    font-size: 5vw;
-    font-weight: 0;
 }
 
 .message-div {
@@ -365,15 +355,37 @@ a:visited {
     overflow: hidden;
 }
 
-.header-divs {
+#objectsDiv {
     font-family: Arial;
     margin-top: 15vw;
 }
 
-.label-types {
+.object-info-div {
+    display: flex;
+}
+
+.object-header-divs {
+    margin-left: 43vw;
+    margin-bottom: 1vw;
+}
+
+.object-type-labels, .data-message-divs {
+    display: inline-flex;
+}
+
+.data-message-divs {
+    margin-left: 0.4vw;
+}
+
+.types {
+    font-size: 1vw;
+    font-weight: 0;
+}
+
+/* .label-types {
     text-align: center;
     font-size: 1.925vw;
-}
+} */
 
 .data-messages {
     text-align: center;

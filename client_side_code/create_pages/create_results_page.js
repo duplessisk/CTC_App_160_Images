@@ -1,7 +1,4 @@
-// init pageHeader
-pageHeaderDiv = document.createElement('div');
-pageHeaderDiv.id = "pageHeaderDiv";
-document.body.appendChild(pageHeaderDiv);
+// add content to pageHeader
 overallScore = document.createElement('div');
 overallScore.id = "overallScore";
 overallAnsweredCorrect = document.createElement('div');
@@ -22,30 +19,27 @@ var objTypes = ["CTC","Unidentified Cell","Fluorescent Artifact",
 var numObjTypes = objTypes.length;
 
 for (var i = 0; i < objTypes.length; i++) {
-    // typeHeader DIVs
-    typeHeaderDiv = document.createElement('div');
-    if (i == 0) {
-        typeHeaderDiv.className = "header-divs"
-    }
-    typeHeaderDiv.id = "type"+ i +"HeaderDiv";
-    document.body.appendChild(typeHeaderDiv);
-    // typeResult DIVs
-    var typeResultsDiv = document.createElement('div');
-    typeResultsDiv.id = "type"+ i +"ResultDiv";
-    typeResultsDiv.className = "types";
-    document.body.appendChild(typeResultsDiv);
-    // typeLabel
-    var typeLabel = document.createElement('p');
-    typeLabel.innerHTML = objTypes[i] + " Results";
-    typeLabel.className = "label-types";
-    document.getElementById("type"+ i +"HeaderDiv")
-        .appendChild(typeLabel);
-    // line breaks
-    if (i < numObjTypes - 1) {
-        var lineBreaks = document.createElement('hr');
-        lineBreaks.className = "line-breaks";
-        document.body.append(lineBreaks);
-    }
+
+    objectDiv = document.createElement('div');
+    objectDiv.id = "object" + i + "Div";
+    document.querySelector("#objectsDiv").appendChild(objectDiv);
+
+    objectInfoDiv = document.createElement('div');
+    objectInfoDiv.id = "objectInfo" + i + "Div";
+    objectInfoDiv.className = "object-info-div";
+    document.querySelector("#object" + i + "Div").appendChild(objectInfoDiv);
+
+    var objectHeaderDiv = document.createElement('div');
+    objectHeaderDiv.id = "objectHeader" + i + "Div";
+    objectHeaderDiv.className = "object-header-divs";
+    document.querySelector("#object" + i + "Div").appendChild(objectHeaderDiv); 
+
+    // object type 
+    var objectTypeLabel = document.createElement('div');
+    objectTypeLabel.innerHTML = objTypes[i];
+    objectTypeLabel.className = "object-type-labels";
+    document.getElementById("objectInfo"+ i +"Div")
+        .appendChild(objectTypeLabel);
 }
 
 /* Stores image paths of all incorrect user answers in the appropriate 
@@ -226,9 +220,9 @@ function addImagesToDom(objNum, typesMap, imageType) {
             } else {
                 messageDiv.innerHTML = "Image  " + imageNum;
             }
-            document.querySelector("#type" + objNum + "ResultDiv")
+            document.querySelector("#img" + objNum + "Div")
                 .appendChild(messageDiv);
-            document.querySelector("#type" + objNum + "ResultDiv")
+            document.querySelector("#img" + objNum + "Div")
                 .appendChild(newImg);
         }
     }
@@ -251,7 +245,7 @@ function setResults() {
     var totalNumTypesMapKeys = Array.from(totalNumTypesMap.keys());
     for (var i = 0; i < numObjTypes; i++) {
         var dataMessageDiv = document.createElement('div');
-        dataMessageDiv.className = "data-messages";
+        dataMessageDiv.className = "data-message-divs";
         var incorrectNumThisTypeValue = incorrectNumTypesMap
             .get(incorrectNumTypesMapKeys[i]);
         var totalNumThisTypeValue = totalNumTypesMap
@@ -262,18 +256,10 @@ function setResults() {
 
         if (incorrectNumThisTypeValue == 0) {
             dataMessageDiv.innerHTML = "You missed no images (100%)";
-        } else if (incorrectNumThisTypeValue == 1) {
-            dataMessageDiv.innerHTML = "You missed " + 
-                incorrectNumThisTypeValue + " (out of " + totalNumThisTypeValue + ")"
-                + " image (" + Math.round((100 - 100*incorrectNumThisTypeValue/totalNumThisTypeValue)) 
-                        +"%)";
         } else {
-            dataMessageDiv.innerHTML = "You missed " + 
-                incorrectNumThisTypeValue + " (out of " + totalNumThisTypeValue + ")"
-                + " images (" + Math.round((100 - 100*incorrectNumThisTypeValue/totalNumThisTypeValue)) 
-                        +"%)";
-            }
-        document.querySelector("#type" + i + "HeaderDiv")
+            dataMessageDiv.innerHTML = incorrectNumThisTypeValue + " out of " + totalNumThisTypeValue;
+        }
+        document.querySelector("#objectInfo" + i + "Div")
             .appendChild(dataMessageDiv);
     }
     document.querySelector("#overallScore").innerHTML = "Score: " + 
@@ -290,7 +276,7 @@ function createBtns() {
         var showTypeBtnDiv = document.createElement('span');
         showTypeBtnDiv.className = "show-type-btn-divs";
         showTypeBtnDiv.id = "showType" + i + "BtnDiv";
-        document.querySelector("#type" + i + "HeaderDiv")
+        document.querySelector("#object" + i + "Div")
             .appendChild(showTypeBtnDiv);
         var showTypeBtn = document.createElement('button');
         showTypeBtn.innerHTML = "Show Missed";
@@ -302,7 +288,7 @@ function createBtns() {
         var showAllTypeBtnDiv = document.createElement('span');
         showAllTypeBtnDiv.className = "show-all-type-btn-divs";
         showAllTypeBtnDiv.id = "showAllType" + i + "BtnDiv";
-        document.querySelector("#type" + i +"HeaderDiv")
+        document.querySelector("#object" + i +"Div")
             .appendChild(showAllTypeBtnDiv);
         var showAllTypeBtn = document.createElement('button');
         showAllTypeBtn.innerHTML = "Show All";
@@ -310,6 +296,21 @@ function createBtns() {
         showAllTypeBtn.className = "show-all-type-btn";
         document.querySelector("#showAllType" + i + "BtnDiv")
             .appendChild(showAllTypeBtn);
+
+
+        // images divs 
+        var imgDiv = document.createElement('div');
+        imgDiv.id = "img" + i + "Div";
+        document.querySelector("#object" + i +"Div")
+        .appendChild(imgDiv);
+
+        // line breaks
+        if (i < numObjTypes - 1) {
+            var lineBreak = document.createElement('hr');
+            lineBreak.className = "line-breaks";
+            document.querySelector("#object" + i +"Div")
+            .appendChild(lineBreak);
+        }
     }
 }
 
@@ -365,7 +366,7 @@ function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg,
                             .innerHTML == otherHideMsg) {
                         document.getElementById(otherBtnId + objNum + "Btn")
                             .innerHTML = otherShowMsg;
-                        document.querySelector("#type" + objNum + "ResultDiv")
+                        document.querySelector("#img" + objNum + "Div")
                             .innerHTML = '';
                         otherBtnsClicked[objNum] = true;
                     }
@@ -374,7 +375,7 @@ function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg,
                 } else { // hide images for show btn
                     document.getElementById(thisBtnId + objNum + "Btn")
                         .innerHTML = thisShowMsg;
-                    document.querySelector("#type" + objNum + "ResultDiv")
+                    document.querySelector("#img" + objNum + "Div")
                         .innerHTML = '';
                         thisBtnsClicked[objNum] = true;
                 }
