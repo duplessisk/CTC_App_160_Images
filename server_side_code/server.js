@@ -1,4 +1,6 @@
 const express = require("express");
+const mongoose = require('mongoose');
+const session = require('express-session');
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
@@ -13,10 +15,33 @@ app.set('view engine', 'ejs');
 
 app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(session( {
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: false,
+}));
 
-var previouslySubmitted = false;
+mongoose.connect("mongodb://localhost:27017/ctcTestingAppDB", {useNewUrlParser: true });
+
+const testTakerSchema = new mongoose.Schema ({
+    id: Number,
+    previouslySubmitted: Boolean
+});
+
+const TestTaker = mongoose.model("testTaker", testTakerSchema);
+
+var userIds = 0;
  
 app.get("/", function(request,response) {
+    userIds += 1;
+    request.session.userId = userIds;
+    
+    var testTaker = new TestTaker({
+        id: request.session.userId,
+        previouslySubmitted: false
+    });
+    testTaker.save();
+
     previouslySubmitted = false;
     response.sendFile(path.join(__dirname + '/html_pages/welcome_page.html'));
 });
