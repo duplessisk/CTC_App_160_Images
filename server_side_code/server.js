@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require('mongoose');
+const MongooseMap = require('mongoose-map')(mongoose);
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
@@ -22,7 +23,12 @@ const schema = new mongoose.Schema({
     previouslySubmitted: Boolean,
     firstName: String,
     lastName: String,
-    company: String
+    company: String,
+    allObjectTypes: Object,
+    missedImagesByPage: Object,
+    allImagesByType: Map,
+    totalIncorrectByType: Map,
+    numImagesByType: Map
 });
 
 const User = mongoose.model('User', schema);
@@ -36,13 +42,16 @@ allObjectTypes = objectTypes.objectTypes;
 
 // Stores path of each image the user answered incorrectly by page (1-5)
 //                 page:   1   2   3   4   5   
-var missedImagesByPage = [ [], [], [], [], [] ];
+// var missedImagesByPage = [ [], [], [], [], [] ];
 
 // Stores path of each image the user answered incorrectly by type 
 var missedImagesByType = new Map();
 
 // Stores path of all images by type
 var allImagesByType = new Map();
+
+// total number of incorrect user responses
+var totalIncorrect = 0;
 
 // total number of incorrect user responses by object type bin
 var totalIncorrectByType = new Map();
@@ -59,10 +68,26 @@ app.get("/", function(request,response) {
         previouslySubmitted: false,
     });
 
-    newUser.save();
+    newUser.save(function() {
+        initGlobalVariables(request);
+    });
 
     response.sendFile(path.join(__dirname + '/html_pages/welcome_page.html'));
 });
+
+function initGlobalVariables(request) {
+
+    var ipAddress = request.connection.remoteAddress;
+
+    User.findOneAndUpdate({userId: ipAddress}, 
+        {
+            allObjectTypes: objectTypes.objectTypes,
+            missedImagesByPage: [ [], [], [], [], [] ],
+            // allImagesByType: new Map(),
+            // totalIncorrectByType: new Map(),
+            // numImagesByType: new Map()
+        }, {upsert: false}, function() {});
+}
 
 app.post("/html_pages/welcome_page", function(request,response) {
     response.redirect('/html_pages/login_page');
@@ -100,7 +125,10 @@ app.get("/html_pages/page_1", function(request,response) {
 });
 
 app.post("/html_pages/page_1", function(request,response) {
-    missedImagesByPage[0] = [];
+
+    // missedImagesByPage[0] = [];
+    resetMissedImagesByPage(request,1);
+    
     answerKeyPageOne = answerKeys.answerKeys[0];
     driveApp(answerKeyPageOne,request,1);
     response.redirect('/html_pages/page_2');
@@ -112,7 +140,10 @@ app.get("/html_pages/page_2", function(request,response) {
 
 app.post("/html_pages/page_2", function(request,response) {
     var btnClicked = request.body.btn;
-    missedImagesByPage[1] = [];
+
+    // missedImagesByPage[1] = [];
+    resetMissedImagesByPage(request,2);
+
     answerKeyPageTwo = answerKeys.answerKeys[1];
     driveApp(answerKeyPageTwo,request,2);
     if (btnClicked == "Previous") {
@@ -128,7 +159,10 @@ app.get("/html_pages/page_3", function(request,response) {
 
 app.post("/html_pages/page_3", function(request,response) {
     var btnClicked = request.body.btn;
-    missedImagesByPage[2] = [];
+
+    // missedImagesByPage[2] = [];
+    resetMissedImagesByPage(request,3);
+
     answerKeyPageThree = answerKeys.answerKeys[2];
     driveApp(answerKeyPageThree,request,3);
     if (btnClicked == "Previous") {
@@ -144,7 +178,10 @@ app.get("/html_pages/page_4", function(request,response) {
 
 app.post("/html_pages/page_4", function(request,response) {
     var btnClicked = request.body.btn;
-    missedImagesByPage[3] = [];
+
+    // missedImagesByPage[3] = [];
+    resetMissedImagesByPage(request,4);
+
     answerKeyPageFour = answerKeys.answerKeys[3];
     driveApp(answerKeyPageFour,request,4);
     if (btnClicked == "Previous") {
@@ -160,7 +197,10 @@ app.get("/html_pages/page_5", function(request,response) {
 
 app.post("/html_pages/page_5", function(request,response) {
     var btnClicked = request.body.btn;
-    missedImagesByPage[4] = [];
+
+    // missedImagesByPage[4] = []; 
+    resetMissedImagesByPage(request,5);
+
     answerKeyPageFive = answerKeys.answerKeys[4];
     driveApp(answerKeyPageFive,request,5);
     if (btnClicked == "Previous") {
@@ -190,7 +230,7 @@ app.post("/html_pages/review", function(request,response) {
                     {previouslySubmitted: true}, function() {});
                 initByTypeMaps();
                 postAllImagePaths();
-                postMissedImagePaths();
+                postMissedImagePaths(request);
                 postResultsData();
                 writeResultsFile();
                 // sendEmailWithResults();
@@ -210,6 +250,23 @@ app.get("/html_pages/form_already_submitted_page", function(request,response) {
 });
 
 app.listen(process.env.PORT || 3000);
+
+/**
+ * Resets the missed images for the specified page (allows user to navigate 
+ * from the current page and then return to it)
+ * @param {*} request 
+ * @param {Number} pageNumber - page whose missed paths are to be reset 
+ */
+function resetMissedImagesByPage(request,pageNumber) {
+    var ipAddress = request.connection.remoteAddress;
+
+    User.find({userId: ipAddress}, function(err,userData) {
+        var updatedMissedImagesByPage = userData[0].missedImagesByPage;
+        updatedMissedImagesByPage[pageNumber - 1] = [];
+        User.findOneAndUpdate({userId: ipAddress}, 
+            {missedImagesByPage: updatedMissedImagesByPage}, function() {});
+    });   
+}
 
 /**
  * Initializes all the by type maps with the appropriate object type 
@@ -234,7 +291,7 @@ function initByTypeMaps() {
 function driveApp(answerKeyPage,request,pageNumber) {
     var userResponses = initUserResponses(request);
     recordUserResponses(userResponses);
-    setMissedImagesByPage(answerKeyPage, userResponses, pageNumber - 1);
+    setMissedImagesByPage(request,answerKeyPage, userResponses, pageNumber - 1);
 }
 
 /**
@@ -279,6 +336,7 @@ function recordUserResponses(userResponses) {
 /**
  * Stores (by object type bin) the image paths of each image the user responded 
  * to incorrectly.
+ * @param {*} request - 
  * @param {Array} answerKey - Array containing boolean values representing 
  *                            answers for each question.
  * @param {Array} userResponses - Array containing boolean values representing 
@@ -286,13 +344,27 @@ function recordUserResponses(userResponses) {
  * @param {number} pageNumber - Client side page number corresponding with user
  *                              response.
  */
-function setMissedImagesByPage(answerKey,userResponses,pageNumber) { 
-    for (var i = 0; i < 10; i++) {
-        if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
-            var imageNumber = String(pageNumber) + String(i);
-            missedImagesByPage[pageNumber].push(imageNumber);
+function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) { 
+    // for (var i = 0; i < 10; i++) {
+    //     if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
+    //         var imageNumber = String(pageNumber) + String(i);
+    //         var ipAddress = request.connection.remoteAddress;
+            // missedImagesByPage[pageNumber].push(imageNumber);
+    //}
+    var ipAddress = request.connection.remoteAddress;
+
+    User.find({userId: ipAddress}, function(err,userData) {
+        var updatedMissedImagesByPage = userData[0].missedImagesByPage;
+        for (var i = 0; i < 10; i++) {
+            if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
+                var imageNumber = String(pageNumber) + String(i);
+                var ipAddress = request.connection.remoteAddress;
+                updatedMissedImagesByPage[pageNumber].push(imageNumber);
+            }
         }
-    }
+        User.findOneAndUpdate({userId: ipAddress}, 
+            {missedImagesByPage: updatedMissedImagesByPage}, function() {});
+    });   
 }
 
 /**
@@ -353,27 +425,49 @@ function writeImagePaths(imagesByType,fileName) {
  * Organizes and posts image paths associated with an incorrect user answer 
  * into the appropriate Object type bins.
  */
-function postMissedImagePaths() {
-    setMissedImagesByType();
+function postMissedImagePaths(request) {
+    setMissedImagesByType(request);
     writeImagePaths(missedImagesByType, "missed_image_paths");
 }
 
 /**
  * Stores (by Object type bin) the image paths of each image the user responded 
  * to incorrectly.
+ * @param {*} request - 
  */
-function setMissedImagesByType() { 
-    for (var i = 0; i < 5; i++) {
-        for (var j = 0; j < missedImagesByPage[i].length; j++) {
-            var imageNum = missedImagesByPage[i][j];
-            var imagePath = '/static/object_answers/object' + imageNum + 
-                'answer.png';
-            var thisObjectType = getThisObjectType(imageNum);
-            missedImagesByType.get(thisObjectType).push(imagePath);
-            totalIncorrectByType.set(thisObjectType, 
-                totalIncorrectByType.get(thisObjectType) + 1);
+function setMissedImagesByType(request) {
+
+    // for (var i = 0; i < 5; i++) {
+    //     for (var j = 0; j < missedImagesByPage[i].length; j++) {
+    //         var imageNum = missedImagesByPage[i][j];
+    //         var imagePath = '/static/object_answers/object' + imageNum + 
+    //             'answer.png';
+    //         var thisObjectType = getThisObjectType(imageNum);
+    //         missedImagesByType.get(thisObjectType).push(imagePath);
+    //         totalIncorrectByType.set(thisObjectType, 
+    //             totalIncorrectByType.get(thisObjectType) + 1);
+    //     }
+    // }
+
+    var ipAddress = request.connection.remoteAddress;
+
+    User.find({userId: ipAddress}, function(err,userData) {
+        var missedImagesByPage = userData[0].missedImagesByPage;
+        console.log();
+        console.log("Before");
+        console.log(totalIncorrectByType);
+        for (var i = 0; i < 5; i++) {
+            for (var j = 0; j < missedImagesByPage[i].length; j++) {
+                var imageNum = missedImagesByPage[i][j];
+                var imagePath = '/static/object_answers/object' + imageNum + 
+                    'answer.png';
+                var thisObjectType = getThisObjectType(imageNum);
+                missedImagesByType.get(thisObjectType).push(imagePath);
+                totalIncorrectByType.set(thisObjectType, 
+                    totalIncorrectByType.get(thisObjectType) + 1);
+            }
         }
-    }
+    });    
 }
 
 /**
@@ -390,9 +484,6 @@ function getThisObjectType(imageNum) {
         return allObjectTypes[Number(imageNum)];
     }
 }
-
-// total number of incorrect user responses
-var totalIncorrect = 0;
 
 /**
  * Posts a breakdown of the user's performance overall and within each Object 
