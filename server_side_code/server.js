@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 mongoose.connect("mongodb://localhost:27017/ctcAppDB", {useNewUrlParser: true, useUnifiedTopology: true });
 
 const schema = new mongoose.Schema({   
-    _id: String, 
+    userId: String, 
     previouslySubmitted: Boolean,
     firstName: String,
     lastName: String,
@@ -31,10 +31,6 @@ console.log();
 console.log("server starting...");
 
 // global vars
-var firstName;
-var lastName;
-var company;
-
 // stores the object type bin for each image
 allObjectTypes = objectTypes.objectTypes;
 
@@ -59,23 +55,62 @@ app.get("/", function(request,response) {
     var ipAddress = request.connection.remoteAddress;
 
     const newUser = new User({ 
-        _id: ipAddress,
-        previouslySubmitted: false
+        userId: ipAddress,
+        previouslySubmitted: false,
     });
-        
+
+    // console.log(users);
+
     newUser.save();
-    
+
+    // newUser.save(function() {
+    //     User.find({userId: ipAddress}, function(error,data) {
+    //         if (error) {
+    //             console.log(error);
+    //         } else {
+    //             console.log("data:");
+    //             console.log(data);
+    //             console.log();
+    //             console.log(data[0].previouslySubmitted);
+    //         }
+    //     });
+    // });
+
+
     response.sendFile(path.join(__dirname + '/html_pages/welcome_page.html'));
 });
 
 app.post("/html_pages/welcome_page", function(request,response) {
     response.redirect('/html_pages/login_page');
+
+    var ipAddress = request.connection.remoteAddress;
+    User.find({userId: ipAddress}, function(error,data) {
+        console.log("Before Update: ");
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("data:");
+            console.log(data);
+        }
+    });
+
+    User.findOneAndUpdate({userId: ipAddress}, {previouslySubmitted: true}, {upsert: true}, function(err, doc) {
+
+    });
+
+    User.find({userId: ipAddress}, function(error,data) {
+        console.log("After Update: ");
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("data:");
+            console.log(data);
+        }
+    });
+
 });
 
 app.get("/html_pages/login_page", function(request,response) {
-    console.log("id2: " + request.requestId);
-
-    previouslySubmitted = false;
     response.sendFile(path.join(__dirname + '/html_pages/login_page.html'));
 });
 
@@ -83,6 +118,10 @@ app.post("/html_pages/login_page", function(request,response) {
     firstName = request.body.firstName;
     lastName = request.body.lastName;
     company = request.body.company;
+
+    var ipAddress = request.connection.remoteAddress;
+    User.updateOne({_id: ipAddress}, {firstName: firstName, lastName: lastName, company: company} , function(e) {});
+
     response.redirect('/html_pages/instructions_page');
 });
 
