@@ -25,6 +25,7 @@
     "browserify-fs": "^1.0.0",
     "csv-load-sync": "^1.0.0",
     "csv-parser": "^3.0.0",
+    "cuid": "^2.1.8",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",

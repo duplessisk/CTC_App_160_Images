@@ -18,8 +18,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 mongoose.connect("mongodb://localhost:27017/ctcAppDB", {useNewUrlParser: true, useUnifiedTopology: true });
 
 const schema = new mongoose.Schema({   
-    _id: Number, 
-    previouslySubmitted: Boolean
+    _id: String, 
+    previouslySubmitted: Boolean,
+    firstName: String,
+    lastName: String,
+    company: String
 });
 
 const User = mongoose.model('User', schema);
@@ -28,8 +31,6 @@ console.log();
 console.log("server starting...");
 
 // global vars
-var userId = 0;
-
 var firstName;
 var lastName;
 var company;
@@ -52,19 +53,18 @@ var totalIncorrectByType = new Map();
 
 // total number of images by object bin type
 var numImagesByType = new Map();
- 
+
 app.get("/", function(request,response) {
-    userId += 1;
+
+    var ipAddress = request.connection.remoteAddress;
 
     const newUser = new User({ 
-        // _id: userId,
-        _id: userId,
-        previouslySubmitted: true
+        _id: ipAddress,
+        previouslySubmitted: false
     });
-    
+        
     newUser.save();
     
-    previouslySubmitted = false;
     response.sendFile(path.join(__dirname + '/html_pages/welcome_page.html'));
 });
 
@@ -73,6 +73,8 @@ app.post("/html_pages/welcome_page", function(request,response) {
 });
 
 app.get("/html_pages/login_page", function(request,response) {
+    console.log("id2: " + request.requestId);
+
     previouslySubmitted = false;
     response.sendFile(path.join(__dirname + '/html_pages/login_page.html'));
 });
