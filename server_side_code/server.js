@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require('mongoose');
-const session = require('express-session');
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
@@ -15,33 +14,56 @@ app.set('view engine', 'ejs');
 
 app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(session( {
-    secret: 'secret-key',
-    resave: false,
-    saveUninitialized: false,
-}));
 
-mongoose.connect("mongodb://localhost:27017/ctcTestingAppDB", {useNewUrlParser: true });
+mongoose.connect("mongodb://localhost:27017/ctcAppDB", {useNewUrlParser: true, useUnifiedTopology: true });
 
-const testTakerSchema = new mongoose.Schema ({
-    id: Number,
+const schema = new mongoose.Schema({   
+    _id: Number, 
     previouslySubmitted: Boolean
 });
 
-const TestTaker = mongoose.model("testTaker", testTakerSchema);
+const User = mongoose.model('User', schema);
 
-var userIds = 0;
+console.log();
+console.log("server starting...");
+
+// global vars
+var userId = 0;
+
+var firstName;
+var lastName;
+var company;
+
+// stores the object type bin for each image
+allObjectTypes = objectTypes.objectTypes;
+
+// Stores path of each image the user answered incorrectly by page (1-5)
+//                 page:   1   2   3   4   5   
+var missedImagesByPage = [ [], [], [], [], [] ];
+
+// Stores path of each image the user answered incorrectly by type 
+var missedImagesByType = new Map();
+
+// Stores path of all images by type
+var allImagesByType = new Map();
+
+// total number of incorrect user responses by object type bin
+var totalIncorrectByType = new Map();
+
+// total number of images by object bin type
+var numImagesByType = new Map();
  
 app.get("/", function(request,response) {
-    userIds += 1;
-    request.session.userId = userIds;
-    
-    var testTaker = new TestTaker({
-        id: request.session.userId,
-        previouslySubmitted: false
-    });
-    testTaker.save();
+    userId += 1;
 
+    const newUser = new User({ 
+        // _id: userId,
+        _id: userId,
+        previouslySubmitted: true
+    });
+    
+    newUser.save();
+    
     previouslySubmitted = false;
     response.sendFile(path.join(__dirname + '/html_pages/welcome_page.html'));
 });
@@ -54,10 +76,6 @@ app.get("/html_pages/login_page", function(request,response) {
     previouslySubmitted = false;
     response.sendFile(path.join(__dirname + '/html_pages/login_page.html'));
 });
-
-var firstName;
-var lastName;
-var company;
 
 app.post("/html_pages/login_page", function(request,response) {
     firstName = request.body.firstName;
@@ -183,26 +201,6 @@ app.get("/html_pages/form_already_submitted_page", function(request,response) {
 });
 
 app.listen(process.env.PORT || 3000);
-
-
-// stores the object type bin for each image
-allObjectTypes = objectTypes.objectTypes;
-
-// Stores path of each image the user answered incorrectly by page (1-5)
-//                 page:   1   2   3   4   5   
-var missedImagesByPage = [ [], [], [], [], [] ];
-
-// Stores path of each image the user answered incorrectly by type 
-var missedImagesByType = new Map();
-
-// Stores path of all images by type
-var allImagesByType = new Map();
-
-// total number of incorrect user responses by object type bin
-var totalIncorrectByType = new Map();
-
-// total number of images by object bin type
-var numImagesByType = new Map();
 
 /**
  * Initializes all the by type maps with the appropriate object type 
