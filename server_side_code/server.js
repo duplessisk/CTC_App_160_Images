@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-mongoose.connect("mongodb://localhost:27017/ctcAppDB", {useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb://localhost:27017/ctcAppDB", {useNewUrlParser: true, useUnifiedTopology: true , useFindAndModify: false });
 
 const schema = new mongoose.Schema({   
     userId: String, 
@@ -59,54 +59,13 @@ app.get("/", function(request,response) {
         previouslySubmitted: false,
     });
 
-    // console.log(users);
-
     newUser.save();
-
-    // newUser.save(function() {
-    //     User.find({userId: ipAddress}, function(error,data) {
-    //         if (error) {
-    //             console.log(error);
-    //         } else {
-    //             console.log("data:");
-    //             console.log(data);
-    //             console.log();
-    //             console.log(data[0].previouslySubmitted);
-    //         }
-    //     });
-    // });
-
 
     response.sendFile(path.join(__dirname + '/html_pages/welcome_page.html'));
 });
 
 app.post("/html_pages/welcome_page", function(request,response) {
     response.redirect('/html_pages/login_page');
-
-    var ipAddress = request.connection.remoteAddress;
-    User.find({userId: ipAddress}, function(error,data) {
-        console.log("Before Update: ");
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("data:");
-            console.log(data);
-        }
-    });
-
-    User.findOneAndUpdate({userId: ipAddress}, {previouslySubmitted: true}, {upsert: true}, function(err, doc) {
-
-    });
-
-    User.find({userId: ipAddress}, function(error,data) {
-        console.log("After Update: ");
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("data:");
-            console.log(data);
-        }
-    });
 
 });
 
@@ -118,9 +77,12 @@ app.post("/html_pages/login_page", function(request,response) {
     firstName = request.body.firstName;
     lastName = request.body.lastName;
     company = request.body.company;
-
+    
     var ipAddress = request.connection.remoteAddress;
-    User.updateOne({_id: ipAddress}, {firstName: firstName, lastName: lastName, company: company} , function(e) {});
+
+    User.findOneAndUpdate({userId: ipAddress}, 
+        {firstName: request.body.firstName, lastName: request.body.lastName,
+            company: request.body.company}, {upsert: false}, function() {});
 
     response.redirect('/html_pages/instructions_page');
 });
@@ -213,23 +175,29 @@ app.get("/html_pages/review", function(request,response) {
 });
 
 app.post("/html_pages/review", function(request,response) {
-    if (previouslySubmitted) {
-        response.redirect('/html_pages/form_already_submitted_page');
-    } else {
-        var btnClicked = request.body.btn;
-        if (btnClicked == "Previous") {
-            response.redirect('/html_pages/page_5');
+
+    var ipAddress = request.connection.remoteAddress;
+
+    User.find({userId: ipAddress}, function(err, userData) {
+        if (userData[0].previouslySubmitted) {
+            response.redirect('/html_pages/form_already_submitted_page');
         } else {
-            previouslySubmitted = true;
-            initByTypeMaps();
-            postAllImagePaths();
-            postMissedImagePaths();
-            postResultsData();
-            writeResultsFile();
-            sendEmailWithResults();
-            response.redirect('/html_pages/results');
+            var btnClicked = request.body.btn;
+            if (btnClicked == "Previous") {
+                response.redirect('/html_pages/page_5');
+            } else {
+                User.findOneAndUpdate({userId: ipAddress}, 
+                    {previouslySubmitted: true}, function() {});
+                initByTypeMaps();
+                postAllImagePaths();
+                postMissedImagePaths();
+                postResultsData();
+                writeResultsFile();
+                // sendEmailWithResults();
+                response.redirect('/html_pages/results');
+            }
         }
-    }
+    });
 });
 
 app.get("/html_pages/results", function(request,response) {
@@ -486,6 +454,10 @@ function setNumImagesByType() {
 }
 
 function writeResultsFile() {
+    firstName = "Kyle";
+    lastName = "Duplessis";
+    company = "Rarecyte";
+
     fs.writeFile("./final_results.txt", "Test Taker: " + firstName + " " + 
         lastName + "\n" + "\n" + "Company: " + company + "\n" + "\n", 
             function() {
