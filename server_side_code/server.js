@@ -27,6 +27,7 @@ const schema = new mongoose.Schema({
     allObjectTypes: Object,
     missedImagesByPage: Object,
     allImagesByType: Map,
+    missedImagesByType: Map,
     totalIncorrectByType: Map,
     numImagesByType: Map
 });
@@ -47,17 +48,11 @@ allObjectTypes = objectTypes.objectTypes;
 // Stores path of each image the user answered incorrectly by type 
 var missedImagesByType = new Map();
 
-// Stores path of all images by type
-var allImagesByType = new Map();
-
 // total number of incorrect user responses
 var totalIncorrect = 0;
 
 // total number of incorrect user responses by object type bin
 var totalIncorrectByType = new Map();
-
-// total number of images by object bin type
-var numImagesByType = new Map();
 
 app.get("/", function(request,response) {
 
@@ -83,10 +78,13 @@ function initGlobalVariables(request) {
         {
             allObjectTypes: objectTypes.objectTypes,
             missedImagesByPage: [ [], [], [], [], [] ],
-            // allImagesByType: new Map(),
-            // totalIncorrectByType: new Map(),
-            // numImagesByType: new Map()
-        }, {upsert: false}, function() {});
+            allImagesByType: new Map(),
+            missedImagesByType: new Map(),
+            totalIncorrectByType: new Map(),
+            numImagesByType: new Map()
+        }, {upsert: false}, function() {
+            initByTypeMaps(request);
+        });
 }
 
 app.post("/html_pages/welcome_page", function(request,response) {
@@ -215,11 +213,11 @@ app.get("/html_pages/review", function(request,response) {
 });
 
 app.post("/html_pages/review", function(request,response) {
-
+    
     var ipAddress = request.connection.remoteAddress;
 
-    User.find({userId: ipAddress}, function(err, userData) {
-        if (userData[0].previouslySubmitted) {
+    User.findOne({userId: ipAddress}, function(err, userData) {
+        if (userData.previouslySubmitted) {
             response.redirect('/html_pages/form_already_submitted_page');
         } else {
             var btnClicked = request.body.btn;
@@ -227,14 +225,16 @@ app.post("/html_pages/review", function(request,response) {
                 response.redirect('/html_pages/page_5');
             } else {
                 User.findOneAndUpdate({userId: ipAddress}, 
-                    {previouslySubmitted: true}, function() {});
-                initByTypeMaps();
-                postAllImagePaths();
-                postMissedImagePaths(request);
-                postResultsData();
-                writeResultsFile();
+                    {previouslySubmitted: true}, {upsert: false}, function() {});
+                
+                console.log(userData);
+
+                // postAllImagePaths(request);
+                // postMissedImagePaths(request);
+                // postResultsData();
+                // writeResultsFile();
                 // sendEmailWithResults();
-                response.redirect('/html_pages/results');
+                // response.redirect('/html_pages/results');
             }
         }
     });
@@ -260,24 +260,41 @@ app.listen(process.env.PORT || 3000);
 function resetMissedImagesByPage(request,pageNumber) {
     var ipAddress = request.connection.remoteAddress;
 
-    User.find({userId: ipAddress}, function(err,userData) {
-        var updatedMissedImagesByPage = userData[0].missedImagesByPage;
+    User.findOne({userId: ipAddress}, function(err,userData) {
+        var updatedMissedImagesByPage = userData.missedImagesByPage;
         updatedMissedImagesByPage[pageNumber - 1] = [];
         User.findOneAndUpdate({userId: ipAddress}, 
-            {missedImagesByPage: updatedMissedImagesByPage}, function() {});
+            {missedImagesByPage: updatedMissedImagesByPage}, {upsert: false}, function() {});
     });   
 }
 
 /**
  * Initializes all the by type maps with the appropriate object type 
  */
-function initByTypeMaps() {
-    for (var i = 0; i < allObjectTypes.length; i++) {
-        var objectType = allObjectTypes[i];
-        missedImagesByType.set(objectType, new Array());
-        totalIncorrectByType.set(objectType, 0);
-        numImagesByType.set(objectType, 0);
-    }
+function initByTypeMaps(request) {
+
+    var ipAddress = request.connection.remoteAddress;
+
+    User.findOne({userId: ipAddress}, function(err,userData) {
+
+        var allObjectTypes = userData.allObjectTypes;
+        var missedImagesByType = userData.missedImagesByType;
+        var totalIncorrectByType = userData.totalIncorrectByType;
+        var numImagesByType = userData.numImagesByType;
+
+        for (var i = 0; i < allObjectTypes.length; i++) {
+            var objectType = allObjectTypes[i];
+            missedImagesByType.set(objectType, new Array());
+            totalIncorrectByType.set(objectType, 0);
+            numImagesByType.set(objectType, 0);
+        }
+
+        User.findOneAndUpdate({userId: ipAddress}, 
+            {missedImagesByType : missedImagesByType, 
+                totalIncorrectByType: totalIncorrectByType,
+                numImagesByType: numImagesByType}, {upsert: false}, function() {});
+
+    });    
 }
 
 /**
@@ -345,16 +362,11 @@ function recordUserResponses(userResponses) {
  *                              response.
  */
 function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) { 
-    // for (var i = 0; i < 10; i++) {
-    //     if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
-    //         var imageNumber = String(pageNumber) + String(i);
-    //         var ipAddress = request.connection.remoteAddress;
-            // missedImagesByPage[pageNumber].push(imageNumber);
-    //}
+
     var ipAddress = request.connection.remoteAddress;
 
-    User.find({userId: ipAddress}, function(err,userData) {
-        var updatedMissedImagesByPage = userData[0].missedImagesByPage;
+    User.findOne({userId: ipAddress}, function(err,userData) {
+        var updatedMissedImagesByPage = userData.missedImagesByPage;
         for (var i = 0; i < 10; i++) {
             if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
                 var imageNumber = String(pageNumber) + String(i);
@@ -363,7 +375,8 @@ function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) {
             }
         }
         User.findOneAndUpdate({userId: ipAddress}, 
-            {missedImagesByPage: updatedMissedImagesByPage}, function() {});
+            {missedImagesByPage: updatedMissedImagesByPage}, {upsert: false}, 
+            function() {});
     });   
 }
 
@@ -371,33 +384,51 @@ function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) {
  * Writes and posts JSON files (seperate file for each object type bin) 
  * containing the user's incorrect answers.
  */
-function postAllImagePaths() {
-    setAllImagePaths();
-    writeImagePaths(allImagesByType, "all_image_paths");
+function postAllImagePaths(request) {
+
+    var ipAddress = request.connection.remoteAddress;
+
+    setAllImagePaths(ipAddress);
+    
+    writeImagePaths(ipAddress,"allImagesByType");
 }
 
 /**
  * Sets all image paths and missed iamge paths. 
  */
-function setAllImagePaths() {
-    for (var i = 0; i < allObjectTypes.length/10; i++) {
-        for (var j = 0; j < 10; j++) {
-            var imageNum = String(i) + String(j);
-            var imagePath = '/static/object_answers/object' + imageNum 
-                + 'answer.png';
-            var thisObjectType = allObjectTypes[Number(imageNum)];
-            if (allImagesByType.has(thisObjectType)) {
-                allImagesByType.get(thisObjectType).push(imagePath);
-                // increment total number images for this Object type
-                numImagesByType.set(thisObjectType, 
-                    numImagesByType.get(thisObjectType) + 1);
-            } else {
-                allImagesByType.set(thisObjectType, new Array(imagePath)); 
-                // init total number images for this Object type
-                numImagesByType.set(thisObjectType, 1);
+function setAllImagePaths(ipAddress) {
+
+    User.findOne({userId: ipAddress}, function(err,userData) {
+
+        var allObjectTypes = userData.allObjectTypes;
+        var allImagesByType = userData.allImagesByType;
+        var numImagesByType = userData.numImagesByType;
+
+        for (var i = 0; i < allObjectTypes.length/10; i++) {
+            for (var j = 0; j < 10; j++) {
+                var imageNum = String(i) + String(j);
+                var imagePath = '/static/object_answers/object' + imageNum 
+                    + 'answer.png';
+                var thisObjectType = allObjectTypes[Number(imageNum)];
+                if (allImagesByType.has(thisObjectType)) {
+                    allImagesByType.get(thisObjectType).push(imagePath);
+                    // increment total number images for this Object type
+                    numImagesByType.set(thisObjectType, 
+                        numImagesByType.get(thisObjectType) + 1);
+                } else {
+                    allImagesByType.set(thisObjectType, new Array(imagePath)); 
+                    // init total number images for this Object type
+                    numImagesByType.set(thisObjectType, 1);
+                }
             }
         }
-    }
+
+        User.findOneAndUpdate({userId: ipAddress}, 
+            {allObjectTypes: allObjectTypes, allImagesByType: allImagesByType,
+                numImagesByType: numImagesByType}, {upsert: false}, function() {});
+
+    });    
+
 }
 
 /**
@@ -405,20 +436,38 @@ function setAllImagePaths() {
  * @param {Map} allImagesByTypeObject - contains all the images organized by 
  *                                      Object type bin.
  */
-function writeImagePaths(imagesByType,fileName) {
-    fs.writeFile("./client_side_code/" + fileName + ".json", "", function(){
-        var imagesByTypeKeys = Array.from(imagesByType.keys());
-        for (var i = 0; i < imagesByTypeKeys.length; i++) {
-            for (var j = 0; j < imagesByType.get(imagesByTypeKeys[i]).length; 
-                j++) {
-                    var thisImageObject = {};
-                    thisImageObject[imagesByTypeKeys[i]] =
-                    imagesByType.get(imagesByTypeKeys[i])[j];
-                    fs.appendFileSync("./client_side_code/" + fileName + ".json", 
-                        JSON.stringify(thisImageObject, null, 4), function(){});
+function writeImagePaths(ipAddress,fileName) {
+
+    User.findOne({userId: ipAddress}, function(err,userData) {
+
+        fs.writeFile("./client_side_code/" + fileName + ".json", "", function(){
+            var imagesByTypeKeys = Array.from(imagesByType.keys());
+            for (var i = 0; i < imagesByTypeKeys.length; i++) {
+                for (var j = 0; j < imagesByType.get(imagesByTypeKeys[i]).length; 
+                    j++) {
+                        var thisImageObject = {};
+                        thisImageObject[imagesByTypeKeys[i]] =
+                        imagesByType.get(imagesByTypeKeys[i])[j];
+                        fs.appendFileSync("./client_side_code/" + fileName + ".json", 
+                            JSON.stringify(thisImageObject, null, 4), function(){});
+                }
             }
-        }
-    });
+        });
+    });   
+
+    // fs.writeFile("./client_side_code/" + fileName + ".json", "", function(){
+    //     var imagesByTypeKeys = Array.from(imagesByType.keys());
+    //     for (var i = 0; i < imagesByTypeKeys.length; i++) {
+    //         for (var j = 0; j < imagesByType.get(imagesByTypeKeys[i]).length; 
+    //             j++) {
+    //                 var thisImageObject = {};
+    //                 thisImageObject[imagesByTypeKeys[i]] =
+    //                 imagesByType.get(imagesByTypeKeys[i])[j];
+    //                 fs.appendFileSync("./client_side_code/" + fileName + ".json", 
+    //                     JSON.stringify(thisImageObject, null, 4), function(){});
+    //         }
+    //     }
+    // });
 }
 
 /**
@@ -426,8 +475,12 @@ function writeImagePaths(imagesByType,fileName) {
  * into the appropriate Object type bins.
  */
 function postMissedImagePaths(request) {
-    setMissedImagesByType(request);
-    writeImagePaths(missedImagesByType, "missed_image_paths");
+
+    var ipAddress = request.connection.remoteAddress;
+
+    setMissedImagesByType(ipAddress);
+    
+    writeImagePaths(ipAddress,"missedImagePaths");
 }
 
 /**
@@ -435,27 +488,14 @@ function postMissedImagePaths(request) {
  * to incorrectly.
  * @param {*} request - 
  */
-function setMissedImagesByType(request) {
+function setMissedImagesByType(ipAddress) {
 
-    // for (var i = 0; i < 5; i++) {
-    //     for (var j = 0; j < missedImagesByPage[i].length; j++) {
-    //         var imageNum = missedImagesByPage[i][j];
-    //         var imagePath = '/static/object_answers/object' + imageNum + 
-    //             'answer.png';
-    //         var thisObjectType = getThisObjectType(imageNum);
-    //         missedImagesByType.get(thisObjectType).push(imagePath);
-    //         totalIncorrectByType.set(thisObjectType, 
-    //             totalIncorrectByType.get(thisObjectType) + 1);
-    //     }
-    // }
+    User.findOne({userId: ipAddress}, function(err,userData) {
 
-    var ipAddress = request.connection.remoteAddress;
+        var missedImagesByPage = userData.missedImagesByPage;
+        var missedImagesByType = userData.missedImagesByType;
 
-    User.find({userId: ipAddress}, function(err,userData) {
-        var missedImagesByPage = userData[0].missedImagesByPage;
-        console.log();
-        console.log("Before");
-        console.log(totalIncorrectByType);
+        var totalIncorrectByType = userData.totalIncorrectByType;
         for (var i = 0; i < 5; i++) {
             for (var j = 0; j < missedImagesByPage[i].length; j++) {
                 var imageNum = missedImagesByPage[i][j];
@@ -467,6 +507,11 @@ function setMissedImagesByType(request) {
                     totalIncorrectByType.get(thisObjectType) + 1);
             }
         }
+
+        User.findOneAndUpdate({userId: ipAddress}, 
+            {missedImagesByPage: missedImagesByPage, totalIncorrectByType: totalIncorrectByType},
+             {upsert: false}, function() {});
+
     });    
 }
 
