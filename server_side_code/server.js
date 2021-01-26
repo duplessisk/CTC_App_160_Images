@@ -225,11 +225,13 @@ app.post("/html_pages/review", function(request,response) {
                 response.redirect('/html_pages/page_5');
             } else {
                 User.findOneAndUpdate({userId: ipAddress}, 
-                    {previouslySubmitted: true}, {upsert: false}, function() {});
+                    {previouslySubmitted: true}, {upsert: false}, function() {
+                        
+                    });
                 
                 console.log(userData);
 
-                // postAllImagePaths(request);
+                postAllImagePaths(request);
                 // postMissedImagePaths(request);
                 // postResultsData();
                 // writeResultsFile();
