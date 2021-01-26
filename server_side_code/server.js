@@ -226,12 +226,14 @@ app.post("/html_pages/review", function(request,response) {
             } else {
                 User.findOneAndUpdate({userId: ipAddress}, 
                     {previouslySubmitted: true}, {upsert: false}, function() {
-                        
+                        setAllImagePaths(ipAddress);
                     });
-                
-                console.log(userData);
 
-                postAllImagePaths(request);
+                // User.findOneAndUpdate({userId: ipAddress}, 
+                //     {previouslySubmitted: true}, {upsert: false}, function() {
+                //         setAllImagePaths(ipAddress);
+                //     });
+                
                 // postMissedImagePaths(request);
                 // postResultsData();
                 // writeResultsFile();
@@ -383,19 +385,6 @@ function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) {
 }
 
 /**
- * Writes and posts JSON files (seperate file for each object type bin) 
- * containing the user's incorrect answers.
- */
-function postAllImagePaths(request) {
-
-    var ipAddress = request.connection.remoteAddress;
-
-    setAllImagePaths(ipAddress);
-    
-    writeImagePaths(ipAddress,"allImagesByType");
-}
-
-/**
  * Sets all image paths and missed iamge paths. 
  */
 function setAllImagePaths(ipAddress) {
@@ -427,8 +416,9 @@ function setAllImagePaths(ipAddress) {
 
         User.findOneAndUpdate({userId: ipAddress}, 
             {allObjectTypes: allObjectTypes, allImagesByType: allImagesByType,
-                numImagesByType: numImagesByType}, {upsert: false}, function() {});
-
+                numImagesByType: numImagesByType}, {upsert: false}, function() {
+                    setMissedImagesByType(ipAddress); // next callback
+                });
     });    
 
 }
@@ -441,6 +431,12 @@ function setAllImagePaths(ipAddress) {
 function writeImagePaths(ipAddress,fileName) {
 
     User.findOne({userId: ipAddress}, function(err,userData) {
+
+        console.log();
+        console.log("In writeImagePaths");
+        console.log(userData);
+
+        var imagesByType = userData.missedImagesByType;
 
         fs.writeFile("./client_side_code/" + fileName + ".json", "", function(){
             var imagesByTypeKeys = Array.from(imagesByType.keys());
@@ -473,19 +469,6 @@ function writeImagePaths(ipAddress,fileName) {
 }
 
 /**
- * Organizes and posts image paths associated with an incorrect user answer 
- * into the appropriate Object type bins.
- */
-function postMissedImagePaths(request) {
-
-    var ipAddress = request.connection.remoteAddress;
-
-    setMissedImagesByType(ipAddress);
-    
-    writeImagePaths(ipAddress,"missedImagePaths");
-}
-
-/**
  * Stores (by Object type bin) the image paths of each image the user responded 
  * to incorrectly.
  * @param {*} request - 
@@ -511,9 +494,10 @@ function setMissedImagesByType(ipAddress) {
         }
 
         User.findOneAndUpdate({userId: ipAddress}, 
-            {missedImagesByPage: missedImagesByPage, totalIncorrectByType: totalIncorrectByType},
-             {upsert: false}, function() {});
-
+            {missedImagesByType: missedImagesByType}, {upsert: false}, 
+            function() {        
+                writeImagePaths(ipAddress,"allImagePaths");
+            });
     });    
 }
 
