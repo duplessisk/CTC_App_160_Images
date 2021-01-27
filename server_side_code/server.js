@@ -293,6 +293,7 @@ function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) {
 
     var ipAddress = request.connection.remoteAddress;
     console.log();
+    console.log("pageNumber: " + pageNumber);
     console.log("ipAddress");
     console.log(ipAddress);
     User.findOne({userId: ipAddress}, function(err,userData) {
