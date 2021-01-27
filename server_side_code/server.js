@@ -178,9 +178,6 @@ app.post("/html_pages/review", function(request,response) {
             if (userData.previouslySubmitted) {
                 response.redirect('/html_pages/form_already_submitted_page');
             } else {
-                console.log();
-                console.log(userData.missedImagesByPage);
-
                 User.findOneAndUpdate({userId: ipAddress}, 
                     {previouslySubmitted: true}, {upsert: false}, 
                         function() {});
