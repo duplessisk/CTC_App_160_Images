@@ -178,6 +178,9 @@ app.post("/html_pages/review", function(request,response) {
             if (userData.previouslySubmitted) {
                 response.redirect('/html_pages/form_already_submitted_page');
             } else {
+                console.log();
+                console.log(userData.missedImagesByPage);
+
                 User.findOneAndUpdate({userId: ipAddress}, 
                     {previouslySubmitted: true}, {upsert: false}, 
                         function() {});
@@ -292,10 +295,7 @@ function recordUserResponses(userResponses) {
 function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) { 
 
     var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-    console.log();
-    console.log("pageNumber: " + pageNumber);
-    console.log("ipAddress");
-    console.log(ipAddress);
+
     User.findOne({userId: ipAddress}, function(err,userData) {
 
         var updatedMissedImagesByPage = userData.missedImagesByPage;
