@@ -184,6 +184,7 @@ app.post("/html_pages/review", function(request,response) {
                 writeResultsFile(totalMissedByType, numImagesByType, 
                     missedImagesByType);
                 sendEmailWithResults();
+                User.findOneAndDelete({userId: ipAddress},function() {});
                 response.redirect('/html_pages/results');
             }
         }

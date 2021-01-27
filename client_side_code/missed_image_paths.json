@@ -1,6 +1,4 @@
 {
-    "CTC": "/static/object_answers/object00answer.png"
-}{
     "CTC": "/static/object_answers/object13answer.png"
 }{
     "CTC": "/static/object_answers/object14answer.png"
@@ -37,27 +35,9 @@
 }{
     "CTC": "/static/object_answers/object45answer.png"
 }{
-    "Unidentified Cell": "/static/object_answers/object01answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object02answer.png"
-}{
     "Unidentified Cell": "/static/object_answers/object10answer.png"
 }{
-    "Fluorescent Artifact": "/static/object_answers/object03answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object06answer.png"
-}{
     "Fluorescent Artifact": "/static/object_answers/object12answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object04answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object05answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object07answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object08answer.png"
-}{
-    "White Blood Cell": "/static/object_answers/object09answer.png"
 }{
     "White Blood Cell": "/static/object_answers/object25answer.png"
 }{
