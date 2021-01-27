@@ -35,7 +35,7 @@ console.log("server starting...");
 
 app.get("/", function(request,response) {
 
-    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
 
     const newUser = new User({ 
         userId: ipAddress,
@@ -63,7 +63,7 @@ app.post("/html_pages/login_page", function(request,response) {
     lastName = request.body.lastName;
     company = request.body.company;
     
-    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
 
     User.findOneAndUpdate({userId: ipAddress}, 
         {firstName: request.body.firstName, lastName: request.body.lastName,
@@ -165,7 +165,7 @@ app.get("/html_pages/review", function(request,response) {
 
 app.post("/html_pages/review", function(request,response) {
     
-    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
 
     
 
@@ -215,7 +215,7 @@ app.listen(process.env.PORT || 3000);
  * @param {Number} pageNumber - page whose missed paths are to be reset.
  */
 function resetMissedImagesByPage(request,pageNumber) {
-    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
 
     User.findOne({userId: ipAddress}, function(err,userData) {
         var updatedMissedImagesByPage = userData.missedImagesByPage;
@@ -291,7 +291,7 @@ function recordUserResponses(userResponses) {
  */
 function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) { 
 
-    var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
     console.log();
     console.log("pageNumber: " + pageNumber);
     console.log("ipAddress");
@@ -302,7 +302,7 @@ function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) {
         for (var i = 0; i < 10; i++) {
             if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
                 var imageNumber = String(pageNumber) + String(i);
-                var ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+                var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
                 updatedMissedImagesByPage[pageNumber].push(imageNumber);
             }
         }
