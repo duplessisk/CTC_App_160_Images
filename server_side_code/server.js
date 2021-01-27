@@ -16,11 +16,8 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/ctcAppDB", {useNewUrlParser: true, 
+mongoose.connect("mongodb+srv://admin-kyle:Subaru2007@ctcappcluster.4hrjs.mongodb.net/ctcAppDB", {useNewUrlParser: true, 
     useUnifiedTopology: true , useFindAndModify: false });
-
-// mongoose.connect("mongodb+srv://admin-kyle:Subaru2007@ctcappcluster.4hrjs.mongodb.net/ctcAppDB", {useNewUrlParser: true, 
-//     useUnifiedTopology: true , useFindAndModify: false });
 
 const schema = new mongoose.Schema({   
     userId: String, 
@@ -297,6 +294,10 @@ function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) {
     var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
 
     User.findOne({userId: ipAddress}, function(err,userData) {
+
+        console.log();
+        console.log(pageNumber);
+        console.log(userData);
 
         var updatedMissedImagesByPage = userData.missedImagesByPage;
         for (var i = 0; i < 10; i++) {
