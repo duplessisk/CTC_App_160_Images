@@ -25,12 +25,7 @@ const schema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     company: String,
-    // allObjectTypes: Object,
     missedImagesByPage: Object,
-    // allImagesByType: Map,
-    // missedImagesByType: Map,
-    // totalIncorrectByType: Map,
-    // numImagesByType: Map
 });
 
 const User = mongoose.model('User', schema);
@@ -45,7 +40,6 @@ app.get("/", function(request,response) {
     const newUser = new User({ 
         userId: ipAddress,
         previouslySubmitted: false,
-        // allObjectTypes: objectTypes.objectTypes,
         missedImagesByPage: [ [], [], [], [], [] ]
     });
 
@@ -53,28 +47,7 @@ app.get("/", function(request,response) {
 
     response.sendFile(path.join(__dirname + '/html_pages/welcome_page.html'));
 
-    // newUser.save(function() {
-    //     initGlobalVariables(request);
-    // });
-
 });
-
-// function initGlobalVariables(request) {
-
-//     var ipAddress = request.connection.remoteAddress;
-
-//     User.findOneAndUpdate({userId: ipAddress}, 
-//         {
-//             allObjectTypes: objectTypes.objectTypes,
-//             missedImagesByPage: [ [], [], [], [], [] ],
-//             allImagesByType: new Map(),
-//             missedImagesByType: new Map(),
-//             totalIncorrectByType: new Map(),
-//             numImagesByType: new Map()
-//         }, {upsert: false}, function() {
-//             initByTypeMaps(request);
-//         });
-// }
 
 app.post("/html_pages/welcome_page", function(request,response) {
     response.redirect('/html_pages/login_page');
@@ -112,9 +85,7 @@ app.get("/html_pages/page_1", function(request,response) {
 });
 
 app.post("/html_pages/page_1", function(request,response) {
-
     resetMissedImagesByPage(request,1);
-    
     answerKeyPageOne = answerKeys.answerKeys[0];
     driveApp(answerKeyPageOne,request,1);
     response.redirect('/html_pages/page_2');
@@ -125,12 +96,10 @@ app.get("/html_pages/page_2", function(request,response) {
 });
 
 app.post("/html_pages/page_2", function(request,response) {
-    var btnClicked = request.body.btn;
-
     resetMissedImagesByPage(request,2);
-
     answerKeyPageTwo = answerKeys.answerKeys[1];
     driveApp(answerKeyPageTwo,request,2);
+    var btnClicked = request.body.btn;
     if (btnClicked == "Previous") {
         response.redirect('/page_1');
     } else if (btnClicked == "Next") {
@@ -143,12 +112,10 @@ app.get("/html_pages/page_3", function(request,response) {
 });
 
 app.post("/html_pages/page_3", function(request,response) {
-    var btnClicked = request.body.btn;
-
     resetMissedImagesByPage(request,3);
-
     answerKeyPageThree = answerKeys.answerKeys[2];
     driveApp(answerKeyPageThree,request,3);
+    var btnClicked = request.body.btn;
     if (btnClicked == "Previous") {
         response.redirect('/html_pages/page_2');
     } else if (btnClicked == "Next") {
@@ -161,12 +128,10 @@ app.get("/html_pages/page_4", function(request,response) {
 });
 
 app.post("/html_pages/page_4", function(request,response) {
-    var btnClicked = request.body.btn;
-
     resetMissedImagesByPage(request,4);
-
     answerKeyPageFour = answerKeys.answerKeys[3];
     driveApp(answerKeyPageFour,request,4);
+    var btnClicked = request.body.btn;
     if (btnClicked == "Previous") {
         response.redirect('/html_pages/page_3');
     } else if (btnClicked == "Next") {
@@ -179,12 +144,10 @@ app.get("/html_pages/page_5", function(request,response) {
 });
 
 app.post("/html_pages/page_5", function(request,response) {
-    var btnClicked = request.body.btn;
-
     resetMissedImagesByPage(request,5);
-
     answerKeyPageFive = answerKeys.answerKeys[4];
     driveApp(answerKeyPageFive,request,5);
+    var btnClicked = request.body.btn;
     if (btnClicked == "Previous") {
         response.redirect('/html_pages/page_4');
     } else if (btnClicked == "Continue") {
@@ -208,17 +171,19 @@ app.post("/html_pages/review", function(request,response) {
             if (btnClicked == "Previous") {
                 response.redirect('/html_pages/page_5');
             } else {
+                User.findOneAndUpdate({userId: ipAddress}, 
+                    {previouslySubmitted: true}, {upsert: false}, 
+                        function() {});
                 var numImagesByType = postAllImagePaths(userData);
-                [missedImagesByType,totalIncorrectByType] = postMissedImagePaths(userData);
-
-                console.log();
-                console.log("totalIncorrectByType: ");
-                console.log(totalIncorrectByType);
+                [missedImagesByType,totalMissedByType] = 
+                    postMissedImagePaths(userData);
                 
-                var totalIncorrect = getTotalIncorrect(totalIncorrectByType);
-                postResultsData(numImagesByType,totalIncorrectByType,totalIncorrect);
-                writeResultsFile(totalIncorrectByType, numImagesByType, missedImagesByType);
-                // sendEmailWithResults();
+                var totalIncorrect = getTotalIncorrect(totalMissedByType);
+                postResultsData(numImagesByType, totalMissedByType, 
+                    totalIncorrect);
+                writeResultsFile(totalMissedByType, numImagesByType, 
+                    missedImagesByType);
+                sendEmailWithResults();
                 response.redirect('/html_pages/results');
             }
         }
@@ -238,9 +203,9 @@ app.listen(process.env.PORT || 3000);
 
 /**
  * Resets the missed images for the specified page (allows user to navigate 
- * from the current page and then return to it)
- * @param {*} request 
- * @param {Number} pageNumber - page whose missed paths are to be reset 
+ * from the current page and then return to it).
+ * @param {http} request - http request from client.
+ * @param {Number} pageNumber - page whose missed paths are to be reset.
  */
 function resetMissedImagesByPage(request,pageNumber) {
     var ipAddress = request.connection.remoteAddress;
@@ -322,6 +287,7 @@ function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) {
     var ipAddress = request.connection.remoteAddress;
 
     User.findOne({userId: ipAddress}, function(err,userData) {
+
         var updatedMissedImagesByPage = userData.missedImagesByPage;
         for (var i = 0; i < 10; i++) {
             if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
@@ -336,20 +302,21 @@ function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) {
     });   
 }
 
+
 /**
  * Writes and posts JSON files (seperate file for each object type bin) 
  * containing the user's incorrect answers.
+ * @return - numImagesByType.
  */
 function postAllImagePaths() {
-    
     [allImagesByType, numImagesByType] = setAllImagePaths();
-
     writeImagePaths(allImagesByType, "all_image_paths");
     return numImagesByType;
 }
 
 /**
  * Sets all image paths and missed iamge paths. 
+ * @return - Array containing allImagesByType and numImagesByType.
  */
 function setAllImagePaths() {
 
@@ -382,23 +349,26 @@ function setAllImagePaths() {
 /**
  * Organizes and posts image paths associated with an incorrect user answer 
  * into the appropriate Object type bins.
+ * @return - array containing missedImagesByType and totalMissedByType.
  */
 function postMissedImagePaths(userData) {
-    [missedImagesByType,totalIncorrectByType] = setMissedImagePaths(userData);
+    [missedImagesByType,totalMissedByType] = setMissedImagePaths(userData);
     writeImagePaths(missedImagesByType, "missed_image_paths");
-    return [missedImagesByType,totalIncorrectByType];
+    return [missedImagesByType,totalMissedByType];
 }
 
 /**
  * Stores (by Object type bin) the image paths of each image the user responded 
  * to incorrectly.
- * @param {*} request - 
+ * @param {MongoDB document} userData - contains all the data related to 
+ *                                      this client's request.
+ * @return - array containing missedImagesByType and totalMissedByType.
  */
 function setMissedImagePaths(userData) {
 
     var allObjectTypes = objectTypes.objectTypes;
     var missedImagesByPage = userData.missedImagesByPage;
-    [missedImagesByType, totalIncorrectByType] = initMissedMaps(allObjectTypes);
+    [missedImagesByType, totalMissedByType] = initMissedMaps(allObjectTypes);
 
     for (var i = 0; i < 5; i++) {
         for (var j = 0; j < missedImagesByPage[i].length; j++) {
@@ -408,41 +378,44 @@ function setMissedImagePaths(userData) {
 
             var thisObjectType = getThisObjectType(allObjectTypes,imageNum);
             if (missedImagesByType.has(thisObjectType)) {
-                totalIncorrectByType.set(thisObjectType, 
-                    totalIncorrectByType.get(thisObjectType) + 1);
+                totalMissedByType.set(thisObjectType, 
+                    totalMissedByType.get(thisObjectType) + 1);
                 missedImagesByType.get(thisObjectType).push(imagePath);
             }
         }
     }
 
-    return [missedImagesByType, totalIncorrectByType];
+    return [missedImagesByType, totalMissedByType];
 
 }
 
 /**
- * 
- * @param {*} allObjectTypes - 
+ * Adds keys for missedImagesByType and totalMissedByType maps.
+ * @param {Array} allObjectTypes - Records type of each object.
+ * @return - array containing missedImagesByType and totalMissedByType.
  */
 function initMissedMaps(allObjectTypes) {
-    var totalIncorrectByType = new Map();
+    var totalMissedByType = new Map();
     var missedImagesByType = new Map();
     for (var i = 0; i < allObjectTypes.length; i++) {
         var objectType = allObjectTypes[i];
-        totalIncorrectByType.set(objectType, 0);
+        totalMissedByType.set(objectType, 0);
         missedImagesByType.set(objectType, new Array());
     }
-    return [missedImagesByType,totalIncorrectByType];
+    return [missedImagesByType,totalMissedByType];
 }
 
 /**
- * 
- * @param {*} totalIncorrectByType - 
+ * Records the total number of incorrect responses for each object type
+ * @param {Map} totalMissedByType - Contains total number of missed objects by 
+ *                                  type
+ * @return - total number of incorrect objects (type agnostic) 
  */
-function getTotalIncorrect(totalIncorrectByType) {
+function getTotalIncorrect(totalMissedByType) {
     var totalIncorrect = 0;
-    var keys = Array.from(totalIncorrectByType.keys());
+    var keys = Array.from(totalMissedByType.keys());
     for (var i = 0; i < keys.length; i++) {
-        totalIncorrect += totalIncorrectByType.get(keys[i]).length;
+        totalIncorrect += totalMissedByType.get(keys[i]).length;
     }
     return totalIncorrect;
 }
@@ -490,14 +463,14 @@ function getThisObjectType(allObjectTypes,imageNum) {
  * Posts a breakdown of the user's performance overall and within each Object 
  * type on the exam. 
  */
-function postResultsData(numImagesByType, totalIncorrectByType, totalIncorrect) {
+function postResultsData(numImagesByType, totalMissedByType, totalIncorrect) {
     var numImagesByTypeString = setNumImagesByType(numImagesByType);
-    var totalIncorrectByTypeString = setTotalIncorrectByType(totalIncorrectByType);
+    var totalMissedByTypeString = settotalMissedByType(totalMissedByType);
     var totalIncorrectString = setTotalIncorrect(totalIncorrect);
 
     fs.writeFile("./client_side_code/results_data.json",  
         totalIncorrectString + 
-        totalIncorrectByTypeString + 
+        totalMissedByTypeString + 
         numImagesByTypeString , function() {
     });
 }
@@ -505,6 +478,7 @@ function postResultsData(numImagesByType, totalIncorrectByType, totalIncorrect) 
 /**
  * Creates a JSON String representing the total number of incorrect responses
  * by the user.
+ * @totalIncorrect {Number} - total number of incorrect objects (type agnostic).
  * @return - JSON String representing total number of incorrect responses by 
  *           the user.
  */
@@ -516,6 +490,7 @@ function setTotalIncorrect(totalIncorrect) {
 
 /**
  * Sets the total number of questions for each Object type.
+ * @numImagesByType {Map} - contains the total number of objects by type.
  * @return - a string representing the total number of images by Object type.
  */
 function setNumImagesByType(numImagesByType) {
@@ -531,22 +506,32 @@ function setNumImagesByType(numImagesByType) {
 
 /**
  * Sets the user's total number of incorrect responses by Object type.
+ * @totalMissedByType - contains number of missed objects by type.
  * @return - a string representing the user's total number of incorrect 
  *           responses by Object type.
  */
-function setTotalIncorrectByType(totalIncorrectByType) {
+function settotalMissedByType(totalMissedByType) {
 
-    var totalIncorrectByTypeObject = {};
-    var totalIncorrectByTypeKeys = Array.from(totalIncorrectByType.keys());
-    for (var i = 0; i < totalIncorrectByTypeKeys.length; i++) {
+    var totalMissedByTypeObject = {};
+    var totalMissedByTypeKeys = Array.from(totalMissedByType.keys());
+    for (var i = 0; i < totalMissedByTypeKeys.length; i++) {
         var thisTypeTotalIncorrect = 
-            totalIncorrectByType.get(totalIncorrectByTypeKeys[i]);
-        totalIncorrectByTypeObject[totalIncorrectByTypeKeys[i]] = thisTypeTotalIncorrect;
+            totalMissedByType.get(totalMissedByTypeKeys[i]);
+        totalMissedByTypeObject[totalMissedByTypeKeys[i]] = 
+            thisTypeTotalIncorrect;
     }
-    return JSON.stringify(totalIncorrectByTypeObject,null,4);
+    return JSON.stringify(totalMissedByTypeObject,null,4);
 }
 
-function writeResultsFile(totalIncorrectByType, numImagesByType, missedImagesByType) {
+/**
+ * Writes the results file that contains all of the object type and score data 
+ * that is used to populate the results page on the front end. 
+ * @param {*} totalMissedByType - 
+ * @param {*} numImagesByType - 
+ * @param {*} missedImagesByType -  
+ */
+function writeResultsFile(totalMissedByType, numImagesByType, 
+                          missedImagesByType) {
     firstName = "Kyle";
     lastName = "Duplessis";
     company = "Rarecyte";
@@ -556,10 +541,10 @@ function writeResultsFile(totalIncorrectByType, numImagesByType, missedImagesByT
             function() {
         fs.appendFileSync("./final_results.txt", "Breakdown: " + "\n", 
         function() {});
-        var keys = Array.from(totalIncorrectByType.keys());
+        var keys = Array.from(totalMissedByType.keys());
         for (var i = 0; i < keys.length; i++) {
             fs.appendFileSync("./final_results.txt", "\n" + fileContents(keys[i], 
-                numImagesByType, totalIncorrectByType, missedImagesByType), 
+                numImagesByType, totalMissedByType, missedImagesByType), 
                 function(){});
         }
         var time = new Date();
@@ -573,24 +558,38 @@ function writeResultsFile(totalIncorrectByType, numImagesByType, missedImagesByT
     });
 }
 
-function fileContents(objectType,numImagesByType,totalIncorrectByType,missedImagesByType) {
-    var percentageIncorrect = 100*totalIncorrectByType.get(objectType)/
+/**
+ * 
+ * @param {*} objectType 
+ * @param {*} numImagesByType 
+ * @param {*} totalMissedByType 
+ * @param {*} missedImagesByType 
+ * @return - 
+ */
+function fileContents(objectType, numImagesByType, totalMissedByType,
+                      missedImagesByType) {
+    var percentageIncorrect = 100*totalMissedByType.get(objectType)/
         numImagesByType.get(objectType);
     var percentageCorrect = (100 - Math.round(percentageIncorrect));
     var globalMessage = "object Type " + objectType + ": Missed " + 
-        totalIncorrectByType.get(objectType) + " out of " + 
-            numImagesByType.get(objectType) + " (" + percentageCorrect + "%)" + "\n";
+        totalMissedByType.get(objectType) + " out of " + 
+            numImagesByType.get(objectType) + " (" + percentageCorrect + "%)" +
+                "\n";
     var granularMessage = "Images Missed: ";
     for (var i = 0; i < missedImagesByType.get(objectType).length; i++) {
         if (i != 0) {
             granularMessage += ", ";
         }
-        granularMessage += missedImagesByType.get(objectType)[i].substring(29,31);
+        granularMessage += missedImagesByType.get(objectType)[i]
+            .substring(29,31);
     }
     granularMessage += "\n";
     return globalMessage + granularMessage;
 }
 
+/**
+ * 
+ */
 function sendEmailWithResults() {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
