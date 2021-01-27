@@ -16,7 +16,7 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-mongoose.connect("mongodb://localhost:27017/ctcAppDB", {useNewUrlParser: true, 
+mongoose.connect("mongodb+srv://admin-kyle:Subaru2007@ctcappcluster.4hrjs.mongodb.net/ctcAppDB", {useNewUrlParser: true, 
     useUnifiedTopology: true , useFindAndModify: false });
 
 const schema = new mongoose.Schema({   
@@ -171,6 +171,11 @@ app.post("/html_pages/review", function(request,response) {
             if (btnClicked == "Previous") {
                 response.redirect('/html_pages/page_5');
             } else {
+
+                console.log();
+                console.log("userData: ");
+                console.log(userData);
+
                 User.findOneAndUpdate({userId: ipAddress}, 
                     {previouslySubmitted: true}, {upsert: false}, 
                         function() {});
@@ -183,8 +188,8 @@ app.post("/html_pages/review", function(request,response) {
                     totalIncorrect);
                 writeResultsFile(totalMissedByType, numImagesByType, 
                     missedImagesByType);
-                sendEmailWithResults();
-                User.findOneAndDelete({userId: ipAddress},function() {});
+                // sendEmailWithResults();
+                // User.findOneAndDelete({userId: ipAddress},function() {});
                 response.redirect('/html_pages/results');
             }
         }
