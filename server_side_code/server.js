@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require('mongoose');
-const MongooseMap = require('mongoose-map')(mongoose);
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
