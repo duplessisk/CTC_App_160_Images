@@ -16,8 +16,11 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-mongoose.connect("mongodb+srv://admin-kyle:Subaru2007@ctcappcluster.4hrjs.mongodb.net/ctcAppDB", {useNewUrlParser: true, 
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/ctcAppDB", {useNewUrlParser: true, 
     useUnifiedTopology: true , useFindAndModify: false });
+
+// mongoose.connect("mongodb+srv://admin-kyle:Subaru2007@ctcappcluster.4hrjs.mongodb.net/ctcAppDB", {useNewUrlParser: true, 
+//     useUnifiedTopology: true , useFindAndModify: false });
 
 const schema = new mongoose.Schema({   
     userId: String, 
