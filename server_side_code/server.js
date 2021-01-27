@@ -85,7 +85,7 @@ app.get("/html_pages/page_1", function(request,response) {
 });
 
 app.post("/html_pages/page_1", function(request,response) {
-    resetMissedImagesByPage(request,1);
+    // resetMissedImagesByPage(request,1);
     answerKeyPageOne = answerKeys.answerKeys[0];
     driveApp(answerKeyPageOne,request,1);
     response.redirect('/html_pages/page_2');
@@ -96,12 +96,13 @@ app.get("/html_pages/page_2", function(request,response) {
 });
 
 app.post("/html_pages/page_2", function(request,response) {
-    resetMissedImagesByPage(request,2);
+    // resetMissedImagesByPage(request,2);
     answerKeyPageTwo = answerKeys.answerKeys[1];
     driveApp(answerKeyPageTwo,request,2);
     var btnClicked = request.body.btn;
     if (btnClicked == "Previous") {
-        response.redirect('/page_1');
+        resetMissedImagesByPage(request,1);
+        response.redirect('/html_pages/page_1');
     } else if (btnClicked == "Next") {
         response.redirect('/html_pages/page_3');
     }
@@ -112,11 +113,12 @@ app.get("/html_pages/page_3", function(request,response) {
 });
 
 app.post("/html_pages/page_3", function(request,response) {
-    resetMissedImagesByPage(request,3);
+    // resetMissedImagesByPage(request,3);
     answerKeyPageThree = answerKeys.answerKeys[2];
     driveApp(answerKeyPageThree,request,3);
     var btnClicked = request.body.btn;
     if (btnClicked == "Previous") {
+        resetMissedImagesByPage(request,2);
         response.redirect('/html_pages/page_2');
     } else if (btnClicked == "Next") {
         response.redirect('/html_pages/page_4');
@@ -128,11 +130,12 @@ app.get("/html_pages/page_4", function(request,response) {
 });
 
 app.post("/html_pages/page_4", function(request,response) {
-    resetMissedImagesByPage(request,4);
+    // resetMissedImagesByPage(request,4);
     answerKeyPageFour = answerKeys.answerKeys[3];
     driveApp(answerKeyPageFour,request,4);
     var btnClicked = request.body.btn;
     if (btnClicked == "Previous") {
+        resetMissedImagesByPage(request,3);
         response.redirect('/html_pages/page_3');
     } else if (btnClicked == "Next") {
         response.redirect('/html_pages/page_5');
@@ -144,11 +147,12 @@ app.get("/html_pages/page_5", function(request,response) {
 });
 
 app.post("/html_pages/page_5", function(request,response) {
-    resetMissedImagesByPage(request,5);
+    // resetMissedImagesByPage(request,5);
     answerKeyPageFive = answerKeys.answerKeys[4];
     driveApp(answerKeyPageFive,request,5);
     var btnClicked = request.body.btn;
     if (btnClicked == "Previous") {
+        resetMissedImagesByPage(request,4);
         response.redirect('/html_pages/page_4');
     } else if (btnClicked == "Continue") {
         response.redirect('/html_pages/review');
@@ -163,19 +167,17 @@ app.post("/html_pages/review", function(request,response) {
     
     var ipAddress = request.connection.remoteAddress;
 
+    
+
     User.findOne({userId: ipAddress}, function(e, userData) {
-        if (userData.previouslySubmitted) {
-            response.redirect('/html_pages/form_already_submitted_page');
+        var btnClicked = request.body.btn;
+        if (btnClicked == "Previous") {
+            resetMissedImagesByPage(request,5);
+            response.redirect('/html_pages/page_5');
         } else {
-            var btnClicked = request.body.btn;
-            if (btnClicked == "Previous") {
-                response.redirect('/html_pages/page_5');
+            if (userData.previouslySubmitted) {
+                response.redirect('/html_pages/form_already_submitted_page');
             } else {
-
-                console.log();
-                console.log("userData: ");
-                console.log(userData);
-
                 User.findOneAndUpdate({userId: ipAddress}, 
                     {previouslySubmitted: true}, {upsert: false}, 
                         function() {});
@@ -189,7 +191,6 @@ app.post("/html_pages/review", function(request,response) {
                 writeResultsFile(totalMissedByType, numImagesByType, 
                     missedImagesByType);
                 // sendEmailWithResults();
-                // User.findOneAndDelete({userId: ipAddress},function() {});
                 response.redirect('/html_pages/results');
             }
         }
@@ -305,7 +306,9 @@ function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) {
         User.findOneAndUpdate({userId: ipAddress}, 
             {missedImagesByPage: updatedMissedImagesByPage}, {upsert: false}, 
             function() {});
+
     });   
+
 }
 
 
