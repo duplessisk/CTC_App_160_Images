@@ -256,11 +256,10 @@ function setResults() {
         totalCorrect -= incorrectNumThisTypeValue;
         totalNumQuestions += totalNumThisTypeValue;
 
-        if (incorrectNumThisTypeValue == 0) {
-            dataMessageDiv.innerHTML = "You missed no images (100%)";
-        } else {
-            dataMessageDiv.innerHTML = incorrectNumThisTypeValue + " out of " + totalNumThisTypeValue;
-        }
+        dataMessageDiv.innerHTML = 
+            (totalNumThisTypeValue - incorrectNumThisTypeValue) + " out of " + 
+                totalNumThisTypeValue;
+
         document.querySelector("#objectInfo" + i + "Div")
             .appendChild(dataMessageDiv);
     }

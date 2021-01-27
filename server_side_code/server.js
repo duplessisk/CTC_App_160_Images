@@ -16,7 +16,8 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-mongoose.connect("mongodb://localhost:27017/ctcAppDB", {useNewUrlParser: true, useUnifiedTopology: true , useFindAndModify: false });
+mongoose.connect("mongodb://localhost:27017/ctcAppDB", {useNewUrlParser: true, 
+    useUnifiedTopology: true , useFindAndModify: false });
 
 const schema = new mongoose.Schema({   
     userId: String, 
@@ -24,12 +25,12 @@ const schema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     company: String,
-    allObjectTypes: Object,
+    // allObjectTypes: Object,
     missedImagesByPage: Object,
-    allImagesByType: Map,
-    missedImagesByType: Map,
-    totalIncorrectByType: Map,
-    numImagesByType: Map
+    // allImagesByType: Map,
+    // missedImagesByType: Map,
+    // totalIncorrectByType: Map,
+    // numImagesByType: Map
 });
 
 const User = mongoose.model('User', schema);
@@ -44,31 +45,36 @@ app.get("/", function(request,response) {
     const newUser = new User({ 
         userId: ipAddress,
         previouslySubmitted: false,
+        // allObjectTypes: objectTypes.objectTypes,
+        missedImagesByPage: [ [], [], [], [], [] ]
     });
 
-    newUser.save(function() {
-        initGlobalVariables(request);
-    });
+    newUser.save();
 
     response.sendFile(path.join(__dirname + '/html_pages/welcome_page.html'));
+
+    // newUser.save(function() {
+    //     initGlobalVariables(request);
+    // });
+
 });
 
-function initGlobalVariables(request) {
+// function initGlobalVariables(request) {
 
-    var ipAddress = request.connection.remoteAddress;
+//     var ipAddress = request.connection.remoteAddress;
 
-    User.findOneAndUpdate({userId: ipAddress}, 
-        {
-            allObjectTypes: objectTypes.objectTypes,
-            missedImagesByPage: [ [], [], [], [], [] ],
-            allImagesByType: new Map(),
-            missedImagesByType: new Map(),
-            totalIncorrectByType: new Map(),
-            numImagesByType: new Map()
-        }, {upsert: false}, function() {
-            initByTypeMaps(request);
-        });
-}
+//     User.findOneAndUpdate({userId: ipAddress}, 
+//         {
+//             allObjectTypes: objectTypes.objectTypes,
+//             missedImagesByPage: [ [], [], [], [], [] ],
+//             allImagesByType: new Map(),
+//             missedImagesByType: new Map(),
+//             totalIncorrectByType: new Map(),
+//             numImagesByType: new Map()
+//         }, {upsert: false}, function() {
+//             initByTypeMaps(request);
+//         });
+// }
 
 app.post("/html_pages/welcome_page", function(request,response) {
     response.redirect('/html_pages/login_page');
@@ -194,7 +200,7 @@ app.post("/html_pages/review", function(request,response) {
     
     var ipAddress = request.connection.remoteAddress;
 
-    User.findOne({userId: ipAddress}, function(err, userData) {
+    User.findOne({userId: ipAddress}, function(e, userData) {
         if (userData.previouslySubmitted) {
             response.redirect('/html_pages/form_already_submitted_page');
         } else {
@@ -204,13 +210,15 @@ app.post("/html_pages/review", function(request,response) {
             } else {
                 var numImagesByType = postAllImagePaths(userData);
                 [missedImagesByType,totalIncorrectByType] = postMissedImagePaths(userData);
-                // var missedByTypeArr = postMissedImagePaths(userData);
-                // var missedImagesByType = missedByTypeArr[0];
-                // var totalIncorrectByType = missedByTypeArr[1];
+
+                console.log();
+                console.log("totalIncorrectByType: ");
+                console.log(totalIncorrectByType);
+                
                 var totalIncorrect = getTotalIncorrect(totalIncorrectByType);
                 postResultsData(numImagesByType,totalIncorrectByType,totalIncorrect);
                 writeResultsFile(totalIncorrectByType, numImagesByType, missedImagesByType);
-                sendEmailWithResults();
+                // sendEmailWithResults();
                 response.redirect('/html_pages/results');
             }
         }
@@ -243,35 +251,6 @@ function resetMissedImagesByPage(request,pageNumber) {
         User.findOneAndUpdate({userId: ipAddress}, 
             {missedImagesByPage: updatedMissedImagesByPage}, {upsert: false}, function() {});
     });   
-}
-
-/**
- * Initializes all the by type maps with the appropriate object type 
- */
-function initByTypeMaps(request) {
-
-    var ipAddress = request.connection.remoteAddress;
-
-    User.findOne({userId: ipAddress}, function(err,userData) {
-
-        var allObjectTypes = userData.allObjectTypes;
-        var missedImagesByType = userData.missedImagesByType;
-        var totalIncorrectByType = userData.totalIncorrectByType;
-        var numImagesByType = userData.numImagesByType;
-
-        for (var i = 0; i < allObjectTypes.length; i++) {
-            var objectType = allObjectTypes[i];
-            missedImagesByType.set(objectType, new Array());
-            totalIncorrectByType.set(objectType, 0);
-            numImagesByType.set(objectType, 0);
-        }
-
-        User.findOneAndUpdate({userId: ipAddress}, 
-            {missedImagesByType : missedImagesByType, 
-                totalIncorrectByType: totalIncorrectByType,
-                numImagesByType: numImagesByType}, {upsert: false}, function() {});
-
-    });    
 }
 
 /**
@@ -361,11 +340,9 @@ function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) {
  * Writes and posts JSON files (seperate file for each object type bin) 
  * containing the user's incorrect answers.
  */
-function postAllImagePaths(userData) {
+function postAllImagePaths() {
     
-    var arr = setAllImagePaths(userData);
-    var allImagesByType = arr[0];
-    var numImagesByType = arr[1];
+    [allImagesByType, numImagesByType] = setAllImagePaths();
 
     writeImagePaths(allImagesByType, "all_image_paths");
     return numImagesByType;
@@ -374,11 +351,11 @@ function postAllImagePaths(userData) {
 /**
  * Sets all image paths and missed iamge paths. 
  */
-function setAllImagePaths(userData) {
+function setAllImagePaths() {
 
-    var allObjectTypes = userData.allObjectTypes;
-    var allImagesByType = userData.allImagesByType;
-    var numImagesByType = userData.numImagesByType;
+    var allObjectTypes = objectTypes.objectTypes;
+    var allImagesByType = new Map();
+    var numImagesByType = new Map();
 
     for (var i = 0; i < allObjectTypes.length/10; i++) {
         for (var j = 0; j < 10; j++) {
@@ -407,9 +384,7 @@ function setAllImagePaths(userData) {
  * into the appropriate Object type bins.
  */
 function postMissedImagePaths(userData) {
-    var arr = setMissedImagePaths(userData);
-    var missedImagesByType = arr[0];
-    var totalIncorrectByType = arr[1];
+    [missedImagesByType,totalIncorrectByType] = setMissedImagePaths(userData);
     writeImagePaths(missedImagesByType, "missed_image_paths");
     return [missedImagesByType,totalIncorrectByType];
 }
@@ -421,26 +396,48 @@ function postMissedImagePaths(userData) {
  */
 function setMissedImagePaths(userData) {
 
-    var allObjectTypes = userData.allObjectTypes;
+    var allObjectTypes = objectTypes.objectTypes;
     var missedImagesByPage = userData.missedImagesByPage;
-    var missedImagesByType = userData.missedImagesByType;
+    [missedImagesByType, totalIncorrectByType] = initMissedMaps(allObjectTypes);
 
-    var totalIncorrectByType = userData.totalIncorrectByType;
     for (var i = 0; i < 5; i++) {
         for (var j = 0; j < missedImagesByPage[i].length; j++) {
             var imageNum = missedImagesByPage[i][j];
             var imagePath = '/static/object_answers/object' + imageNum + 
                 'answer.png';
+
             var thisObjectType = getThisObjectType(allObjectTypes,imageNum);
-            missedImagesByType.get(thisObjectType).push(imagePath);
-            totalIncorrectByType.set(thisObjectType, 
-                totalIncorrectByType.get(thisObjectType) + 1);
+            if (missedImagesByType.has(thisObjectType)) {
+                totalIncorrectByType.set(thisObjectType, 
+                    totalIncorrectByType.get(thisObjectType) + 1);
+                missedImagesByType.get(thisObjectType).push(imagePath);
+            }
         }
     }
+
     return [missedImagesByType, totalIncorrectByType];
+
 }
 
+/**
+ * 
+ * @param {*} allObjectTypes - 
+ */
+function initMissedMaps(allObjectTypes) {
+    var totalIncorrectByType = new Map();
+    var missedImagesByType = new Map();
+    for (var i = 0; i < allObjectTypes.length; i++) {
+        var objectType = allObjectTypes[i];
+        totalIncorrectByType.set(objectType, 0);
+        missedImagesByType.set(objectType, new Array());
+    }
+    return [missedImagesByType,totalIncorrectByType];
+}
 
+/**
+ * 
+ * @param {*} totalIncorrectByType - 
+ */
 function getTotalIncorrect(totalIncorrectByType) {
     var totalIncorrect = 0;
     var keys = Array.from(totalIncorrectByType.keys());
@@ -538,6 +535,7 @@ function setNumImagesByType(numImagesByType) {
  *           responses by Object type.
  */
 function setTotalIncorrectByType(totalIncorrectByType) {
+
     var totalIncorrectByTypeObject = {};
     var totalIncorrectByTypeKeys = Array.from(totalIncorrectByType.keys());
     for (var i = 0; i < totalIncorrectByTypeKeys.length; i++) {
