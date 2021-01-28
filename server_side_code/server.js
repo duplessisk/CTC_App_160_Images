@@ -156,7 +156,7 @@ app.post("/html_pages/review", function(request,response) {
                 Client.findOneAndUpdate({clientId: id}, 
                     {previouslySubmitted: true}, {upsert: false}, 
                         function() {});
-                var numObjectsByType = postAllObjectPaths(clientData);
+                var numObjectsByType = postAllObjectPaths();
                 [wrongObjectsByType,totalWrongByType] = 
                     postWrongObjectPaths(clientData.wrongObjectsByPage);
                 
@@ -335,7 +335,7 @@ function setAllObjectPaths() {
     var numObjectsByType = new Map();
 
     for (var i = 0; i < allObjectTypes.length/10; i++) {
-        for (var j = 0; j < allObjectTypes[i].length; j++) {
+        for (var j = 0; j < 10; j++) {
             var objectNum = String(i) + String(j);
             var objectPath = '/static/object_answers/object' + objectNum 
                 + 'answer.png';
