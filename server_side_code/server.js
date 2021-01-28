@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const answerKeys = require("./object_types");
 const objectTypes = require("./object_types");
 const nodemailer = require("nodemailer");
+const { userInfo } = require("os");
 require("dotenv").config();
 
 const app = express();
@@ -53,13 +54,12 @@ app.post("/html_pages/login_page", function(request,response) {
 });
 
 app.get("/html_pages/instructions_page", function(request,response) {
-    response.sendFile(path.join(__dirname + 
-        '/html_pages/instructions_page.html'));
+    initClientDocument(request, response);
 });
 
 app.post("/html_pages/instructions_page", function(request,response) {
-    initClientDocument(request);
     response.redirect('/html_pages/page_1');
+    // initClientDocument(request, response);
 });
 
 app.get("/html_pages/page_1", function(request,response) {
@@ -197,23 +197,37 @@ function setClientCookie(request, response) {
 }
 
 /**
- * Initializes client data in MongoDB.
+ * Initializes client data in MongoDB. If the form has already been submitted by
+ * that particular user, then they aren't allowed to proceed. 
  * @param {http} request - Client http request to the server.
+ * @param {http} response - Server http response to the client.
  */ 
-function initClientDocument(request) {
+function initClientDocument(request, response) {
+
     var id = request.cookies['session_id'];
 
-    const newClient = new Client({ 
-        clientId: id,
-        previouslySubmitted: false,
-        wrongObjectsByPage: [ [], [], [], [], [] ]
-    });
-    
-    newClient.save();
+    Client.exists({clientId: id},function(e,alreadySubmitted) {
+        if (alreadySubmitted) {
+            response.sendFile(path.join(__dirname + 
+                '/html_pages/form_already_submitted_page.html'));
+        } else {
+            const newClient = new Client({ 
+                clientId: id,
+                previouslySubmitted: false,
+                wrongObjectsByPage: [ [], [], [], [], [] ]
+            });
+            
+            newClient.save();
+            Client.findOneAndUpdate({clientId: id}, 
+                {firstName: request.body.firstName, 
+                    lastName: request.body.lastName,
+                        company: request.body.company}, {upsert: false}, 
+                            function() {});
 
-    Client.findOneAndUpdate({clientId: id}, 
-        {firstName: request.body.firstName, lastName: request.body.lastName,
-            company: request.body.company}, {upsert: false}, function() {});
+        response.sendFile(path.join(__dirname + 
+            '/html_pages/instructions_page.html'));
+        }
+    });
 }
 
 /**
