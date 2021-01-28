@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
@@ -15,6 +16,7 @@ app.set('view engine', 'ejs');
 
 app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
 
 mongoose.connect("mongodb+srv://admin-kyle:Subaru2007@ctcappcluster.4hrjs.mongodb.net/ctcAppDB", {useNewUrlParser: true, 
     useUnifiedTopology: true , useFindAndModify: false });
@@ -34,19 +36,7 @@ console.log();
 console.log("server starting...");
 
 app.get("/", function(request,response) {
-
-    var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-
-    const newUser = new User({ 
-        userId: ipAddress,
-        previouslySubmitted: false,
-        missedImagesByPage: [ [], [], [], [], [] ]
-    });
-
-    newUser.save();
-
     response.sendFile(path.join(__dirname + '/html_pages/welcome_page.html'));
-
 });
 
 app.post("/html_pages/welcome_page", function(request,response) {
@@ -62,13 +52,9 @@ app.post("/html_pages/login_page", function(request,response) {
     firstName = request.body.firstName;
     lastName = request.body.lastName;
     company = request.body.company;
+
+    response.cookie("session_id", firstName + "." + lastName + "." + company);
     
-    var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-
-    User.findOneAndUpdate({userId: ipAddress}, 
-        {firstName: request.body.firstName, lastName: request.body.lastName,
-            company: request.body.company}, {upsert: false}, function() {});
-
     response.redirect('/html_pages/instructions_page');
 });
 
@@ -77,6 +63,21 @@ app.get("/html_pages/instructions_page", function(request,response) {
 });
 
 app.post("/html_pages/instructions_page", function(request,response) {
+
+    var id = request.cookies['session_id'];
+
+    const newUser = new User({ 
+        userId: id,
+        previouslySubmitted: false,
+        missedImagesByPage: [ [], [], [], [], [] ]
+    });
+    
+    newUser.save();
+
+    User.findOneAndUpdate({userId: id}, 
+        {firstName: request.body.firstName, lastName: request.body.lastName,
+            company: request.body.company}, {upsert: false}, function() {});
+
     response.redirect('/html_pages/page_1');
 });
 
@@ -85,7 +86,6 @@ app.get("/html_pages/page_1", function(request,response) {
 });
 
 app.post("/html_pages/page_1", function(request,response) {
-    // resetMissedImagesByPage(request,1);
     answerKeyPageOne = answerKeys.answerKeys[0];
     driveApp(answerKeyPageOne,request,1);
     response.redirect('/html_pages/page_2');
@@ -96,7 +96,6 @@ app.get("/html_pages/page_2", function(request,response) {
 });
 
 app.post("/html_pages/page_2", function(request,response) {
-    // resetMissedImagesByPage(request,2);
     answerKeyPageTwo = answerKeys.answerKeys[1];
     driveApp(answerKeyPageTwo,request,2);
     var btnClicked = request.body.btn;
@@ -113,7 +112,6 @@ app.get("/html_pages/page_3", function(request,response) {
 });
 
 app.post("/html_pages/page_3", function(request,response) {
-    // resetMissedImagesByPage(request,3);
     answerKeyPageThree = answerKeys.answerKeys[2];
     driveApp(answerKeyPageThree,request,3);
     var btnClicked = request.body.btn;
@@ -130,7 +128,6 @@ app.get("/html_pages/page_4", function(request,response) {
 });
 
 app.post("/html_pages/page_4", function(request,response) {
-    // resetMissedImagesByPage(request,4);
     answerKeyPageFour = answerKeys.answerKeys[3];
     driveApp(answerKeyPageFour,request,4);
     var btnClicked = request.body.btn;
@@ -147,7 +144,6 @@ app.get("/html_pages/page_5", function(request,response) {
 });
 
 app.post("/html_pages/page_5", function(request,response) {
-    // resetMissedImagesByPage(request,5);
     answerKeyPageFive = answerKeys.answerKeys[4];
     driveApp(answerKeyPageFive,request,5);
     var btnClicked = request.body.btn;
@@ -165,11 +161,9 @@ app.get("/html_pages/review", function(request,response) {
 
 app.post("/html_pages/review", function(request,response) {
     
-    var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+    var id = request.cookies['session_id'];
 
-    
-
-    User.findOne({userId: ipAddress}, function(e, userData) {
+    User.findOne({userId: id}, function(e, userData) {
         var btnClicked = request.body.btn;
         if (btnClicked == "Previous") {
             resetMissedImagesByPage(request,5);
@@ -178,7 +172,7 @@ app.post("/html_pages/review", function(request,response) {
             if (userData.previouslySubmitted) {
                 response.redirect('/html_pages/form_already_submitted_page');
             } else {
-                User.findOneAndUpdate({userId: ipAddress}, 
+                User.findOneAndUpdate({userId: id}, 
                     {previouslySubmitted: true}, {upsert: false}, 
                         function() {});
                 var numImagesByType = postAllImagePaths(userData);
@@ -188,7 +182,7 @@ app.post("/html_pages/review", function(request,response) {
                 var totalIncorrect = getTotalIncorrect(totalMissedByType);
                 postResultsData(numImagesByType, totalMissedByType, 
                     totalIncorrect);
-                writeResultsFile(totalMissedByType, numImagesByType, 
+                writeResultsFile(request,totalMissedByType, numImagesByType, 
                     missedImagesByType);
                 // sendEmailWithResults();
                 response.redirect('/html_pages/results');
@@ -215,12 +209,13 @@ app.listen(process.env.PORT || 3000);
  * @param {Number} pageNumber - page whose missed paths are to be reset.
  */
 function resetMissedImagesByPage(request,pageNumber) {
-    var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
 
-    User.findOne({userId: ipAddress}, function(err,userData) {
+    var id = request.cookies['session_id'];
+
+    User.findOne({userId: id}, function(err,userData) {
         var updatedMissedImagesByPage = userData.missedImagesByPage;
         updatedMissedImagesByPage[pageNumber - 1] = [];
-        User.findOneAndUpdate({userId: ipAddress}, 
+        User.findOneAndUpdate({userId: id}, 
             {missedImagesByPage: updatedMissedImagesByPage}, {upsert: false}, function() {});
     });   
 }
@@ -291,26 +286,20 @@ function recordUserResponses(userResponses) {
  */
 function setMissedImagesByPage(request,answerKey,userResponses,pageNumber) { 
 
-    var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+    var id = request.cookies['session_id'];
 
-    User.findOne({userId: ipAddress}, function(err,userData) {
-
-        console.log();
-        console.log(pageNumber);
-        console.log(userData);
+    User.findOne({userId: id}, function(err,userData) {
 
         var updatedMissedImagesByPage = userData.missedImagesByPage;
         for (var i = 0; i < 10; i++) {
             if (answerKey[i] != userResponses[i] || userResponses[i] == null) {  
                 var imageNumber = String(pageNumber) + String(i);
-                var ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
                 updatedMissedImagesByPage[pageNumber].push(imageNumber);
             }
         }
-        User.findOneAndUpdate({userId: ipAddress}, 
+        User.findOneAndUpdate({userId: id}, 
             {missedImagesByPage: updatedMissedImagesByPage}, {upsert: false}, 
             function() {});
-
     });   
 
 }
@@ -543,11 +532,14 @@ function settotalMissedByType(totalMissedByType) {
  * @param {*} numImagesByType - 
  * @param {*} missedImagesByType -  
  */
-function writeResultsFile(totalMissedByType, numImagesByType, 
+function writeResultsFile(request,totalMissedByType, numImagesByType, 
                           missedImagesByType) {
-    firstName = "Kyle";
-    lastName = "Duplessis";
-    company = "Rarecyte";
+
+    var userInfo = request.cookies['session_id'].split(".");
+
+    firstName = userInfo[0];
+    lastName = userInfo[1];
+    company = userInfo[2];
 
     fs.writeFile("./final_results.txt", "Test Taker: " + firstName + " " + 
         lastName + "\n" + "\n" + "Company: " + company + "\n" + "\n", 
