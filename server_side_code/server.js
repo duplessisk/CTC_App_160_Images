@@ -9,7 +9,6 @@ const objectTypes = require("./object_types");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-
 const app = express();
 
 app.set('view engine', 'ejs');
