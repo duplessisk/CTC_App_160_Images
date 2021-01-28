@@ -9,7 +9,6 @@ const objectTypes = require("./object_types");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -54,7 +53,8 @@ app.post("/html_pages/login_page", function(request,response) {
 });
 
 app.get("/html_pages/instructions_page", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/instructions_page.html'));
+    response.sendFile(path.join(__dirname + 
+        '/html_pages/instructions_page.html'));
 });
 
 app.post("/html_pages/instructions_page", function(request,response) {
@@ -299,7 +299,8 @@ function setWrongObjectsByPage(request,answerKey,clientResponses,pageNumber) {
 
         var updatedWrongObjectsByPage = clientData.wrongObjectsByPage;
         for (var i = 0; i < 10; i++) {
-            if (answerKey[i] != clientResponses[i] || clientResponses[i] == null) {  
+            if (answerKey[i] != clientResponses[i] || 
+                clientResponses[i] == null) {  
                 var objectNumber = String(pageNumber) + String(i);
                 updatedWrongObjectsByPage[pageNumber].push(objectNumber);
             }
@@ -492,7 +493,8 @@ function writeResultsData(numObjectsByType, totalWrongByType, totalIncorrect) {
 /**
  * Returns JSON String representing the total number of incorrect responses
  * by the client.
- * @param {Number} totalIncorrect - total number of incorrect objects (type agnostic).
+ * @param {Number} totalIncorrect - total number of incorrect objects 
+ *                                  (type agnostic).
  * @return - JSON String representing total number of incorrect responses by 
  *           the client.
  */
@@ -564,9 +566,10 @@ function writeResultsFile(request, totalWrongByType, numObjectsByType,
         function() {});
         var keys = Array.from(totalWrongByType.keys());
         for (var i = 0; i < keys.length; i++) {
-            fs.appendFileSync("./final_results.txt", "\n" + fileContents(keys[i], 
-                numObjectsByType, totalWrongByType, wrongObjectsByType), 
-                function(){});
+            fs.appendFileSync("./final_results.txt", "\n" + 
+                fileContents(keys[i], numObjectsByType, totalWrongByType, 
+                    wrongObjectsByType), 
+                        function(){});
         }
         var time = new Date();
         if (time.getHours >= 12) {
@@ -596,8 +599,8 @@ function fileContents(objectType, numObjectsByType, totalWrongByType,
     var percentageCorrect = (100 - Math.round(percentageIncorrect));
     var globalMessage = "object Type " + objectType + ": Wrong " + 
         totalWrongByType.get(objectType) + " out of " + 
-            numObjectsByType.get(objectType) + " (" + percentageCorrect + "%)" +
-                "\n";
+            numObjectsByType.get(objectType) + " (" + percentageCorrect + "%)" 
+                + "\n";
     var granularMessage = "Objects Wrong: ";
     for (var i = 0; i < wrongObjectsByType.get(objectType).length; i++) {
         if (i != 0) {
