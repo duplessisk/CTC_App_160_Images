@@ -44,24 +44,24 @@ for (var i = 0; i < objTypes.length; i++) {
         .appendChild(objectTypeLabel);
 }
 
-/* Stores image paths of all incorrect user answers in the appropriate 
+/* Stores object paths of all incorrect user answers in the appropriate 
    cell type bin */
-var missedTypesMap = new Map();
+var wrongTypesMap = new Map();
 
-// Stores image paths of all images in the appropriate cell type bin
+// Stores object paths of all objects in the appropriate cell type bin
 var allTypesMap = new Map();
 
 /**
  * Main function that reads in JSON files, and links the data with the DOM.
  */
 async function main() {
-    var missedImagePathsJson = await fetch("/static/missed_image_paths.json");
-    var missedImagePathsText = await missedImagePathsJson.text();
-    setImagePaths(missedImagePathsText, missedTypesMap, "missed");
+    var wrongObjectPathsJson = await fetch("/static/wrong_object_paths.json");
+    var wrongObjectPathsText = await wrongObjectPathsJson.text();
+    setObjectPaths(wrongObjectPathsText, wrongTypesMap, "wrong");
 
-    var allImagePathsJson = await fetch("/static/all_image_paths.json");
-    var allImagePathsText = await allImagePathsJson.text();
-    setImagePaths(allImagePathsText, allTypesMap, "all");
+    var allObjectPathsJson = await fetch("/static/all_object_paths.json");
+    var allObjectPathsText = await allObjectPathsJson.text();
+    setObjectPaths(allObjectPathsText, allTypesMap, "all");
 
     var resultsJson = await fetch("/static/results_data.json");
     var resultsJsonText = await resultsJson.text();
@@ -71,19 +71,19 @@ async function main() {
     createBtns();
 
     // init showBtns functionality
-    querySelectBtns(".show-type-btn", "showType", "Show Missed", "Hide Missed", 
+    querySelectBtns(".show-type-btn", "showType", "Show Wrong", "Hide Wrong", 
                     "showAllType", "Show All", "Hide All", 8, showBtnsClicked,
-                     showAllBtnsClicked, missedTypesMap, "missed");
+                     showAllBtnsClicked, wrongTypesMap, "wrong");
     // init showAllBtns functionaily
     querySelectBtns(".show-all-type-btn", "showAllType", "Show All", "Hide All", 
-                    "showType", "Show Missed", "Hide Missed", 11, showAllBtnsClicked,
+                    "showType", "Show Wrong", "Hide Wrong", 11, showAllBtnsClicked,
                     showBtnsClicked, allTypesMap, "all");
 }
 
 // Stores the total number of incorrect responses by the user by cell type bin
 var incorrectNumTypesMap = new Map();
 
-// Stores the total number of images per cell type bin
+// Stores the total number of objects per cell type bin
 var totalNumTypesMap = new Map();
 
 /**
@@ -91,49 +91,49 @@ var totalNumTypesMap = new Map();
  * @param {Promise} incorrectTypeBlocks - Promise obj that needs to be 
  *                                        parsed in order to obtain data
  */
-function setImagePaths(imagePathsText, typesMap) {
-    var imagePathsString = filterString(imagePathsText);
-    setTypesMap(imagePathsString.substring(0,imagePathsString.length - 1),
+function setObjectPaths(objectPathsText, typesMap) {
+    var objectPathsString = filterString(objectPathsText);
+    setTypesMap(objectPathsString.substring(0,objectPathsString.length - 1),
         typesMap);
 }
 
 /**
- * Creates string representing missed_image_paths.JSON that excludes 
+ * Creates string representing wrong_object_paths.JSON that excludes 
  * unnecessary tokens
- * @param {String} missedImagePathsText - contents from missed_image_paths.JSON
+ * @param {String} wrongObjectPathsText - contents from wrong_object_paths.JSON
  *                                        in String form
- * @return - String containing all missed image paths
+ * @return - String containing all wrong object paths
  */
-function filterString(imagePathsText) {
-    imagePathsString = "";
-    for (let i in imagePathsText) {
-        let t = imagePathsText[i];
+function filterString(objectPathsText) {
+    objectPathsString = "";
+    for (let i in objectPathsText) {
+        let t = objectPathsText[i];
         if (t != '{') {
-            imagePathsString += t;
+            objectPathsString += t;
         }
     } 
-    return imagePathsString;
+    return objectPathsString;
 }
 
 /**
- * Occupies missedTypesMap with the type of cell the user answered incorrectly 
- * and the image path associated with that cell.
- * @param {String} imagePathsString - String containing all missed image paths.
+ * Occupies wrongTypesMap with the type of cell the user answered incorrectly 
+ * and the object path associated with that cell.
+ * @param {String} objectPathsString - String containing all wrong object paths.
  */
-function setTypesMap(imagePathsString, typesMap) {
-    var jsonObjArr = imagePathsString.split("}");
-    // execute if block IF user missed one or more images
+function setTypesMap(objectPathsString, typesMap) {
+    var jsonObjArr = objectPathsString.split("}");
+    // execute if block IF user wrong one or more objects
     if (jsonObjArr[0].length != 0) { 
         for (var i = 0; i < jsonObjArr.length; i++) {
             var jsonObjSubArr = jsonObjArr[i].split(":");
             var thisCellType = jsonObjSubArr[0].replaceAll('"','');
             thisCellType = thisCellType.replaceAll(' ','');
             thisCellType = thisCellType.replace('\n','');
-            var imagePath = jsonObjSubArr[1].replaceAll('"','');
+            var objectPath = jsonObjSubArr[1].replaceAll('"','');
             if (typesMap.has(thisCellType)) {
-                typesMap.get(thisCellType).push(imagePath);
+                typesMap.get(thisCellType).push(objectPath);
             } else {
-                typesMap.set(thisCellType, new Array(imagePath)); 
+                typesMap.set(thisCellType, new Array(objectPath)); 
             }    
         }
     }
@@ -163,8 +163,8 @@ function setResultsMaps(resultsText) {
  *                                          or totalNumsTypeMap
  * @param {Number} thisCellTypeIndex - index in numByTypeString that contains 
  *                                     the proper cell type bin
- * @param {Number} imagePathStartIndex - index in numByType string that 
- *                                       contains the start of the image path 
+ * @param {Number} objectPathStartIndex - index in numByType string that 
+ *                                       contains the start of the object path 
  *                                       of interest.
  */
 function setNumByTypesMap(numByTypeString, numTypesMap) {
@@ -177,7 +177,7 @@ function setNumByTypesMap(numByTypeString, numTypesMap) {
     }
 }
 
-// total number of questions the user missed
+// total number of questions the user wrong
 var totalNumIncorrect;
 
 /**
@@ -193,33 +193,33 @@ function setTotalNumIncorrect(totalNumIncorrectString) {
 }
 
 /**
- * Adds incorrect cell images to DOM
+ * Adds incorrect cell objects to DOM
  * @param {Array} cellType - Stores all the cell type bins
  * @param {Array} incorrectTypeArr - Contains the paths of all incorrectly 
- *                                   answered images based on cell type
+ *                                   answered objects based on cell type
  */
-function addImagesToDom(objNum, typesMap, imageType) {
+function addObjectsToDom(objNum, typesMap, objectType) {
     var objType = objTypes[objNum].replaceAll(' ','');
-    var imagePaths = typesMap.get(objType);
-    if (imagePaths != undefined) { // avoid getting length of empty imagePaths
-        for (var i = 0; i < imagePaths.length; i++) {
+    var objectPaths = typesMap.get(objType);
+    if (objectPaths != undefined) { // avoid getting length of empty objectPaths
+        for (var i = 0; i < objectPaths.length; i++) {
 
             var messageDiv = document.createElement('div');
             messageDiv.className = "message-div";
             messageDiv.id = "messageDiv";
     
-            var imageNum = imagePaths[i].substring(30,32);
-            var imagePath = imagePaths[i];
+            var objectNum = objectPaths[i].substring(30,32);
+            var objectPath = objectPaths[i];
 
             var newImg = document.createElement('img');
-            newImg.src = imagePath;
+            newImg.src = objectPath;
             newImg.id="resultsImg";
     
-            if (imageType == "missed") {
-                messageDiv.innerHTML = "You got image  " + imageNum + 
+            if (objectType == "wrong") {
+                messageDiv.innerHTML = "You got object  " + objectNum + 
                     " incorrect";
             } else {
-                messageDiv.innerHTML = "Image  " + imageNum;
+                messageDiv.innerHTML = "Object  " + objectNum;
             }
             document.querySelector("#img" + objNum + "Div")
                 .appendChild(messageDiv);
@@ -229,10 +229,10 @@ function addImagesToDom(objNum, typesMap, imageType) {
     }
 }
 
-// Stores the total number of incorrect images per cell type bin
+// Stores the total number of incorrect objects per cell type bin
 var incorrectNumTypesMap = new Map();
 
-// Stores the total number of images per cell type bin
+// Stores the total number of objects per cell type bin
 var totalNumTypesMap = new Map();
 
 /**
@@ -280,7 +280,7 @@ function createBtns() {
         document.querySelector("#object" + i + "Div")
             .appendChild(showTypeBtnDiv);
         var showTypeBtn = document.createElement('button');
-        showTypeBtn.innerHTML = "Show Missed";
+        showTypeBtn.innerHTML = "Show Wrong";
         showTypeBtn.id = "showType" + i + "Btn";
         showTypeBtn.className = "show-type-btn";
         document.querySelector("#showType"+ i + "BtnDiv")
@@ -299,7 +299,7 @@ function createBtns() {
             .appendChild(showAllTypeBtn);
 
 
-        // images divs 
+        // objects divs 
         var imgDiv = document.createElement('div');
         imgDiv.id = "img" + i + "Div";
         document.querySelector("#object" + i +"Div")
@@ -333,7 +333,7 @@ var showAllBtnsClicked = [true,true,true,true,true,true];
  * @param {String} thisShowMsg - message button shows when it's not activated
  * @param {String} thisHideMsg - message button shows when it's activated
  * @param {String} otherBtnId - other button's id (e.g. if button is show
- *                              missed button, opposite button is the show 
+ *                              wrong button, opposite button is the show 
  *                              all button).
  * @param {String} otherShowMsg - message that other button shows when activated
  * @param {String} otherHideMsg -  message that other button shows when 
@@ -346,9 +346,9 @@ var showAllBtnsClicked = [true,true,true,true,true,true];
  *                                  activated (show or hide mode) or not.
  * @param {Array} otherBtnsClicked - Keeps track of whether the other button is 
  *                               is activated (show or hide mode) or not.
- * @param {Map} typesMap - map containing all the image paths (either missed 
- *                       image or all image paths).
- * @param {String} imgType - differentiates between the missedTypesMap and 
+ * @param {Map} typesMap - map containing all the object paths (either wrong 
+ *                       object or all object paths).
+ * @param {String} imgType - differentiates between the wrongTypesMap and 
  *                           allTypesMap. 
  */
 function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg, 
@@ -359,7 +359,7 @@ function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg,
              function() {
                 var objNum = Number(this.id.charAt(thisIdIndex));
                 var clicked = thisBtnsClicked[objNum];
-                // show images for show btn
+                // show objects for show btn
                 if (clicked) {
                     document.getElementById(thisBtnId + objNum + "Btn")
                         .innerHTML = thisHideMsg;
@@ -372,8 +372,8 @@ function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg,
                         otherBtnsClicked[objNum] = true;
                     }
                     thisBtnsClicked[objNum] = false;
-                    addImagesToDom(objNum, typesMap, imgType);
-                } else { // hide images for show btn
+                    addObjectsToDom(objNum, typesMap, imgType);
+                } else { // hide objects for show btn
                     document.getElementById(thisBtnId + objNum + "Btn")
                         .innerHTML = thisShowMsg;
                     document.querySelector("#img" + objNum + "Div")
