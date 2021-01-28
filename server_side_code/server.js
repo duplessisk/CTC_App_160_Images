@@ -132,15 +132,15 @@ app.post("/html_pages/page_5", function(request,response) {
         resetWrongObjectsByPage(request,4);
         response.redirect('/html_pages/page_4');
     } else if (btnClicked == "Continue") {
-        response.redirect('/html_pages/review');
+        response.redirect('/html_pages/review_page');
     }
 });
 
-app.get("/html_pages/review", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/review.html'));
+app.get("/html_pages/review_page", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/review_page.html'));
 });
 
-app.post("/html_pages/review", function(request,response) {
+app.post("/html_pages/review_page", function(request,response) {
     
     var id = request.cookies['session_id'];
 
@@ -166,14 +166,14 @@ app.post("/html_pages/review", function(request,response) {
                 writeResultsFile(request,totalWrongByType, numObjectsByType, 
                     wrongObjectsByType);
                 // sendEmailWithResults();
-                response.redirect('/html_pages/results');
+                response.redirect('/html_pages/results_page');
             }
         }
     });
 });
 
-app.get("/html_pages/results", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/results.html'));
+app.get("/html_pages/results_page", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/results_page.html'));
 });
 
 app.get("/html_pages/form_already_submitted_page", function(request,response) {
@@ -628,7 +628,7 @@ function sendEmailWithResults() {
     let mailOptions = {
         from: 'klduplessis@gmail.com',
         to: 'klduplessis@gmail.com',
-        subject: 'CTC Test Results',
+        subject: 'CTC Test results_page',
         text: 'It works',
         attachments: [{
             filename: 'final_results.txt',
