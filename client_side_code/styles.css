@@ -298,9 +298,9 @@ a:visited {
     font-size: 5vw;
     color: white;
 
-    transition: font-size 0.5s, height 0.5s;
-    -webkit-transition: font-size 0.5s, height 0.5s;
-    -moz-transition: font-size 0.5s, height 0.5s;
+    transition: font-size 0.25s, height 0.25s;
+    -webkit-transition: font-size 0.25s, height 0.25s;
+    -moz-transition: font-size 0.25s, height 0.25s;
 }
 
 #pageHeaderDiv.small {
