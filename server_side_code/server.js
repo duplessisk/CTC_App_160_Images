@@ -20,9 +20,6 @@ app.use(cookieParser());
 mongoose.connect(process.env.MONGO_DB_CREDENTIALS, {useNewUrlParser: true, 
     useUnifiedTopology: true , useFindAndModify: false });
 
-// mongoose.connect("mongodb+srv://admin-kyle:Subaru2007@ctcappcluster.4hrjs.mongodb.net/ctcAppDB", {useNewUrlParser: true, 
-//     useUnifiedTopology: true , useFindAndModify: false });
-
 const schema = new mongoose.Schema({   
     clientId: String, 
     previouslySubmitted: Boolean,
