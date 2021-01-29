@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const answerKeys = require("./object_types");
 const objectTypes = require("./object_types");
 const nodemailer = require("nodemailer");
-require("dotenv").config();
+require("dotenv").config({ path: path.resolve(__dirname, './.env') });
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
-mongoose.connect("mongodb+srv://admin-kyle:Subaru2007@ctcappcluster.4hrjs.mongodb.net/ctcAppDB", {useNewUrlParser: true, 
+mongoose.connect(process.env.MONGO_DB_CREDENTIALS, {useNewUrlParser: true, 
     useUnifiedTopology: true , useFindAndModify: false });
 
 const schema = new mongoose.Schema({   
@@ -53,13 +53,12 @@ app.post("/html_pages/login_page", function(request,response) {
 });
 
 app.get("/html_pages/instructions_page", function(request,response) {
-    response.sendFile(path.join(__dirname + 
-        '/html_pages/instructions_page.html'));
+    initClientDocument(request, response);
 });
 
 app.post("/html_pages/instructions_page", function(request,response) {
-    initClientDocument(request);
     response.redirect('/html_pages/page_1');
+    // initClientDocument(request, response);
 });
 
 app.get("/html_pages/page_1", function(request,response) {
@@ -197,23 +196,37 @@ function setClientCookie(request, response) {
 }
 
 /**
- * Initializes client data in MongoDB.
+ * Initializes client data in MongoDB. If the form has already been submitted by
+ * that particular user, then they aren't allowed to proceed. 
  * @param {http} request - Client http request to the server.
+ * @param {http} response - Server http response to the client.
  */ 
-function initClientDocument(request) {
+function initClientDocument(request, response) {
+
     var id = request.cookies['session_id'];
 
-    const newClient = new Client({ 
-        clientId: id,
-        previouslySubmitted: false,
-        wrongObjectsByPage: [ [], [], [], [], [] ]
-    });
-    
-    newClient.save();
+    Client.exists({clientId: id},function(e,alreadySubmitted) {
+        if (alreadySubmitted) {
+            response.sendFile(path.join(__dirname + 
+                '/html_pages/form_already_submitted_page.html'));
+        } else {
+            const newClient = new Client({ 
+                clientId: id,
+                previouslySubmitted: false,
+                wrongObjectsByPage: [ [], [], [], [], [] ]
+            });
+            
+            newClient.save();
+            Client.findOneAndUpdate({clientId: id}, 
+                {firstName: request.body.firstName, 
+                    lastName: request.body.lastName,
+                        company: request.body.company}, {upsert: false}, 
+                            function() {});
 
-    Client.findOneAndUpdate({clientId: id}, 
-        {firstName: request.body.firstName, lastName: request.body.lastName,
-            company: request.body.company}, {upsert: false}, function() {});
+        response.sendFile(path.join(__dirname + 
+            '/html_pages/instructions_page.html'));
+        }
+    });
 }
 
 /**
@@ -620,14 +633,14 @@ function sendEmailWithResults() {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            client:'klduplessis@gmail.com',
-            pass:'gdliyxusctinnsia'
+            user:process.env.EMAIL_SENDER_ACC,
+            pass:process.env.EMAIL_SENDER_PASSWORD
         }
     });
 
     let mailOptions = {
-        from: 'klduplessis@gmail.com',
-        to: 'klduplessis@gmail.com',
+        from: process.env.EMAIL_SENDER_ACC,
+        to: process.env.EMAIL_RECIEVER_ACC,
         subject: 'CTC Test results_page',
         text: 'It works',
         attachments: [{
@@ -638,9 +651,7 @@ function sendEmailWithResults() {
 
     transporter.sendMail(mailOptions, function(error,data) {
         if (error) {
-            console.log("Error Occurs");
-        } else {
-            console.log("Email sent");
-        }
+            console.log(error);
+        } 
     });
 }
