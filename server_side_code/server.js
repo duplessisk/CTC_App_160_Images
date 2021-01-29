@@ -165,7 +165,7 @@ app.post("/html_pages/review_page", function(request,response) {
                     totalIncorrect);
                 writeResultsFile(request,totalWrongByType, numObjectsByType, 
                     wrongObjectsByType);
-                // sendEmailWithResults();
+                sendEmailWithResults();
                 response.redirect('/html_pages/results_page');
             }
         }
