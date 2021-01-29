@@ -1,25 +1,25 @@
 Test Taker: Kyle Duplessis
 
-Company: Rarecyte
+Company: test2
 
 Breakdown: 
 
-object Type CTC: Wrong 18 out of 19 (5%)
-Objects Wrong: 13, 14, 16, 19, 20, 22, 24, 28, 29, 32, 33, 34, 35, 37, 38, 39, 43, 45
+object Type CTC: Wrong 19 out of 19 (0%)
+Objects Wrong: 00, 13, 14, 16, 19, 20, 22, 24, 28, 29, 32, 33, 34, 35, 37, 38, 39, 43, 45
 
-object Type Unidentified Cell: Wrong 1 out of 3 (67%)
-Objects Wrong: 10
+object Type Unidentified Cell: Wrong 3 out of 3 (0%)
+Objects Wrong: 01, 02, 10
 
-object Type Fluorescent Artifact: Wrong 1 out of 3 (67%)
-Objects Wrong: 12
+object Type Fluorescent Artifact: Wrong 3 out of 3 (0%)
+Objects Wrong: 03, 06, 12
 
-object Type CK/EpCAM Foci: Wrong 0 out of 4 (100%)
-Objects Wrong: 
+object Type CK/EpCAM Foci: Wrong 4 out of 4 (0%)
+Objects Wrong: 04, 05, 07, 08
 
-object Type White Blood Cell: Wrong 5 out of 6 (17%)
-Objects Wrong: 25, 46, 47, 48, 49
+object Type White Blood Cell: Wrong 6 out of 6 (0%)
+Objects Wrong: 09, 25, 46, 47, 48, 49
 
 object Type Apoptotic CTC: Wrong 15 out of 15 (0%)
 Objects Wrong: 11, 15, 17, 18, 21, 23, 26, 27, 30, 31, 36, 40, 41, 42, 44
 
-Time Stamp: 1/28/2021, 2:34:48 PM
+Time Stamp: 1/29/2021, 8:56:48 AM

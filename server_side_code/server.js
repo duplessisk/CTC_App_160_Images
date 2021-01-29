@@ -7,8 +7,7 @@ const bodyParser = require("body-parser");
 const answerKeys = require("./object_types");
 const objectTypes = require("./object_types");
 const nodemailer = require("nodemailer");
-const { userInfo } = require("os");
-require("dotenv").config();
+require("dotenv").config({ path: path.resolve(__dirname, './.env') });
 
 const app = express();
 
@@ -18,8 +17,11 @@ app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
-mongoose.connect("mongodb+srv://admin-kyle:Subaru2007@ctcappcluster.4hrjs.mongodb.net/ctcAppDB", {useNewUrlParser: true, 
+mongoose.connect(process.env.MONGO_DB_CREDENTIALS, {useNewUrlParser: true, 
     useUnifiedTopology: true , useFindAndModify: false });
+
+// mongoose.connect("mongodb+srv://admin-kyle:Subaru2007@ctcappcluster.4hrjs.mongodb.net/ctcAppDB", {useNewUrlParser: true, 
+//     useUnifiedTopology: true , useFindAndModify: false });
 
 const schema = new mongoose.Schema({   
     clientId: String, 
@@ -165,7 +167,7 @@ app.post("/html_pages/review_page", function(request,response) {
                     totalIncorrect);
                 writeResultsFile(request,totalWrongByType, numObjectsByType, 
                     wrongObjectsByType);
-                // sendEmailWithResults();
+                sendEmailWithResults();
                 response.redirect('/html_pages/results_page');
             }
         }
@@ -634,14 +636,16 @@ function sendEmailWithResults() {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            client:'klduplessis@gmail.com',
-            pass:'gdliyxusctinnsia'
+            client:"klduplessis@gmail.com",
+            pass: "gdliyxusctinnsia"
+            // client:process.env.EMAIL_SENDER_ACC,
+            // pass:process.env.EMAIL_SENDER_PASSWORD
         }
     });
 
     let mailOptions = {
-        from: 'klduplessis@gmail.com',
-        to: 'klduplessis@gmail.com',
+        from: process.env.EMAIL_SENDER_ACC,
+        to: process.env.EMAIL_RECIEVER_ACC,
         subject: 'CTC Test results_page',
         text: 'It works',
         attachments: [{
@@ -652,7 +656,8 @@ function sendEmailWithResults() {
 
     transporter.sendMail(mailOptions, function(error,data) {
         if (error) {
-            console.log("Error Occurs");
+            console.log(error);
+            console.log("Error Occured");
         } else {
             console.log("Email sent");
         }
