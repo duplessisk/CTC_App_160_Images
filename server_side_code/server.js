@@ -636,10 +636,8 @@ function sendEmailWithResults() {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            client:"klduplessis@gmail.com",
-            pass: "gdliyxusctinnsia"
-            // client:process.env.EMAIL_SENDER_ACC,
-            // pass:process.env.EMAIL_SENDER_PASSWORD
+            user:process.env.EMAIL_SENDER_ACC,
+            pass:process.env.EMAIL_SENDER_PASSWORD
         }
     });
 
@@ -657,9 +655,6 @@ function sendEmailWithResults() {
     transporter.sendMail(mailOptions, function(error,data) {
         if (error) {
             console.log(error);
-            console.log("Error Occured");
-        } else {
-            console.log("Email sent");
-        }
+        } 
     });
 }
