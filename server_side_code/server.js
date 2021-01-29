@@ -17,7 +17,7 @@ app.use('/static', express.static('client_side_code'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
-mongoose.connect(process.env.MONGO_DB_CREDENTIALS, {useNewUrlParser: true, 
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, 
     useUnifiedTopology: true , useFindAndModify: false });
 
 const schema = new mongoose.Schema({   
