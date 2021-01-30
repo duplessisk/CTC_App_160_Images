@@ -66,3 +66,16 @@ document.querySelector('#nextBtn').addEventListener('click', function() {
     }
     localStorage.setItem('pageOneSaved', userResponsesLocal);
 });
+
+var returnToReviewPageBtn = document.createElement('button');
+returnToReviewPageBtn.type = "submit";
+returnToReviewPageBtn.className = "btn";
+returnToReviewPageBtn.innerHTML = "Review Page";
+returnToReviewPageBtn.id = "returnToReviewPageBtn";
+returnToReviewPageBtn.name = "btn";
+returnToReviewPageBtn.value = "returnToReviewPage";
+var reviewPageVisited = localStorage.getItem('reviewPageAlreadyVisited');
+
+if (reviewPageVisited) {
+    document.querySelector("#form").appendChild(returnToReviewPageBtn);
+}

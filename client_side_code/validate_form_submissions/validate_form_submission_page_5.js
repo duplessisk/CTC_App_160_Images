@@ -65,6 +65,7 @@ document.querySelector('#previousBtn').addEventListener('click', function() {
 document.querySelector('#continueBtn').addEventListener('click', function() {
     userResponsesLocal = "";
     localStorage.setItem('pageFiveAlreadyVisited', 1);
+    localStorage.setItem('reviewPageAlreadyVisited', true);
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i] == "null") {
             userResponsesLocal += "n";

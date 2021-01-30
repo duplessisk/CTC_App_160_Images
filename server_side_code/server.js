@@ -148,6 +148,21 @@ app.post("/html_pages/review_page", function(request,response) {
         if (btnClicked == "Previous") {
             resetWrongObjectsByPage(request,5);
             response.redirect('/html_pages/page_5');
+        } else if (btnClicked == "pageOneNull") {
+            resetWrongObjectsByPage(request,1);
+            response.redirect('/html_pages/page_1');
+        } else if (btnClicked == "pageTwoNull") {
+            resetWrongObjectsByPage(request,2);
+            response.redirect('/html_pages/page_2');
+        } else if (btnClicked == "pageThreeNull") {
+            resetWrongObjectsByPage(request,3);
+            response.redirect('/html_pages/page_3');
+        } else if (btnClicked == "pageFourNull") {
+            resetWrongObjectsByPage(request,4);
+            response.redirect('/html_pages/page_4');
+        } else if (btnClicked == "pageFiveNull") {
+            resetWrongObjectsByPage(request,5);
+            reponse.redirect('/html_pages/page_5');
         } else {
             if (clientData.previouslySubmitted) {
                 response.redirect('/html_pages/form_already_submitted_page');

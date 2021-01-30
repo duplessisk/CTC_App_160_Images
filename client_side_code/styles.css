@@ -9,6 +9,10 @@ body {
     margin-left: -3%;
 }
 
+#formDiv.review {
+    margin-bottom: 4vw;
+}
+
 #welcomeImage {
     margin-left: 12%;
     width: 80%;
@@ -205,8 +209,18 @@ body {
 
 /* page 1 */
 #nextBtn {
-    margin-bottom: 1%;
+    margin-bottom: 1vw;
     margin-left: 52.23%;
+}
+
+#returnToReviewPageBtn {
+    font: bold 1.1vw Arial;
+    padding-top: 0.1vw;
+    padding-bottom: 0.1vw;
+    margin-bottom: 1vw;
+    margin-top: 0vw;
+    margin-left: 52.23%;
+    background-color: RGB(100,98,98);
 }
 
 
@@ -221,6 +235,10 @@ body {
 
 #previousBtnDiv {
     margin-left: 43.5%;
+}
+
+#returnToReviewPageBtnDiv {
+    margin-top: -4vw;
 }
 
 

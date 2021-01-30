@@ -90,7 +90,7 @@ if (pageFiveHasNull == "true") {
     pageFiveNullbtn.className = "null-btns";
     pageFiveNullbtn.type = "submit";
     pageFiveNullbtn.name = "btn";
-    pageFiveNullbtn.value = "pageFiveNull";
+    pageFiveNullbtn.value = "PageFiveNull";
     var linebreak = document.createElement('br');
     document.querySelector("#nullPagesDiv").appendChild(linebreak);
     document.querySelector("#nullPagesDiv").appendChild(pageFiveNullbtn);
