@@ -76,6 +76,26 @@ returnToReviewPageBtn.name = "btn";
 returnToReviewPageBtn.value = "returnToReviewPage";
 var reviewPageVisited = localStorage.getItem('reviewPageAlreadyVisited');
 
+returnToReviewPageBtn.addEventListener('click', function() {
+    userResponsesLocal = "";
+    localStorage.setItem('pageOneAlreadyVisited', 1);
+    for (var i = 0; i < userResponses.length; i++) {
+        if (userResponses[i] == "null") {
+            userResponsesLocal += "n";
+        } else if (userResponses[i] == true) {
+            userResponsesLocal += "t";
+        } else {
+            userResponsesLocal += "f";
+        }
+    }
+    if (userResponsesLocal.includes("n")) {
+        localStorage.setItem('pageOneHasNull', true);
+    } else {
+        localStorage.setItem('pageOneHasNull', false);
+    }
+    localStorage.setItem('pageOneSaved', userResponsesLocal);
+});
+
 if (reviewPageVisited) {
     document.querySelector("#form").appendChild(returnToReviewPageBtn);
 }

@@ -86,7 +86,6 @@ var returnToReviewPageBtnDiv = document.createElement('div');
 returnToReviewPageBtnDiv.id = "returnToReviewPageBtnDiv";
 document.querySelector("#form").appendChild(returnToReviewPageBtnDiv);
 
-
 var returnToReviewPageBtn = document.createElement('button');
 returnToReviewPageBtn.type = "submit";
 returnToReviewPageBtn.className = "btn";
@@ -95,6 +94,26 @@ returnToReviewPageBtn.id = "returnToReviewPageBtn";
 returnToReviewPageBtn.name = "btn";
 returnToReviewPageBtn.value = "returnToReviewPage";
 var reviewPageVisited = localStorage.getItem('reviewPageAlreadyVisited');
+
+returnToReviewPageBtn.addEventListener('click', function() {
+    userResponsesLocal = "";
+    localStorage.setItem('pageTwoAlreadyVisited', 1);
+    for (var i = 0; i < userResponses.length; i++) {
+        if (userResponses[i] == "null") {
+            userResponsesLocal += "n";
+        } else if (userResponses[i] == true) {
+            userResponsesLocal += "t";
+        } else {
+            userResponsesLocal += "f";
+        }
+    }
+    if (userResponsesLocal.includes("n")) {
+        localStorage.setItem('pageTwoHasNull', true);
+    } else {
+        localStorage.setItem('pageTwoHasNull', false);
+    }
+    localStorage.setItem('pageTwoSaved', userResponsesLocal);
+});
 
 if (reviewPageVisited) {
     document.querySelector("#form").appendChild(returnToReviewPageBtn);

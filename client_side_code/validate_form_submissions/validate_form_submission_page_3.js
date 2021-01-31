@@ -96,6 +96,26 @@ returnToReviewPageBtn.name = "btn";
 returnToReviewPageBtn.value = "returnToReviewPage";
 var reviewPageVisited = localStorage.getItem('reviewPageAlreadyVisited');
 
+returnToReviewPageBtn.addEventListener('click', function() {
+    userResponsesLocal = "";
+    localStorage.setItem('pageThreeAlreadyVisited', 1);
+    for (var i = 0; i < userResponses.length; i++) {
+        if (userResponses[i] == "null") {
+            userResponsesLocal += "n";
+        } else if (userResponses[i] == true) {
+            userResponsesLocal += "t";
+        } else {
+            userResponsesLocal += "f";
+        }
+    }
+    if (userResponsesLocal.includes("n")) {
+        localStorage.setItem('pageThreeHasNull', true);
+    } else {
+        localStorage.setItem('pageThreeHasNull', false);
+    }
+    localStorage.setItem('pageThreeSaved', userResponsesLocal);
+});
+
 if (reviewPageVisited) {
     document.querySelector("#form").appendChild(returnToReviewPageBtn);
     document.querySelector("#formDiv").classList.add('review');

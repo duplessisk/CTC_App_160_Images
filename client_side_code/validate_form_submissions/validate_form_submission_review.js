@@ -23,6 +23,7 @@ reviewMessage.innerHTML = "You can't submit this form twice, so please go back a
 document.querySelector("#reviewMessageHeaderDiv").appendChild(reviewMessage);
 
 var pageOneHasNull = localStorage.getItem('pageOneHasNull');
+console.log(pageOneHasNull);
 var pageTwoHasNull = localStorage.getItem('pageTwoHasNull');
 var pageThreeHasNull = localStorage.getItem('pageThreeHasNull');
 var pageFourHasNull = localStorage.getItem('pageFourHasNull');

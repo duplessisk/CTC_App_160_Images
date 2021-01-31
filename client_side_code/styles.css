@@ -223,7 +223,6 @@ body {
     background-color: RGB(100,98,98);
 }
 
-
 /* pages 2-4 */
 #previousBtnDiv, #nextBtnDiv {
     display: inline-block;
@@ -242,6 +241,16 @@ body {
 }
 
 /* review page */
+
+.null-btns {
+    background: RGB(180,91,56);
+    cursor: pointer;
+    color: white;
+    font: bold 1vw Arial;
+    margin-bottom: 0.5vw;
+    width: 8vw;
+    border-radius: 100vw;
+}
 
 #previousBtnDiv, #submitBtnDiv {
     margin-top: 4%;
@@ -282,16 +291,6 @@ body {
 #nullPagesDiv {
     margin-top: 2.5vw;
     margin-left: 47.75vw;
-}
-
-.null-btns {
-    background: RGB(180,91,56);
-    cursor: pointer;
-    color: white;
-    font: bold 1vw Arial;
-    margin-bottom: 0.5vw;
-    width: 8vw;
-    border-radius: 100vw;
 }
 
 a:visited {   
