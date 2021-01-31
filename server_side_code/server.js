@@ -65,8 +65,8 @@ app.get("/html_pages/page_1", function(request,response) {
 });
 
 app.post("/html_pages/page_1", function(request,response) {
-    resetWrongObjectsByPage(request,response, 1, '/html_pages/review_page', 
-        '/html_pages/page_2', '');
+    resetWrongObjectsByPage(request,response, 1, '', 
+        '/html_pages/page_2', '/html_pages/review_page');
 });
 
 app.get("/html_pages/page_2", function(request,response) {
