@@ -58,7 +58,6 @@ app.get("/html_pages/instructions_page", function(request,response) {
 
 app.post("/html_pages/instructions_page", function(request,response) {
     response.redirect('/html_pages/page_1');
-    // initClientDocument(request, response);
 });
 
 app.get("/html_pages/page_1", function(request,response) {
@@ -66,9 +65,8 @@ app.get("/html_pages/page_1", function(request,response) {
 });
 
 app.post("/html_pages/page_1", function(request,response) {
-    answerKeyPageOne = answerKeys.answerKeys[0];
-    driveApp(answerKeyPageOne,request,1);
-    response.redirect('/html_pages/page_2');
+    resetWrongObjectsByPage(request,response, 1, '/html_pages/review_page', 
+        '/html_pages/page_2', '');
 });
 
 app.get("/html_pages/page_2", function(request,response) {
@@ -76,15 +74,8 @@ app.get("/html_pages/page_2", function(request,response) {
 });
 
 app.post("/html_pages/page_2", function(request,response) {
-    answerKeyPageTwo = answerKeys.answerKeys[1];
-    driveApp(answerKeyPageTwo,request,2);
-    var btnClicked = request.body.btn;
-    if (btnClicked == "Previous") {
-        resetWrongObjectsByPage(request,1);
-        response.redirect('/html_pages/page_1');
-    } else if (btnClicked == "Next") {
-        response.redirect('/html_pages/page_3');
-    }
+    resetWrongObjectsByPage(request,response, 2, '/html_pages/page_1',
+        '/html_pages/page_3','/html_pages/review_page');
 });
 
 app.get("/html_pages/page_3", function(request,response) {
@@ -92,15 +83,8 @@ app.get("/html_pages/page_3", function(request,response) {
 });
 
 app.post("/html_pages/page_3", function(request,response) {
-    answerKeyPageThree = answerKeys.answerKeys[2];
-    driveApp(answerKeyPageThree,request,3);
-    var btnClicked = request.body.btn;
-    if (btnClicked == "Previous") {
-        resetWrongObjectsByPage(request,2);
-        response.redirect('/html_pages/page_2');
-    } else if (btnClicked == "Next") {
-        response.redirect('/html_pages/page_4');
-    }
+    resetWrongObjectsByPage(request,response, 3, '/html_pages/page_2',
+    '/html_pages/page_4','/html_pages/review_page');
 });
 
 app.get("/html_pages/page_4", function(request,response) {
@@ -108,15 +92,8 @@ app.get("/html_pages/page_4", function(request,response) {
 });
 
 app.post("/html_pages/page_4", function(request,response) {
-    answerKeyPageFour = answerKeys.answerKeys[3];
-    driveApp(answerKeyPageFour,request,4);
-    var btnClicked = request.body.btn;
-    if (btnClicked == "Previous") {
-        resetWrongObjectsByPage(request,3);
-        response.redirect('/html_pages/page_3');
-    } else if (btnClicked == "Next") {
-        response.redirect('/html_pages/page_5');
-    }
+    resetWrongObjectsByPage(request,response, 4, '/html_pages/page_3',
+    '/html_pages/page_5','/html_pages/review_page');
 });
 
 app.get("/html_pages/page_5", function(request,response) {
@@ -124,15 +101,8 @@ app.get("/html_pages/page_5", function(request,response) {
 });
 
 app.post("/html_pages/page_5", function(request,response) {
-    answerKeyPageFive = answerKeys.answerKeys[4];
-    driveApp(answerKeyPageFive,request,5);
-    var btnClicked = request.body.btn;
-    if (btnClicked == "Previous") {
-        resetWrongObjectsByPage(request,4);
-        response.redirect('/html_pages/page_4');
-    } else if (btnClicked == "Continue") {
-        response.redirect('/html_pages/review_page');
-    }
+    resetWrongObjectsByPage(request, response, 5, '/html_pages/page_4',
+    '/html_pages/review_page','');
 });
 
 app.get("/html_pages/review_page", function(request,response) {
@@ -146,42 +116,34 @@ app.post("/html_pages/review_page", function(request,response) {
     Client.findOne({clientId: id}, function(e, clientData) {
         var btnClicked = request.body.btn;
         if (btnClicked == "Previous") {
-            resetWrongObjectsByPage(request,5);
-            response.redirect('/html_pages/page_5');
+            resetWrongObjectsByPage(request,response,5,'/html_pages/page_5','','');
         } else if (btnClicked == "pageOneNull") {
-            resetWrongObjectsByPage(request,1);
-            response.redirect('/html_pages/page_1');
+            resetWrongObjectsByPage(request,response,1,'','','/html_pages/page_1');
         } else if (btnClicked == "pageTwoNull") {
-            resetWrongObjectsByPage(request,2);
-            response.redirect('/html_pages/page_2');
+            resetWrongObjectsByPage(request,response,2,'','','/html_pages/page_2');
         } else if (btnClicked == "pageThreeNull") {
-            resetWrongObjectsByPage(request,3);
-            response.redirect('/html_pages/page_3');
+            resetWrongObjectsByPage(request,response,3,'','','/html_pages/page_3');
         } else if (btnClicked == "pageFourNull") {
-            resetWrongObjectsByPage(request,4);
-            response.redirect('/html_pages/page_4');
+            resetWrongObjectsByPage(request,response,4,'','','/html_pages/page_4');
         } else if (btnClicked == "pageFiveNull") {
-            resetWrongObjectsByPage(request,5);
-            reponse.redirect('/html_pages/page_5');
+            resetWrongObjectsByPage(request,response,5,'','','/html_pages/page_5');
+        } else if (clientData.previouslySubmitted) {
+            response.redirect('/html_pages/form_already_submitted_page');
         } else {
-            if (clientData.previouslySubmitted) {
-                response.redirect('/html_pages/form_already_submitted_page');
-            } else {
-                Client.findOneAndUpdate({clientId: id}, 
-                    {previouslySubmitted: true}, {upsert: false}, 
-                        function() {});
-                var numObjectsByType = postAllObjectPaths();
-                [wrongObjectsByType,totalWrongByType] = 
-                    postWrongObjectPaths(clientData.wrongObjectsByPage);
-                
-                var totalIncorrect = getTotalIncorrect(totalWrongByType);
-                writeResultsData(numObjectsByType, totalWrongByType, 
-                    totalIncorrect);
-                writeResultsFile(request,totalWrongByType, numObjectsByType, 
-                    wrongObjectsByType);
-                sendEmailWithResults();
-                response.redirect('/html_pages/results_page');
-            }
+            Client.findOneAndUpdate({clientId: id}, 
+                {previouslySubmitted: true}, {upsert: false}, 
+                    function() {});
+            var numObjectsByType = postAllObjectPaths();
+            [wrongObjectsByType,totalWrongByType] = 
+                postWrongObjectPaths(clientData.wrongObjectsByPage);
+            
+            var totalIncorrect = getTotalIncorrect(totalWrongByType);
+            writeResultsData(numObjectsByType, totalWrongByType, 
+                totalIncorrect);
+            writeResultsFile(request,totalWrongByType, numObjectsByType, 
+                wrongObjectsByType);
+            // sendEmailWithResults();
+            response.redirect('/html_pages/results_page');
         }
     });
 });
@@ -250,16 +212,27 @@ function initClientDocument(request, response) {
  * @param {http} request - client http request to the server.
  * @param {Number} pageNumber - Page whose wrong paths are to be reset.
  */
-function resetWrongObjectsByPage(request,pageNumber) {
+function resetWrongObjectsByPage(request, response, pageNumber, path1, path2, path3) {
 
     var id = request.cookies['session_id'];
 
-    Client.findOne({clientId: id}, function(err,clientData) {
+    Client.findOne({clientId: id}, function(e,clientData) {
         var updatedWrongObjectsByPage = clientData.wrongObjectsByPage;
         updatedWrongObjectsByPage[pageNumber - 1] = [];
         Client.findOneAndUpdate({clientId: id}, 
             {wrongObjectsByPage: updatedWrongObjectsByPage}, {upsert: false},
-                function() {});
+                function() {
+                    answerKeyPageOne = answerKeys.answerKeys[pageNumber - 1];
+                    driveApp(answerKeyPageOne,request,pageNumber);
+                    var btnClicked = request.body.btn;
+                    if (btnClicked == "Previous") {
+                        response.redirect(path1);
+                    } else if (btnClicked == "Next") {
+                        response.redirect(path2);
+                    } else {
+                        response.redirect(path3);
+                    }
+                });
     });   
 }
 
@@ -319,7 +292,9 @@ function setClientResponses(clientResponses) {
  * @param {Array} clientResponses - Contains client responses for each object.
  * @param {number} pageNumber - App page number (1-5) client is on.
  */
-function setWrongObjectsByPage(request,answerKey,clientResponses,pageNumber) { 
+function setWrongObjectsByPage(request,answerKey,clientResponses,pageNumber) {
+
+    // var btnClicked = request.body.btn;
 
     var id = request.cookies['session_id'];
 
@@ -338,7 +313,6 @@ function setWrongObjectsByPage(request,answerKey,clientResponses,pageNumber) {
             function() {});
     });
 }
-
 
 /**
  * Sets and writes all objects paths by type and number of objects by type. 
@@ -664,9 +638,9 @@ function sendEmailWithResults() {
         }]
     }
 
-    transporter.sendMail(mailOptions, function(error,data) {
+    transporter.sendMail(mailOptions, function(e,data) {
         if (error) {
-            console.log(error);
+            console.log(e);
         } 
     });
 }

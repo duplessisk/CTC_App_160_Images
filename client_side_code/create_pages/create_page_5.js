@@ -39,15 +39,15 @@ previousBtn.name = "btn";
 previousBtn.value = "Previous";
 document.querySelector("#previousBtnDiv").appendChild(previousBtn);
 
-var continueBtnDiv = document.createElement('div');
-continueBtnDiv.id = "continueBtnDiv";
-continueBtnDiv.className = "right-btn";
-document.querySelector("#form").appendChild(continueBtnDiv);
+var nextBtnDiv = document.createElement('div');
+nextBtnDiv.id = "nextBtnDiv";
+nextBtnDiv.className = "right-btn";
+document.querySelector("#form").appendChild(nextBtnDiv);
 
-var continueBtn = document.createElement('input');
-continueBtn.type = "submit";
-continueBtn.className = "btn";
-continueBtn.id = "continueBtn";
-continueBtn.name = "btn";
-continueBtn.value = "Continue";
-document.querySelector("#continueBtnDiv").appendChild(continueBtn);
+var nextBtn = document.createElement('input');
+nextBtn.type = "submit";
+nextBtn.className = "btn";
+nextBtn.id = "nextBtn";
+nextBtn.name = "btn";
+nextBtn.value = "Next";
+document.querySelector("#nextBtnDiv").appendChild(nextBtn);

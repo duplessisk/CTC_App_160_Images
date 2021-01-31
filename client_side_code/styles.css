@@ -241,16 +241,6 @@ body {
     margin-top: -4vw;
 }
 
-
-/* page 5 */
-#continueBtn {
-    font-size: 1.4vw;
-}
-#continueBtnDiv, #previousBtnDiv {
-    display: inline-block;
-}
-
-
 /* review page */
 
 #previousBtnDiv, #submitBtnDiv {
