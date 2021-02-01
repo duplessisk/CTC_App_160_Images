@@ -116,7 +116,6 @@ returnToReviewPageBtn.addEventListener('click', function() {
 });
 
 reviewPageVisited = localStorage.getItem("reviewPageVisited");
-console.log(reviewPageVisited);
 
 if (reviewPageVisited) {
     document.querySelector("#form").appendChild(returnToReviewPageBtn);
