@@ -1,3 +1,7 @@
+localStorage.setItem('reviewPageVisited', true);
+
+console.log(localStorage.getItem('reviewPageVisited'));
+
 document.querySelector('#previousBtnReviewPage').addEventListener('click', function() {
     var formAlreadySubmitted = localStorage.getItem('formAlreadySubmitted');
     if (formAlreadySubmitted) {

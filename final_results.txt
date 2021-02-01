@@ -22,4 +22,4 @@ Objects Wrong: 09, 25, 46, 47, 48, 49
 object Type Apoptotic CTC: Wrong 15 out of 15 (0%)
 Objects Wrong: 11, 15, 17, 18, 21, 23, 26, 27, 30, 31, 36, 40, 41, 42, 44
 
-Time Stamp: 1/31/2021, 6:15:57 PM
+Time Stamp: 1/31/2021, 6:44:03 PM

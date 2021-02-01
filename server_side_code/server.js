@@ -107,7 +107,7 @@ app.get("/html_pages/page_5", function(request,response) {
 app.post("/html_pages/page_5", function(request,response) {
     processPage(request, 5, true);
     redirectPage(request, response, '/html_pages/page_4',
-        '/html_pages/review_page','');
+        '/html_pages/review_page','/html_pages/review_page');
 });
 
 // review page
@@ -202,11 +202,9 @@ function initClientDocument(request, response) {
 
         Client.findOne({clientId: id}, function(e,clientData) {
             if (clientData != null && clientData.previouslySubmitted) {
-                console.log("clientData is not null");
                 response.sendFile(path.join(__dirname + 
                     '/html_pages/form_already_submitted_page.html'));
             } else {
-                console.log("clientData is null");
                 const newClient = new Client({ 
                     clientId: id,
                     previouslySubmitted: false,
