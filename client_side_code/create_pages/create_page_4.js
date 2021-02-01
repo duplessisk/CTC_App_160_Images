@@ -1,53 +1,23 @@
-for (var i = 0; i < 10; i++) {
-    var newQuestion = document.createElement('div');
-    document.querySelector("#form").appendChild(newQuestion);
-    newQuestion.innerHTML = 
-        "<div class='new-image-row'> "+ 
-            "<div class='checkboxes-container'>" + 
-                "<div class='checkbox-container'>" + 
-                    "<label for='myRadioIdYes"+i+"' class='radio-btn-labels'>" + 
-                        "<input type='radio' value='yes' name='radio"+i+"' class='default-radio-btns yes_check_boxes' id='myRadioIdYes"+i+"'>" + 
-                        "<div class='custom-radio-btns'></div>" + 
-                        "Cell" + 
-                    "</label>" +
-                "</div>" + 
-                "<div id='buffer'></div>" + 
-                "<div class='checkbox-container'>" + 
-                "<label for='myRadioIdNo"+i+"' class='radio-btn-labels'>" + 
-                    "<input type='radio' value='no' name='radio"+i+"' class='default-radio-btns no_check_boxes' id='myRadioIdNo"+i+"'>" + 
-                    "<div class='custom-radio-btns'></div>" + 
-                    "Not Cell" + 
-                "</label>" +
-            "</div>" + 
-                "</div>" +
-                "<div class= 'cell-image-row-container'>" + 
-                    "<img src='/static/object_images/object3"+i+".png' alt='This image was originally intended to display a row of cell images' id='cellImage'>" + 
-                "</div>" + 
-            "</div>" + 
-        "</div>"
-}
+/**
+ * Creates all the elements on Page 4. First creates the checkboxes, then 
+ * creates the next button. Only when both of those elements are created is the 
+ * page validated.
+ */
 
-var previousBtnDiv = document.createElement('div');
-previousBtnDiv.id = "previousBtnDiv";
-document.querySelector("#form").appendChild(previousBtnDiv);
+// Global variable used in create_checkboxes.js to select images 30-39.
+window.imageNum = 3;
 
-var previousBtn = document.createElement('input');
-previousBtn.type = "submit";
-previousBtn.className = "btn";
-previousBtn.id = "previousBtn";
-previousBtn.name = "btn";
-previousBtn.value = "Previous";
-document.querySelector("#previousBtnDiv").appendChild(previousBtn);
+// Global variable used in create_checkboxes.js to select the correct page
+window.pageNum = "Four";
 
-var nextBtnDiv = document.createElement('div');
-nextBtnDiv.id = "nextBtnDiv";
-nextBtnDiv.className = "right-btn";
-document.querySelector("#form").appendChild(nextBtnDiv);
+$.getScript('/static/create_pages/page_elements/checkboxes/create_checkboxes.js', function() {
 
-var nextBtn = document.createElement('input');
-nextBtn.type = "submit";
-nextBtn.className = "btn";
-nextBtn.id = "nextBtn";
-nextBtn.name = "btn";
-nextBtn.value = "Next";
-document.querySelector("#nextBtnDiv").appendChild(nextBtn);
+    $.getScript('/static/create_pages/page_elements/buttons/create_previous_next_buttons.js', function() {
+
+        var validatePageFour = document.createElement('script');
+        validatePageFour.src = "/static/validate_form_submissions/validate_form_submission.js";
+        document.head.appendChild(validatePageFour);
+    
+    });
+
+});

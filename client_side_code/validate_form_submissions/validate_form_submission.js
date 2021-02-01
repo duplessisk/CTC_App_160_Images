@@ -4,12 +4,12 @@ var noCheckBoxes = document.querySelectorAll('.no_check_boxes');
 
 var userResponses = [];
 
-if (localStorage.getItem('pageOneAlreadyVisited') == null) {
+if (localStorage.getItem('page' + pageNum + 'AlreadyVisited') == null) {
     for (var i = 0; i < 20; i++) {
         userResponses[i] = "null";
     }
 } else {
-    var userResponsesLocal = localStorage.getItem('pageOneSaved');
+    var userResponsesLocal = localStorage.getItem('page' + pageNum + 'Saved');
     for (var i = 0; i < userResponsesLocal.length; i++) {
         if (String(userResponsesLocal.charAt(i)) == "t") {
             userResponses[i] = true;
@@ -23,7 +23,7 @@ if (localStorage.getItem('pageOneAlreadyVisited') == null) {
 
 for (var i = 0; i < userResponses.length; i++) {
     if (userResponses[i] != "null" && userResponses[i]) {
-        allCheckBoxes[i].checked = true;
+        allCheckBoxes[i].checked = true
     } 
 }
 
@@ -47,9 +47,24 @@ for (var i = 0; i < noCheckBoxes.length; i++) {
     });
 }
 
+document.querySelector('#previousBtn').addEventListener('click', function() {
+    userResponsesLocal = "";
+    localStorage.setItem('page' + pageNum + 'AlreadyVisited', 1);
+    for (var i = 0; i < userResponses.length; i++) {
+        if (userResponses[i] == "null") {
+            userResponsesLocal += "n";
+        } else if (userResponses[i] == true) {
+            userResponsesLocal += "t";
+        } else {
+            userResponsesLocal += "f";
+        }
+    }
+    localStorage.setItem('page' + pageNum + 'Saved', userResponsesLocal);
+});
+
 document.querySelector('#nextBtn').addEventListener('click', function() {
     userResponsesLocal = "";
-    localStorage.setItem('pageOneAlreadyVisited', 1);
+    localStorage.setItem('page' + pageNum + 'AlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i] == "null") {
             userResponsesLocal += "n";
@@ -60,12 +75,16 @@ document.querySelector('#nextBtn').addEventListener('click', function() {
         }
     }
     if (userResponsesLocal.includes("n")) {
-        localStorage.setItem('pageOneHasNull', true);
+        localStorage.setItem('page' + pageNum + 'HasNull', true);
     } else {
-        localStorage.setItem('pageOneHasNull', false);
+        localStorage.setItem('page' + pageNum + 'HasNull', false);
     }
-    localStorage.setItem('pageOneSaved', userResponsesLocal);
+    localStorage.setItem('page' + pageNum + 'Saved', userResponsesLocal);
 });
+
+var returnToReviewPageBtnDiv = document.createElement('div');
+returnToReviewPageBtnDiv.id = "returnToReviewPageBtnDiv";
+document.querySelector("#form").appendChild(returnToReviewPageBtnDiv);
 
 var returnToReviewPageBtn = document.createElement('button');
 returnToReviewPageBtn.type = "submit";
@@ -78,7 +97,7 @@ var reviewPageVisited = localStorage.getItem('reviewPageAlreadyVisited');
 
 returnToReviewPageBtn.addEventListener('click', function() {
     userResponsesLocal = "";
-    localStorage.setItem('pageOneAlreadyVisited', 1);
+    localStorage.setItem('page' + pageNum + 'AlreadyVisited', 1);
     for (var i = 0; i < userResponses.length; i++) {
         if (userResponses[i] == "null") {
             userResponsesLocal += "n";
@@ -89,13 +108,14 @@ returnToReviewPageBtn.addEventListener('click', function() {
         }
     }
     if (userResponsesLocal.includes("n")) {
-        localStorage.setItem('pageOneHasNull', true);
+        localStorage.setItem('page' + pageNum + 'HasNull', true);
     } else {
-        localStorage.setItem('pageOneHasNull', false);
+        localStorage.setItem('page' + pageNum + 'HasNull', false);
     }
-    localStorage.setItem('pageOneSaved', userResponsesLocal);
+    localStorage.setItem('page' + pageNum + 'Saved', userResponsesLocal);
 });
 
 if (reviewPageVisited) {
     document.querySelector("#form").appendChild(returnToReviewPageBtn);
+    document.querySelector("#formDiv").classList.add('review');
 }

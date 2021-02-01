@@ -66,8 +66,8 @@ app.get("/html_pages/page_1", function(request,response) {
 });
 app.post("/html_pages/page_1", function(request,response) {
     processPage(request, 1, true);                      
-    redirectPage(request, response, '', '/html_pages/page_2', 
-    '/html_pages/review_page');
+    redirectPage(request, response, '/html_pages/instructions_page', 
+        '/html_pages/page_2', '/html_pages/review_page');
 });
 
 // page 2
@@ -200,28 +200,31 @@ function initClientDocument(request, response) {
 
     var id = request.cookies['session_id'];
 
-    Client.exists({clientId: id},function(e,alreadySubmitted) {
-        if (alreadySubmitted) {
+        Client.findOne({clientId: id}, function(e,clientData) {
+            if (clientData != null && clientData.previouslySubmitted) {
+                console.log("clientData is not null");
+                response.sendFile(path.join(__dirname + 
+                    '/html_pages/form_already_submitted_page.html'));
+            } else {
+                console.log("clientData is null");
+                const newClient = new Client({ 
+                    clientId: id,
+                    previouslySubmitted: false,
+                    wrongObjectsByPage: [ [], [], [], [], [] ]
+                });
+                
+                newClient.save();
+                Client.findOneAndUpdate({clientId: id}, 
+                    {firstName: request.body.firstName, 
+                        lastName: request.body.lastName,
+                            company: request.body.company}, {upsert: false}, 
+                                function() {});
+    
             response.sendFile(path.join(__dirname + 
-                '/html_pages/form_already_submitted_page.html'));
-        } else {
-            const newClient = new Client({ 
-                clientId: id,
-                previouslySubmitted: false,
-                wrongObjectsByPage: [ [], [], [], [], [] ]
-            });
-            
-            newClient.save();
-            Client.findOneAndUpdate({clientId: id}, 
-                {firstName: request.body.firstName, 
-                    lastName: request.body.lastName,
-                        company: request.body.company}, {upsert: false}, 
-                            function() {});
+                '/html_pages/instructions_page.html'));
+            }
+        });
 
-        response.sendFile(path.join(__dirname + 
-            '/html_pages/instructions_page.html'));
-        }
-    });
 }
 
 /**

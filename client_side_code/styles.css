@@ -98,14 +98,7 @@ body {
     border: 0.25em solid rgba(248, 245, 245, 0.829);
 }
 
-#progressPageOneDiv {
-    margin-top: 0.5%;
-    margin-left: 51.7%;
-    font-family: Arial;
-    font-size: 1.25vw;
-}
-
-#progressPageTwoDiv {
+#progressPageDiv {
     margin-top: -4%;
     margin-left: 51.25%;
     font-family: Arial;
@@ -208,10 +201,6 @@ body {
 
 
 /* page 1 */
-#nextBtn {
-    margin-bottom: 1vw;
-    margin-left: 52.23%;
-}
 
 #returnToReviewPageBtn {
     font: bold 1.1vw Arial;
@@ -224,6 +213,7 @@ body {
 }
 
 /* pages 2-4 */
+
 #previousBtnDiv, #nextBtnDiv {
     display: inline-block;
 }
