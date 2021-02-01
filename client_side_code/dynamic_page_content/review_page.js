@@ -1,8 +1,8 @@
+document.getElementById("previousBtnDiv").classList.add('review');
+
 localStorage.setItem('reviewPageVisited', true);
 
-console.log(localStorage.getItem('reviewPageVisited'));
-
-document.querySelector('#previousBtnReviewPage').addEventListener('click', function() {
+document.querySelector('#previousBtn').addEventListener('click', function() {
     var formAlreadySubmitted = localStorage.getItem('formAlreadySubmitted');
     if (formAlreadySubmitted) {
         localStorage.setItem('formCompleted', true);
@@ -11,7 +11,7 @@ document.querySelector('#previousBtnReviewPage').addEventListener('click', funct
     }
 });
 
-document.querySelector('#submitBtnReviewPage').addEventListener('click', function() {
+document.querySelector('#submitBtn').addEventListener('click', function() {
     var formAlreadySubmitted = localStorage.getItem('formAlreadySubmitted');
     if (formAlreadySubmitted) {
         localStorage.setItem('formCompleted', true);

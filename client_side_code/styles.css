@@ -178,9 +178,8 @@ body {
 }
 
 /* welcome page */
-#beginBtn {
-    margin-top: 5%;
-    margin-left: 50.5%;
+#beginBtnDiv {
+    margin-top: 2vw;
 }
 
 
@@ -193,12 +192,11 @@ body {
     margin-left: 1%;
 }
 
-#resetLoginBtnDiv, #submitLoginBtnDiv {
+#resetLoginBtnDiv, #submitBtnDiv {
     margin-top: 2%;
     margin-bottom: 5%;
     display: inline-block;
 }
-
 
 /* page 1 */
 
@@ -223,7 +221,11 @@ body {
 }
 
 #previousBtnDiv {
-    margin-left: 43.5%;
+    margin-left: 43vw;
+}
+
+#previousBtnDiv.review {
+    margin-left: 39.5vw;
 }
 
 #returnToReviewPageBtnDiv {
@@ -243,17 +245,7 @@ body {
 }
 
 #previousBtnDiv, #submitBtnDiv {
-    margin-top: 4%;
-    margin-bottom: 5%;
-    display: inline-block;
-}
-
-#previousBtnReviewPageDiv {
-    margin-left: 39.25%;
-}
-
-#submitBtnReviewPageDiv, #previousBtnReviewPageDiv {
-    margin-top: 4%;
+    margin-top: 3%;
     margin-bottom: 5%;
     display: inline-block;
 }

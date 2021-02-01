@@ -59,14 +59,13 @@ app.get("/html_pages/instructions_page", function(request,response) {
 });
 app.post("/html_pages/instructions_page", function(request,response) {
     // response.render(__dirname + "/html_pages/pages_one_through_five_template", {pageNum: 1, pageNumString: "One"});
-    // response.render("pages_one_through_five_template", {pageNum: 1, pageNumString: "One"});
     response.redirect('/html_pages/page_1');
 });
 
 // page 1
-// app.get("/html_pages/page_1", function(request,response) {
-//     response.sendFile(path.join(__dirname + '/html_pages/page_1.html'));
-// });
+app.get("/html_pages/page_1", function(request,response) {
+    response.sendFile(path.join(__dirname + '/html_pages/page_1.html'));
+});
 app.post("/html_pages/page_1", function(request,response) {
     processPage(request, 1, true);                      
     redirectPage(request, response, '/html_pages/instructions_page', 

@@ -1,3 +1,5 @@
+// Creates the Begin button on the welcome and instructions pages.
+
 var beginBtnDiv = document.createElement('div');
 beginBtnDiv.id = "beginBtnDiv";
 document.querySelector("#form").appendChild(beginBtnDiv);
