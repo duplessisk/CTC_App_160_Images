@@ -40,7 +40,6 @@ app.get("/", function(request,response) {
 });
 app.post("/html_pages/welcome_page", function(request,response) {
     response.redirect('/html_pages/login_page');
-
 });
 
 // login page
@@ -49,12 +48,14 @@ app.get("/html_pages/login_page", function(request,response) {
 });
 app.post("/html_pages/login_page", function(request,response) {
     setClientCookie(request, response);
+    initClientDocument(request, response);
     response.redirect('/html_pages/instructions_page');
 });
 
 // instructions page
 app.get("/html_pages/instructions_page", function(request,response) {
-    initClientDocument(request, response);
+    response.sendFile(path.join(__dirname + 
+        '/html_pages/instructions_page.html'));
 });
 app.post("/html_pages/instructions_page", function(request,response) {
     response.redirect('/html_pages/page_1');
@@ -218,8 +219,9 @@ function initClientDocument(request, response) {
                             company: request.body.company}, {upsert: false}, 
                                 function() {});
     
-            response.sendFile(path.join(__dirname + 
-                '/html_pages/instructions_page.html'));
+            // response.sendFile(path.join(__dirname + 
+            //     '/html_pages/instructions_page.html'));
+            // 
             }
         });
 
