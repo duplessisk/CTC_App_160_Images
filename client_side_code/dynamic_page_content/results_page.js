@@ -154,6 +154,21 @@ function setResultsMaps(resultsText) {
     setNumByTypesMap(jsonResultsArr[2], totalNumTypesMap);
 }
 
+// total number of questions the user wrong
+var totalNumIncorrect;
+
+/**
+ * Sets the total number of incorrect responses by the user 
+ * @param {String} totalNumIncorrectString - String representing data from 
+ *                                           results_data.json. Contains total 
+ *                                           number of incorrect responses by 
+ *                                           the user. 
+ */
+function setTotalNumIncorrect(totalNumIncorrectString) {
+    totalNumIncorrect = totalNumIncorrectString.substring(23,
+        totalNumIncorrectString.length);
+}
+
 /**
  * Sets the total number of incorrect responses or total number of questions by
  * cell bin type 
@@ -174,58 +189,6 @@ function setNumByTypesMap(numByTypeString, numTypesMap) {
         var thisCellType = numTypeSubArr[0];
         var numType = numTypeSubArr[1];
         numTypesMap.set(thisCellType, Number(numType)); 
-    }
-}
-
-// total number of questions the user wrong
-var totalNumIncorrect;
-
-/**
- * Sets the total number of incorrect responses by the user 
- * @param {String} totalNumIncorrectString - String representing data from 
- *                                           results_data.json. Contains total 
- *                                           number of incorrect responses by 
- *                                           the user. 
- */
-function setTotalNumIncorrect(totalNumIncorrectString) {
-    totalNumIncorrect = totalNumIncorrectString.substring(23,
-        totalNumIncorrectString.length);
-}
-
-/**
- * Adds incorrect cell objects to DOM
- * @param {Array} cellType - Stores all the cell type bins
- * @param {Array} incorrectTypeArr - Contains the paths of all incorrectly 
- *                                   answered objects based on cell type
- */
-function addObjectsToDom(objNum, typesMap, objectType) {
-    var objType = objTypes[objNum].replaceAll(' ','');
-    var objectPaths = typesMap.get(objType);
-    if (objectPaths != undefined) { // avoid getting length of empty objectPaths
-        for (var i = 0; i < objectPaths.length; i++) {
-
-            var messageDiv = document.createElement('div');
-            messageDiv.className = "message-div";
-            messageDiv.id = "messageDiv";
-    
-            var objectNum = objectPaths[i].substring(30,32);
-            var objectPath = objectPaths[i];
-
-            var newImg = document.createElement('img');
-            newImg.src = objectPath;
-            newImg.id="resultsImg";
-    
-            if (objectType == "wrong") {
-                messageDiv.innerHTML = "You got object  " + objectNum + 
-                    " incorrect";
-            } else {
-                messageDiv.innerHTML = "Object  " + objectNum;
-            }
-            document.querySelector("#img" + objNum + "Div")
-                .appendChild(messageDiv);
-            document.querySelector("#img" + objNum + "Div")
-                .appendChild(newImg);
-        }
     }
 }
 
@@ -381,6 +344,43 @@ function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg,
                         thisBtnsClicked[objNum] = true;
                 }
         });
+    }
+}
+
+/**
+ * Adds incorrect cell objects to DOM
+ * @param {Array} cellType - Stores all the cell type bins
+ * @param {Array} incorrectTypeArr - Contains the paths of all incorrectly 
+ *                                   answered objects based on cell type
+ */
+function addObjectsToDom(objNum, typesMap, objectType) {
+    var objType = objTypes[objNum].replaceAll(' ','');
+    var objectPaths = typesMap.get(objType);
+    if (objectPaths != undefined) { // avoid getting length of empty objectPaths
+        for (var i = 0; i < objectPaths.length; i++) {
+
+            var messageDiv = document.createElement('div');
+            messageDiv.className = "message-div";
+            messageDiv.id = "messageDiv";
+    
+            var objectNum = objectPaths[i].substring(30,32);
+            var objectPath = objectPaths[i];
+
+            var newImg = document.createElement('img');
+            newImg.src = objectPath;
+            newImg.id="resultsImg";
+    
+            if (objectType == "wrong") {
+                messageDiv.innerHTML = "You got object  " + objectNum + 
+                    " incorrect";
+            } else {
+                messageDiv.innerHTML = "Object  " + objectNum;
+            }
+            document.querySelector("#img" + objNum + "Div")
+                .appendChild(messageDiv);
+            document.querySelector("#img" + objNum + "Div")
+                .appendChild(newImg);
+        }
     }
 }
 

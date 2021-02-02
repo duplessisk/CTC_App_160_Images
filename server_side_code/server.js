@@ -58,7 +58,6 @@ app.get("/html_pages/instructions_page", function(request,response) {
         '/html_pages/instructions_page.html'));
 });
 app.post("/html_pages/instructions_page", function(request,response) {
-    // response.render(__dirname + "/html_pages/pages_one_through_five_template", {pageNum: 1, pageNumString: "One"});
     response.redirect('/html_pages/page_1');
 });
 
