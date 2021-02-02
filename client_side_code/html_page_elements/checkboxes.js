@@ -8,7 +8,7 @@ for (var i = 0; i < 10; i++) {
             "<div class='checkboxes-container'>" + 
                 "<div class='checkbox-container'>" + 
                     "<label for='myRadioIdCell"+i+"' class='radio-btn-labels'>" + 
-                        "<input type='radio' value='cell' name='radio"+i+"' class='default-radio-btns cell-check-boxes' id='myRadioIdcell"+i+"'>" + 
+                        "<input type='radio' value='cell' name='radio"+i+"' class='default-radio-btns cell-check-boxes' id='myRadioIdCell"+i+"'>" + 
                         "<div class='custom-radio-btns'></div>" + 
                         "Cell" + 
                     "</label>" +

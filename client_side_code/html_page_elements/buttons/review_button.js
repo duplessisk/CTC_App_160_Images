@@ -2,6 +2,7 @@
 
 var returnToReviewPageBtnDiv = document.createElement('div');
 returnToReviewPageBtnDiv.id = "returnToReviewPageBtnDiv";
+
 document.querySelector("#form").appendChild(returnToReviewPageBtnDiv);
 
 var returnToReviewPageBtn = document.createElement('button');
@@ -11,7 +12,6 @@ returnToReviewPageBtn.innerHTML = "Review Page";
 returnToReviewPageBtn.id = "returnToReviewPageBtn";
 returnToReviewPageBtn.name = "btn";
 returnToReviewPageBtn.value = "returnToReviewPage";
-var reviewPageVisited = localStorage.getItem('reviewPageAlreadyVisited');
 
 reviewPageVisited = localStorage.getItem("reviewPageVisited");
 
