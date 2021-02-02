@@ -19,22 +19,20 @@ async function main() {
     var wrongTypesMap = new Map();
     var allTypesMap = new Map();
 
+    var objTypes = [];
+    var objLabels = [];
+
     var wrongObjectPathsJson = await fetch("/static/wrong_object_paths.json");
     var wrongObjectPathsText = await wrongObjectPathsJson.text();
-    setObjectPaths(wrongObjectPathsText, wrongTypesMap, "wrong");
-
+    setObjectPaths(objTypes, objLabels, wrongObjectPathsText, wrongTypesMap);
+    
     var allObjectPathsJson = await fetch("/static/all_object_paths.json");
     var allObjectPathsText = await allObjectPathsJson.text();
-    setObjectPaths(allObjectPathsText, allTypesMap, "all");
+    setObjectPaths(objTypes, objLabels, allObjectPathsText, allTypesMap);
 
-    var objLabels = ["Cell: CTC - ","Non-Cell: Uncharacterized Object - ", 
-        "Non-Cell: Fluorescent Artifact - ", "Non-Cell: CK/EpCAM Foci - ",
-            "Non-Cell: White Blood Cell - ","Non-Cell: Apoptotic Object - "];
-    var objTypes = ["CTC", "Unidentified Cell", "Fluorescent Artifact", 
-        "CK/EpCAM Foci", "White Blood Cell", "Apoptotic CTC"];
-
-    // var objTypes = [];
-    // var objLabels = [];
+    // var objLabels = ["Cell: CTC - ","Non-Cell: Uncharacterized Object - ", 
+    //     "Non-Cell: Fluorescent Artifact - ", "Non-Cell: CK/EpCAM Foci - ",
+    //         "Non-Cell: White Blood Cell - ","Non-Cell: Apoptotic Object - "];
 
     createObjDivs(objTypes, objLabels);
     
@@ -93,9 +91,9 @@ function addScoreToPageHeader() {
  * @param {Promise} incorrectTypeBlocks - Promise obj that needs to be 
  *                                        parsed in order to obtain data
  */
-function setObjectPaths(objectPathsText, typesMap) {
+function setObjectPaths(objTypes, objLabels, objectPathsText, typesMap) {
     var objectPathsString = filterString(objectPathsText);
-    setTypesMap(objectPathsString.substring(0,objectPathsString.length - 1),
+    setTypesMap(objTypes, objLabels, objectPathsString.substring(0,objectPathsString.length - 1),
         typesMap);
 }
 
@@ -122,23 +120,39 @@ function filterString(objectPathsText) {
  * and the object path associated with that cell.
  * @param {String} objectPathsString - String containing all wrong object paths.
  */
-function setTypesMap(objectPathsString, typesMap) {
-    console.log("im in again");
+function setTypesMap(objTypes,objLabels,objectPathsString, typesMap) {
     var jsonObjArr = objectPathsString.split("}");
     // execute if block IF client got one or more objects wrong
     if (jsonObjArr[0].length != 0) { 
         for (var i = 0; i < jsonObjArr.length; i++) {
             var jsonObjSubArr = jsonObjArr[i].split(":");
             var thisCellType = jsonObjSubArr[0].replaceAll('"','');
+            var thisCellLabel = thisCellType;
             thisCellType = thisCellType.replaceAll(' ','');
             thisCellType = thisCellType.replace('\n','');
             var objectPath = jsonObjSubArr[1].replaceAll('"','');
             if (typesMap.has(thisCellType)) {
                 typesMap.get(thisCellType).push(objectPath);
             } else {
+                setObjLabels(thisCellLabel, objLabels)
+                addToObjTypes(thisCellType,objTypes);
                 typesMap.set(thisCellType, new Array(objectPath)); 
             }    
         }
+    }
+}
+
+function addToObjTypes(thisCellType, objTypes) {
+    if (!objTypes.includes(thisCellType)) {
+        objTypes.push(thisCellType);
+    }
+}
+
+function setObjLabels(thisCellLabel, objLabels) {
+    if (thisCellLabel == "CTC") {
+        objLabels.push("Cell: " +thisCellLabel);
+    } else {
+        objLabels.push("Not Cell: " + thisCellLabel);
     }
 }
 
