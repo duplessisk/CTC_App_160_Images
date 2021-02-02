@@ -1,73 +1,107 @@
  /**
- * This script allows for pages 1 through 5 to be dynamic. Specifically,  
+ * Allows for pages 1 through 5 to be dynamic. Specifically,  
  * this script caches the client's responses for this page (this 
  * effectively saves their responses for each page). This is important because
  * the client should be able to navigate away from this page and excpect the 
  * status of the page to be the same should they decide to return to 
  * it in the future.
  */
+function main() {
 
-var allCheckBoxes = document.querySelectorAll('.default-radio-btns');
-var cellCheckBoxes = document.querySelectorAll('.cell-check-boxes');
-var notCellCheckBoxes = document.querySelectorAll('.not-cell-check-boxes');
+    var allCheckboxes = document.querySelectorAll('.default-radio-btns');
+    var cellCheckboxes = document.querySelectorAll('.cell-check-boxes');
+    var notCellCheckboxes = document.querySelectorAll('.not-cell-check-boxes');
+    
+    // Init array containing all client responses.
+    var pastClientResponses = [];
 
-// Init array containing all client responses.
-var clientResponses = [];
+    populatePastClientResponses(pastClientResponses);
+
+    recheckBoxes(pastClientResponses, allCheckboxes);
+
+    var currentClientResponses = [];
+
+    populateCurrentClientResponses(cellCheckboxes, currentClientResponses, 
+        true, false);
+    populateCurrentClientResponses(notCellCheckboxes, currentClientResponses, 
+        false, true);
+
+    redirectPage("previousButton", currentClientResponses);
+    redirectPage("nextButton", currentClientResponses);
+    redirectPage("returnButton", currentClientResponses);
+    
+}
+    
+main();
+
 
 /**
- * Populates the current clientResponses with the client's saved responses 
- * (in cache) on their previous visit to this page. 
+ * 
+ * Populates the past client responses with the client's cached responses
+ * on their previous visit to this page. 
+ * @param {Array} pastClientResponses - Contains client's previous responses 
+ *                                      for each question.
  */
-if (localStorage.getItem('page' + pageNum + 'AlreadyVisited') == null) {
-    for (var i = 0; i < 20; i++) {
-        clientResponses[i] = "null";
-    }
-} else {
-    var clientResponsesLocal = localStorage.getItem('page' + pageNum + 'Saved');
-    for (var i = 0; i < clientResponsesLocal.length; i++) {
-        if (String(clientResponsesLocal.charAt(i)) == "t") {
-            clientResponses[i] = true;
-        } else if (String(clientResponsesLocal.charAt(i)) == "f") {
-            clientResponses[i] = false;
-        } else {
-            clientResponses[i] = "null";
+function populatePastClientResponses(pastClientResponses) {
+    if (localStorage.getItem('page' + pageNum + 'AlreadyVisited') == null) {
+        for (var i = 0; i < 20; i++) {
+            pastClientResponses[i] = "null";
+        }
+    } else {
+        var cachedClientResponses = localStorage.getItem('page' + pageNum + 'Saved');
+        for (var i = 0; i < cachedClientResponses.length; i++) {
+            if (String(cachedClientResponses.charAt(i)) == "t") {
+                pastClientResponses[i] = true;
+            } else if (String(cachedClientResponses.charAt(i)) == "f") {
+                pastClientResponses[i] = false;
+            } else {
+                pastClientResponses[i] = "null";
+            }
         }
     }
 }
 
-// Checks this page's checkboxes that were checked in the past by the client.
-for (var i = 0; i < clientResponses.length; i++) {
-    if (clientResponses[i] != "null" && clientResponses[i]) {
-        allCheckBoxes[i].checked = true;
-    } 
-}
 
 /**
- * For each cell check box, records whether or not it has been checked, and 
- * stores that result in clientResponses array.
+ * Checks this page's checkboxes that were checked in the past by the client.
+ * @param {Array} pastClientResponses - Contains client's previous responses 
+ *                                      for each question.
  */
-for (var i = 0; i < cellCheckBoxes.length; i++) {
-    cellCheckBoxes[i].addEventListener('change', function() {
-        idNum = Number(this.id.charAt(12));
-        if (this.checked) {
-            clientResponses[2*idNum] = true;
-            clientResponses[2*idNum + 1] = false;
-        }
-    });
+function recheckBoxes(pastClientResponses, allCheckboxes) {
+    // Checks this page's checkboxes that were checked in the past by the client.
+    for (var i = 0; i < pastClientResponses.length; i++) {
+        if (pastClientResponses[i] != "null" && pastClientResponses[i]) {
+            allCheckboxes[i].checked = true;
+        } 
+    }
 }
 
+
 /**
- * For each not cell check box, records whether or not it has been checked, and 
- * stores that result in clientResponses array.
+ * For each check box type (cell or not cell), waits for the checkbox to be 
+ * clicked, then records whether or not its been clicked in the current 
+ * client responses. 
+ * array.
+ * @param {Array} checkboxesType - All client responses for the specified 
+ *                                 check box type (cell or not cell). 
+ * @param {Array} pastClientResponses - Contains client's previous responses 
+ *                                      for each question. 
+ * @param {Boolean} cellResponse - True if cell checkbox has been selected, 
+ *                                 false o.w.
+ * @param {Boolean} notCellResponse - True if not cell checkbox has been 
+ *                                    selected, false o.w.
  */
-for (var i = 0; i < notCellCheckBoxes.length; i++) {
-    notCellCheckBoxes[i].addEventListener('change', function() {
-        idNum = Number(this.id.charAt(11));
-        if (this.checked) {
-            clientResponses[2*idNum + 1] = true;
-            clientResponses[2*idNum] = false;
-        }
-    });
+function populateCurrentClientResponses(checkboxesType, currentClientResponses,
+                            cellResponse, notCellResponse) {
+    for (var i = 0; i < checkboxesType.length; i++) {
+        checkboxesType[i].addEventListener('change', function() {
+            idNum = Number(this.id.charAt(12));
+            if (this.checked) {
+                currentClientResponses[2*idNum] = cellResponse;
+                currentClientResponses[2*idNum + 1] = notCellResponse;
+            }
+        });
+    }
 }
 
 /**
@@ -76,36 +110,29 @@ for (var i = 0; i < notCellCheckBoxes.length; i++) {
  * 
  * Also records whether or not a client has left a question on this page 
  * blank.
+ * @param {Button} button - Button that will listen for a click event 
+ * @param {Array} currentClientResponses - Contains client's responses for each 
+ *                                  question.
  */
-document.querySelector('#previousBtn').addEventListener('click', function() {
-    clientResponsesLocal = "";
-    localStorage.setItem('page' + pageNum + 'AlreadyVisited', 1);
-    for (var i = 0; i < clientResponses.length; i++) {
-        if (clientResponses[i] == "null") {
-            clientResponsesLocal += "n";
-        } else if (clientResponses[i] == true) {
-            clientResponsesLocal += "t";
-        } else {
-            clientResponsesLocal += "f";
-        }
-    }
-    localStorage.setItem('page' + pageNum + 'Saved', clientResponsesLocal);
-});
+function redirectPage(button, currentClientResponses) {
+    document.querySelector('#' + button).addEventListener('click', function() {
+        setClientResponsesLocal(currentClientResponses);
+    });
+}
+
 
 /**
- * Senses whether or not the Next button on this page has been clicked. 
- * If it has, the client responses for this page are cached. 
- * 
- * Also records whether or not a client has left a question on this page 
- * blank. 
+ * Caches the clients responses so they can be loaded at a later time
+ * @param {Array} currentClientResponses - Contains client's responses for each 
+ *                                  question. 
  */
-document.querySelector('#nextBtn').addEventListener('click', function() {
+function setClientResponsesLocal(currentClientResponses) {
     clientResponsesLocal = "";
     localStorage.setItem('page' + pageNum + 'AlreadyVisited', 1);
-    for (var i = 0; i < clientResponses.length; i++) {
-        if (clientResponses[i] == "null") {
+    for (var i = 0; i < currentClientResponses.length; i++) {
+        if (currentClientResponses[i] == "null") {
             clientResponsesLocal += "n";
-        } else if (clientResponses[i] == true) {
+        } else if (currentClientResponses[i] == true) {
             clientResponsesLocal += "t";
         } else {
             clientResponsesLocal += "f";
@@ -117,31 +144,4 @@ document.querySelector('#nextBtn').addEventListener('click', function() {
         localStorage.setItem('page' + pageNum + 'HasNull', false);
     }
     localStorage.setItem('page' + pageNum + 'Saved', clientResponsesLocal);
-});
-
-/**
- * Senses whether or not the Next button on this page has been clicked. 
- * If it has, the client responses for this page are cached. 
- * 
- * Also records whether or not a client has left a question on this page 
- * blank. 
- */
-returnToReviewPageBtn.addEventListener('click', function() {
-    clientResponsesLocal = "";
-    localStorage.setItem('page' + pageNum + 'AlreadyVisited', 1);
-    for (var i = 0; i < clientResponses.length; i++) {
-        if (clientResponses[i] == "null") {
-            clientResponsesLocal += "n";
-        } else if (clientResponses[i] == true) {
-            clientResponsesLocal += "t";
-        } else {
-            clientResponsesLocal += "f";
-        }
-    }
-    if (clientResponsesLocal.includes("n")) {
-        localStorage.setItem('page' + pageNum + 'HasNull', true);
-    } else {
-        localStorage.setItem('page' + pageNum + 'HasNull', false);
-    }
-    localStorage.setItem('page' + pageNum + 'Saved', clientResponsesLocal);
-});
+}
