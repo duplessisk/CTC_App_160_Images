@@ -149,10 +149,11 @@ function addToObjTypes(thisCellType, objTypes) {
 }
 
 function setObjLabels(thisCellLabel, objLabels) {
-    if (thisCellLabel == "CTC") {
-        objLabels.push("Cell: " +thisCellLabel);
+    var thisCellLabelString = String(thisCellLabel);
+    if (thisCellLabelString.includes("CTC")) {
+        objLabels.push("Cell: " + thisCellLabel + " -");
     } else {
-        objLabels.push("Not Cell: " + thisCellLabel);
+        objLabels.push("Non-Cell: " + thisCellLabel + " -");
     }
 }
 
