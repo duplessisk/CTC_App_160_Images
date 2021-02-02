@@ -17,11 +17,12 @@ async function main() {
 
     var wrongObjectPathsJson = await fetch("/static/wrong_object_paths.json");
     var wrongObjectPathsText = await wrongObjectPathsJson.text();
-    setObjectPaths(objTypes, objLabels, wrongObjectPathsText, wrongTypesMap);
+    setObjectPaths(objTypes, objLabels, wrongObjectPathsText, wrongTypesMap, 
+        "Wrong");
     
     var allObjectPathsJson = await fetch("/static/all_object_paths.json");
     var allObjectPathsText = await allObjectPathsJson.text();
-    setObjectPaths(objTypes, objLabels, allObjectPathsText, allTypesMap);
+    setObjectPaths(objTypes, objLabels, allObjectPathsText, allTypesMap, "All");
 
     createObjDivs(objTypes, objLabels);
     
@@ -80,10 +81,11 @@ function addScoreToPageHeader() {
  * @param {Promise} incorrectTypeBlocks - Promise obj that needs to be 
  *                                        parsed in order to obtain data
  */
-function setObjectPaths(objTypes, objLabels, objectPathsText, typesMap) {
+function setObjectPaths(objTypes, objLabels, objectPathsText, typesMap, 
+                        wrongOrAll) {
     var objectPathsString = filterString(objectPathsText);
-    setTypesMap(objTypes, objLabels, objectPathsString.substring(0,objectPathsString.length - 1),
-        typesMap);
+    setTypesMap(objTypes, objLabels, objectPathsString.substring(0,
+        objectPathsString.length - 1), typesMap, wrongOrAll);
 }
 
 /**
@@ -109,7 +111,8 @@ function filterString(objectPathsText) {
  * and the object path associated with that cell.
  * @param {String} objectPathsString - String containing all wrong object paths.
  */
-function setTypesMap(objTypes,objLabels,objectPathsString, typesMap) {
+function setTypesMap(objTypes,objLabels,objectPathsString, typesMap, 
+                     wrongOrAll) {
     var jsonObjArr = objectPathsString.split("}");
     // execute if block IF client got one or more objects wrong
     if (jsonObjArr[0].length != 0) { 
@@ -123,8 +126,11 @@ function setTypesMap(objTypes,objLabels,objectPathsString, typesMap) {
             if (typesMap.has(thisCellType)) {
                 typesMap.get(thisCellType).push(objectPath);
             } else {
-                setObjLabels(thisCellLabel, objLabels)
-                addToObjTypes(thisCellType,objTypes);
+                // objTypes and objLabels populated based on all object types.
+                if (wrongOrAll == "All") {
+                    setObjLabels(thisCellLabel, objLabels);
+                    addToObjTypes(thisCellType,objTypes);
+                }
                 typesMap.set(thisCellType, new Array(objectPath)); 
             }    
         }
