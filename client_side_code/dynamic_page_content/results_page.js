@@ -2,13 +2,6 @@
  * This script creates the results page. 
  */
 
-// create results DIV for each different cell type  
-// var objLabels = ["Cell: CTC - ","Non-Cell: Uncharacterized Object - ", 
-//     "Non-Cell: Fluorescent Artifact - ", "Non-Cell: CK/EpCAM Foci - ",
-//     "Non-Cell: White Blood Cell - ","Non-Cell: Apoptotic Object - "];
-// var objTypes = ["CTC", "Unidentified Cell", "Fluorescent Artifact", 
-//     "CK/EpCAM Foci", "White Blood Cell", "Apoptotic CTC"];
-
 /**
  * Main function that reads in JSON files, and links the data with the DOM.
  */
@@ -29,10 +22,6 @@ async function main() {
     var allObjectPathsJson = await fetch("/static/all_object_paths.json");
     var allObjectPathsText = await allObjectPathsJson.text();
     setObjectPaths(objTypes, objLabels, allObjectPathsText, allTypesMap);
-
-    // var objLabels = ["Cell: CTC - ","Non-Cell: Uncharacterized Object - ", 
-    //     "Non-Cell: Fluorescent Artifact - ", "Non-Cell: CK/EpCAM Foci - ",
-    //         "Non-Cell: White Blood Cell - ","Non-Cell: Apoptotic Object - "];
 
     createObjDivs(objTypes, objLabels);
     
