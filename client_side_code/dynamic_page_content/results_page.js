@@ -1,3 +1,7 @@
+/**
+ * This script creates the results page. 
+ */
+
 // add content to pageHeader
 overallScore = document.createElement('div');
 overallScore.id = "overallScore";
