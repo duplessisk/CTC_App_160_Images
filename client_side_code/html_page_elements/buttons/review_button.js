@@ -2,12 +2,13 @@
 
 var returnToReviewPageBtnDiv = document.createElement('div');
 returnToReviewPageBtnDiv.id = "returnToReviewPageBtnDiv";
-
+returnToReviewPageBtnDiv.classList.add('hide');
 document.querySelector("#form").appendChild(returnToReviewPageBtnDiv);
 
 var returnToReviewPageBtn = document.createElement('button');
 returnToReviewPageBtn.type = "submit";
 returnToReviewPageBtn.className = "btn";
+returnToReviewPageBtn.classList.add('hide');
 returnToReviewPageBtn.innerHTML = "Review Page";
 returnToReviewPageBtn.id = "returnToReviewPageBtn";
 returnToReviewPageBtn.name = "btn";

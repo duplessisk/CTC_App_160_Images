@@ -32,6 +32,10 @@ function main() {
     reviewPageVisited = localStorage.getItem("reviewPageVisited");
 
     if (reviewPageVisited) {
+        document.querySelector("#returnToReviewPageBtnDiv").classList.remove('hide');
+        document.querySelector("#returnToReviewPageBtnDiv").classList.add('show');
+        document.querySelector("#returnToReviewPageBtn").classList.remove('hide');
+        document.querySelector("#returnToReviewPageBtn").classList.add('show');
         redirectPage("returnToReviewPageBtn", currentClientResponses);
     }  
 

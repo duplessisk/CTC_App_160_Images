@@ -1,6 +1,32 @@
-document.getElementById("previousBtnDiv").classList.add('review');
+function main() {
 
-localStorage.setItem('reviewPageVisited', true);
+    document.getElementById("previousBtnDiv").classList.add('review');
+
+    localStorage.setItem('reviewPageVisited', true);
+
+    redirectPage('previousBtn');
+    redirectPage('previousBtn');
+
+
+}
+
+main();
+
+/**
+ * 
+ * @param {*} btn 
+ */
+function redirectPage(btn) {
+    document.querySelector('#' + btn).addEventListener('click', function() {
+        var formAlreadySubmitted = localStorage.getItem('formAlreadySubmitted');
+        if (formAlreadySubmitted) {
+            localStorage.setItem('formCompleted', true);
+        } else {
+            localStorage.setItem('formAlreadySubmitted', true);
+        }
+    });
+}
+
 
 document.querySelector('#previousBtn').addEventListener('click', function() {
     var formAlreadySubmitted = localStorage.getItem('formAlreadySubmitted');

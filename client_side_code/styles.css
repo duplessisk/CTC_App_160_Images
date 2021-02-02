@@ -200,7 +200,7 @@ body {
 
 /* page 1 */
 
-#returnToReviewPageBtn {
+#returnToReviewPageBtn.show {
     font: bold 1.1vw Arial;
     padding-top: 0.1vw;
     padding-bottom: 0.1vw;
@@ -208,6 +208,10 @@ body {
     margin-top: 0vw;
     margin-left: 52.23%;
     background-color: RGB(100,98,98);
+}
+
+#returnToReviewPageBtn.hide {
+    display: none;
 }
 
 /* pages 2-4 */
@@ -228,7 +232,11 @@ body {
     margin-left: 39.5vw;
 }
 
-#returnToReviewPageBtnDiv {
+#returnToReviewPageBtnDiv.hide {
+    margin-top: -4vw;
+}
+
+#returnToReviewPageBtnDiv.show {
     margin-top: -4vw;
 }
 
