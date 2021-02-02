@@ -590,18 +590,6 @@ function setTotalWrongByType(totalWrongByType) {
     return JSON.stringify(totalWrongByTypeObject,null,4);
 }
 
-
-// function writeObjectTypes(totalWrongByType) {
-//     objectTypes = Array.from(totalWrongByType.keys());
-//     for (var i = 0; i < objectTypes.length; i++) {
-//         objectType = {objectTypes[i]};
-//         fs.appendFileSync("./object_types.txt", "\n" + 
-//             fileContents(keys[i], numObjectsByType, totalWrongByType, 
-//                 wrongObjectsByType), 
-//                     function(){});
-//     }
-// }
-
 /**
  * Writes the final_results.txt that will be emailed to the admin.
  * @param {http} request - Client http request to the server.

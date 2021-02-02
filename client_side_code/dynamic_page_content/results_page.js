@@ -2,63 +2,23 @@
  * This script creates the results page. 
  */
 
-// add content to pageHeader
-overallScore = document.createElement('div');
-overallScore.id = "overallScore";
-overallAnsweredCorrect = document.createElement('div');
-overallAnsweredCorrect.id = "overallAnsweredCorrect";
-document.body.appendChild(pageHeaderDiv);
-document.querySelector("#pageHeaderDiv").appendChild(overallScore);
-document.querySelector("#pageHeaderDiv").appendChild(overallAnsweredCorrect);
-
-// buffer to allow for gap between pageHeader and rest of page 
-bufferDiv = document.createElement('div');
-bufferDiv.id = "bufferDiv";
-document.body.appendChild(bufferDiv);
-
 // create results DIV for each different cell type  
-var objLabels = ["Cell: CTC - ","Non-Cell: Uncharacterized Object - ", "Non-Cell: Fluorescent Artifact - ",
-    "Non-Cell: CK/EpCAM Foci - ","Non-Cell: White Blood Cell - ","Non-Cell: Apoptotic Object - "];
-var objTypes = ["CTC", "Unidentified Cell", "Fluorescent Artifact", "CK/EpCAM Foci", "White Blood Cell", "Apoptotic CTC"];
-
-var numObjTypes = objTypes.length;
-
-for (var i = 0; i < objTypes.length; i++) {
-
-    objectDiv = document.createElement('div');
-    objectDiv.id = "object" + i + "Div";
-    document.querySelector("#objectsDiv").appendChild(objectDiv);
-
-    objectInfoDiv = document.createElement('div');
-    objectInfoDiv.id = "objectInfo" + i + "Div";
-    objectInfoDiv.className = "object-info-div";
-    document.querySelector("#object" + i + "Div").appendChild(objectInfoDiv);
-
-    var objectHeaderDiv = document.createElement('div');
-    objectHeaderDiv.id = "objectHeader" + i + "Div";
-    objectHeaderDiv.className = "object-header-divs";
-    document.querySelector("#object" + i + "Div").appendChild(objectHeaderDiv); 
-
-    // object type 
-    var objectTypeLabel = document.createElement('div');
-    objectTypeLabel.id = "objectLabel" + i + "Div";
-    objectTypeLabel.innerHTML = objLabels[i];
-    objectTypeLabel.className = "object-type-labels";
-    document.getElementById("objectInfo"+ i +"Div")
-        .appendChild(objectTypeLabel);
-}
-
-/* Stores object paths of all incorrect user answers in the appropriate 
-   cell type bin */
-var wrongTypesMap = new Map();
-
-// Stores object paths of all objects in the appropriate cell type bin
-var allTypesMap = new Map();
+// var objLabels = ["Cell: CTC - ","Non-Cell: Uncharacterized Object - ", 
+//     "Non-Cell: Fluorescent Artifact - ", "Non-Cell: CK/EpCAM Foci - ",
+//     "Non-Cell: White Blood Cell - ","Non-Cell: Apoptotic Object - "];
+// var objTypes = ["CTC", "Unidentified Cell", "Fluorescent Artifact", 
+//     "CK/EpCAM Foci", "White Blood Cell", "Apoptotic CTC"];
 
 /**
  * Main function that reads in JSON files, and links the data with the DOM.
  */
 async function main() {
+
+    addScoreToPageHeader();
+
+    var wrongTypesMap = new Map();
+    var allTypesMap = new Map();
+
     var wrongObjectPathsJson = await fetch("/static/wrong_object_paths.json");
     var wrongObjectPathsText = await wrongObjectPathsJson.text();
     setObjectPaths(wrongObjectPathsText, wrongTypesMap, "wrong");
@@ -67,28 +27,66 @@ async function main() {
     var allObjectPathsText = await allObjectPathsJson.text();
     setObjectPaths(allObjectPathsText, allTypesMap, "all");
 
+    var objLabels = ["Cell: CTC - ","Non-Cell: Uncharacterized Object - ", 
+        "Non-Cell: Fluorescent Artifact - ", "Non-Cell: CK/EpCAM Foci - ",
+            "Non-Cell: White Blood Cell - ","Non-Cell: Apoptotic Object - "];
+    var objTypes = ["CTC", "Unidentified Cell", "Fluorescent Artifact", 
+        "CK/EpCAM Foci", "White Blood Cell", "Apoptotic CTC"];
+
+    // var objTypes = [];
+    // var objLabels = [];
+
+    createObjDivs(objTypes, objLabels);
+    
+    var numObjTypes = objTypes.length;
+
     var resultsJson = await fetch("/static/results_data.json");
     var resultsJsonText = await resultsJson.text();
-    setResultsMaps(resultsJsonText);
 
-    setResults();
-    createBtns();
+    var incorrectNumTypesMap = new Map();
+    var totalNumTypesMap = new Map();
+
+    setResultsMaps(resultsJsonText,incorrectNumTypesMap,totalNumTypesMap);
+
+    setResults(numObjTypes, incorrectNumTypesMap, totalNumTypesMap);
+    createBtns(numObjTypes);
+
+    var showBtnsClicked = [true,true,true,true,true,true];
+    var showAllBtnsClicked = [true,true,true,true,true,true];
 
     // init showBtns functionality
-    querySelectBtns(".show-type-btn", "showType", "Show Wrong", "Hide Wrong", 
-                    "showAllType", "Show All", "Hide All", 8, showBtnsClicked,
-                     showAllBtnsClicked, wrongTypesMap, "wrong");
+    querySelectBtns(numObjTypes,".show-type-btn", "showType", "Show Wrong", 
+                    "Hide Wrong", "showAllType", "Show All", "Hide All", 8, 
+                    showBtnsClicked,showAllBtnsClicked, wrongTypesMap, "wrong",
+                    objTypes);
     // init showAllBtns functionaily
-    querySelectBtns(".show-all-type-btn", "showAllType", "Show All", "Hide All", 
-                    "showType", "Show Wrong", "Hide Wrong", 11, showAllBtnsClicked,
-                    showBtnsClicked, allTypesMap, "all");
+    querySelectBtns(numObjTypes,".show-all-type-btn", "showAllType", "Show All",
+                    "Hide All", "showType", "Show Wrong", "Hide Wrong", 11, 
+                    showAllBtnsClicked, showBtnsClicked, allTypesMap, "all",
+                    objTypes);
 }
 
-// Stores the total number of incorrect responses by the user by cell type bin
-var incorrectNumTypesMap = new Map();
+main();
 
-// Stores the total number of objects per cell type bin
-var totalNumTypesMap = new Map();
+
+/**
+ * Adds score to results page header.
+ */
+function addScoreToPageHeader() {
+    // add content to pageHeader
+    overallScore = document.createElement('div');
+    overallScore.id = "overallScore";
+    overallAnsweredCorrect = document.createElement('div');
+    overallAnsweredCorrect.id = "overallAnsweredCorrect";
+    document.body.appendChild(pageHeaderDiv);
+    document.querySelector("#pageHeaderDiv").appendChild(overallScore);
+    document.querySelector("#pageHeaderDiv").appendChild(overallAnsweredCorrect);
+
+    // buffer to allow for gap between pageHeader and rest of page 
+    bufferDiv = document.createElement('div');
+    bufferDiv.id = "bufferDiv";
+    document.body.appendChild(bufferDiv);
+}
 
 /**
  * Returns an array containing the data from the specified JSON file
@@ -125,8 +123,9 @@ function filterString(objectPathsText) {
  * @param {String} objectPathsString - String containing all wrong object paths.
  */
 function setTypesMap(objectPathsString, typesMap) {
+    console.log("im in again");
     var jsonObjArr = objectPathsString.split("}");
-    // execute if block IF user wrong one or more objects
+    // execute if block IF client got one or more objects wrong
     if (jsonObjArr[0].length != 0) { 
         for (var i = 0; i < jsonObjArr.length; i++) {
             var jsonObjSubArr = jsonObjArr[i].split(":");
@@ -144,12 +143,43 @@ function setTypesMap(objectPathsString, typesMap) {
 }
 
 /**
+ * Creates a Div for each object type.
+ * @param {Array} objTypes - Contains all of the object types.
+ */
+function createObjDivs(objTypes, objLabels) {
+    for (var i = 0; i < objTypes.length; i++) {
+
+        objectDiv = document.createElement('div');
+        objectDiv.id = "object" + i + "Div";
+        document.querySelector("#objectsDiv").appendChild(objectDiv);
+    
+        objectInfoDiv = document.createElement('div');
+        objectInfoDiv.id = "objectInfo" + i + "Div";
+        objectInfoDiv.className = "object-info-div";
+        document.querySelector("#object" + i + "Div").appendChild(objectInfoDiv);
+    
+        var objectHeaderDiv = document.createElement('div');
+        objectHeaderDiv.id = "objectHeader" + i + "Div";
+        objectHeaderDiv.className = "object-header-divs";
+        document.querySelector("#object" + i + "Div").appendChild(objectHeaderDiv); 
+    
+        // object type 
+        var objectTypeLabel = document.createElement('div');
+        objectTypeLabel.id = "objectLabel" + i + "Div";
+        objectTypeLabel.innerHTML = objLabels[i];
+        objectTypeLabel.className = "object-type-labels";
+        document.getElementById("objectInfo"+ i +"Div")
+            .appendChild(objectTypeLabel);
+    }
+}
+
+/**
  * Sets incorrectNumTypesMap and totalNumTypesMap with contents from 
  * results_data.json. 
  * @param {String} resultsText - String representation of results_data.json 
  *                               contents. 
  */
-function setResultsMaps(resultsText) {
+function setResultsMaps(resultsText, incorrectNumTypesMap, totalNumTypesMap) {
     var resultsString = filterString(resultsText);
 
     var jsonResultsArr = resultsString.split("}");
@@ -157,9 +187,6 @@ function setResultsMaps(resultsText) {
     setNumByTypesMap(jsonResultsArr[1], incorrectNumTypesMap);
     setNumByTypesMap(jsonResultsArr[2], totalNumTypesMap);
 }
-
-// total number of questions the user wrong
-var totalNumIncorrect;
 
 /**
  * Sets the total number of incorrect responses by the user 
@@ -178,7 +205,7 @@ function setTotalNumIncorrect(totalNumIncorrectString) {
  * cell bin type 
  * @param {String} numByTypeString -   
  * @param {Map<String,Array>} numTypesMap - Map to set either 
- *                                          incorrectNumsTypeMap 
+ *                                          incorrectNumTypesMap 
  *                                          or totalNumsTypeMap
  * @param {Number} thisCellTypeIndex - index in numByTypeString that contains 
  *                                     the proper cell type bin
@@ -196,17 +223,11 @@ function setNumByTypesMap(numByTypeString, numTypesMap) {
     }
 }
 
-// Stores the total number of incorrect objects per cell type bin
-var incorrectNumTypesMap = new Map();
-
-// Stores the total number of objects per cell type bin
-var totalNumTypesMap = new Map();
-
 /**
  * Uses information stored within totalIncorrect, incorrectNumTypesMap, and 
  * totalNumTypesMap to add the appropriate user data to the DOM.
  */
-function setResults() {
+function setResults(numObjTypes, incorrectNumTypesMap, totalNumTypesMap) {
     var totalCorrect = 50;
     var totalNumQuestions = 0;
     var incorrectNumTypesMapKeys = Array.from(incorrectNumTypesMap.keys());
@@ -239,7 +260,7 @@ function setResults() {
 /**
  * Creates btn elements and adds them to the DOM
  */
-function createBtns() {
+function createBtns(numObjTypes) {
     for (var i = 0; i < numObjTypes; i++) {
         var showTypeBtnDiv = document.createElement('span');
         showTypeBtnDiv.className = "show-type-btn-divs";
@@ -265,7 +286,6 @@ function createBtns() {
         document.querySelector("#showAllType" + i + "BtnDiv")
             .appendChild(showAllTypeBtn);
 
-
         // objects divs 
         var imgDiv = document.createElement('div');
         imgDiv.id = "img" + i + "Div";
@@ -281,16 +301,6 @@ function createBtns() {
         }
     }
 }
-
-/*
-  Stores whether or not a particular show btn has been clicked (false) 
-  or not (true)
-*/
-var showBtnsClicked = [true,true,true,true,true,true];
-
-// Stores whether or not a particular show all btn has been clicked (false) 
-// or not (true)
-var showAllBtnsClicked = [true,true,true,true,true,true];
 
 /**
  * Adds an event listener to all of the show and show all btns. Contains 
@@ -318,9 +328,10 @@ var showAllBtnsClicked = [true,true,true,true,true,true];
  * @param {String} imgType - differentiates between the wrongTypesMap and 
  *                           allTypesMap. 
  */
-function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg, 
-                         otherBtnId, otherShowMsg, otherHideMsg, thisIdIndex, 
-                         thisBtnsClicked, otherBtnsClicked, typesMap, imgType) {
+function querySelectBtns(numObjTypes, thisBtnClass, thisBtnId, thisShowMsg, 
+                         thisHideMsg, otherBtnId, otherShowMsg, otherHideMsg, 
+                         thisIdIndex, thisBtnsClicked, otherBtnsClicked, 
+                         typesMap, imgType, objTypes) {
     for (var i = 0; i < numObjTypes; i++) {
         document.querySelectorAll(thisBtnClass)[i].addEventListener('click',
              function() {
@@ -339,7 +350,7 @@ function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg,
                         otherBtnsClicked[objNum] = true;
                     }
                     thisBtnsClicked[objNum] = false;
-                    addObjectsToDom(objNum, typesMap, imgType);
+                    addObjectsToDom(objNum, typesMap, imgType, objTypes);
                 } else { // hide objects for show btn
                     document.getElementById(thisBtnId + objNum + "Btn")
                         .innerHTML = thisShowMsg;
@@ -357,7 +368,7 @@ function querySelectBtns(thisBtnClass, thisBtnId, thisShowMsg, thisHideMsg,
  * @param {Array} incorrectTypeArr - Contains the paths of all incorrectly 
  *                                   answered objects based on cell type
  */
-function addObjectsToDom(objNum, typesMap, objectType) {
+function addObjectsToDom(objNum, typesMap, objectType, objTypes) {
     var objType = objTypes[objNum].replaceAll(' ','');
     var objectPaths = typesMap.get(objType);
     if (objectPaths != undefined) { // avoid getting length of empty objectPaths
@@ -387,6 +398,3 @@ function addObjectsToDom(objNum, typesMap, objectType) {
         }
     }
 }
-
-// run main function to init/create page
-main();
