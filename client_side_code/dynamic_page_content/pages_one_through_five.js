@@ -124,7 +124,7 @@ function setCurrentClientResponses(checkboxesType,checkboxesTypeString,
  * 
  * Also records whether or not a client has left a question on this page 
  * blank.
- * @param {btn} btn - btn that will listen for a click event 
+ * @param {HTML Button} btn - btn that will listen for a click event 
  * @param {Array} currentClientResponses - Contains client's responses for each 
  *                                  question.
  */

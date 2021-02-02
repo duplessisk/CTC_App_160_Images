@@ -1,7 +1,6 @@
 // Creates the score header on the results page.
 
 window.addEventListener('scroll', function() {
-    console.log(document.documentElement.scrollTop);
     if (document.documentElement.scrollTop > 5) {
         document.getElementById("pageHeaderDiv").classList.add('small');
     } else {

@@ -302,9 +302,9 @@ function initClientResponses(request) {
  */
 function setClientResponses(clientResponses) {
     for (var i = 0; i < clientResponses.length; i++) {
-        if (clientResponses[i] == "yes") {
+        if (clientResponses[i] == "cell") {
             clientResponses[i] = true;
-        } else if (clientResponses[i] == "no")  {
+        } else if (clientResponses[i] == "notCell")  {
             clientResponses[i] = false;
         } else {
             clientResponses[i] = null;

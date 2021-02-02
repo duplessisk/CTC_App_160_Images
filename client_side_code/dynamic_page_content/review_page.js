@@ -1,3 +1,9 @@
+ /**
+ * Allows for the review page to be dynamic. Specifically, this script 
+ * lets the user know if they've skipped any questions (and lets them navigate
+ * to the approprate pages) on the test before they submit.  
+ */
+
 function main() {
 
     document.getElementById("previousBtnDiv").classList.add('review');
@@ -5,16 +11,27 @@ function main() {
     localStorage.setItem('reviewPageVisited', true);
 
     redirectPage('previousBtn');
-    redirectPage('previousBtn');
+    redirectPage('submitBtn');
 
+    writeReviewMessage();
 
+    var pagesContainSkippedQuestions = getNullPages();
+    
+    console.log(localStorage.getItem('pageOneHasNull'));
+
+    console.log(pagesContainSkippedQuestions);
+
+    findPagesWithSkippedQuestions(pagesContainSkippedQuestions);
+    
+    addNullButton(pagesContainSkippedQuestions)
+    
 }
 
 main();
 
 /**
  * 
- * @param {*} btn 
+ * @param {HTML Button} btn - btn that will listen for a click event. 
  */
 function redirectPage(btn) {
     document.querySelector('#' + btn).addEventListener('click', function() {
@@ -27,104 +44,71 @@ function redirectPage(btn) {
     });
 }
 
-
-document.querySelector('#previousBtn').addEventListener('click', function() {
-    var formAlreadySubmitted = localStorage.getItem('formAlreadySubmitted');
-    if (formAlreadySubmitted) {
-        localStorage.setItem('formCompleted', true);
-    } else {
-        localStorage.setItem('formAlreadySubmitted', true);
-    }
-});
-
-document.querySelector('#submitBtn').addEventListener('click', function() {
-    var formAlreadySubmitted = localStorage.getItem('formAlreadySubmitted');
-    if (formAlreadySubmitted) {
-        localStorage.setItem('formCompleted', true);
-    } else {
-        localStorage.setItem('formAlreadySubmitted', true);
-    }
-});
-
-var reviewMessage = document.createElement('p');
-reviewMessage.id = "reviewMessage";
-reviewMessage.innerHTML = "You can't submit this form twice, so please go back and review your answers. " +
-" Any unanswered questions will be marked as incorrect.";
-document.querySelector("#reviewMessageHeaderDiv").appendChild(reviewMessage);
-
-var pageOneHasNull = localStorage.getItem('pageOneHasNull');
-var pageTwoHasNull = localStorage.getItem('pageTwoHasNull');
-var pageThreeHasNull = localStorage.getItem('pageThreeHasNull');
-var pageFourHasNull = localStorage.getItem('pageFourHasNull');
-var pageFiveHasNull = localStorage.getItem('pageFiveHasNull');
-
-var initBuffer = document.createElement('div');
-
-if (pageOneHasNull == "true" || pageTwoHasNull == "true" ||
-    pageThreeHasNull == "true" || pageFourHasNull == "true" || pageFiveHasNull == "true") {
-    var skippedPages = document.createElement('p');
-    skippedPages.innerHTML = "You didn't answer questions on the following page(s): ";
-    skippedPages.className = "review-page-messages";
-    document.querySelector("#reviewMessageResultsDiv").appendChild(skippedPages);
+/**
+ * Writes introductary message on review page.
+ */
+function writeReviewMessage() {
+    var reviewMessage = document.createElement('p');
+    reviewMessage.id = "reviewMessage";
+    reviewMessage.innerHTML = "You can't submit this form twice, so please" + 
+        " go back and review your answers. Any unanswered questions will be" +  
+            " marked as incorrect.";
+    document.querySelector("#reviewMessageHeaderDiv")
+        .appendChild(reviewMessage);
 }
 
-if (pageOneHasNull == "true") {
-    var pageOneNullbtn = document.createElement('button');
-    pageOneNullbtn.innerHTML = "Page One";
-    pageOneNullbtn.className = "null-btns";
-    pageOneNullbtn.name = "btn";
-    pageOneNullbtn.value = "pageOneNull";
-    pageOneNullbtn.type = "submit";
-    document.querySelector("#nullPagesDiv").appendChild(pageOneNullbtn);
+/**
+ * Returns an array containing information on whether or not each page (1-5)
+ * contains a blank client response.
+ * @return - Array containing whether or not each page contains a blank 
+ *           client response.
+ */
+function getNullPages() {
+    var pagesContainBlankAnswers = [];
+    var pages = ["One","Two","Three","Four","Five"];
+    for (var i = 0; i < 5; i++) {
+        pagesContainBlankAnswers[i] = localStorage.getItem('page' + 
+            pages[i] + 'HasNull');
+    }
+    return pagesContainBlankAnswers;
 }
 
-if (pageTwoHasNull == "true") {
-    var pageTwoNullbtn = document.createElement('button');
-    pageTwoNullbtn.innerHTML = "Page Two";
-    pageTwoNullbtn.className = "null-btns";
-    pageTwoNullbtn.type = "submit";
-    pageTwoNullbtn.name = "btn";
-    pageTwoNullbtn.value = "pageTwoNull";
-    var linebreak = document.createElement('br');
-    document.querySelector("#nullPagesDiv").appendChild(linebreak);
-    document.querySelector("#nullPagesDiv").appendChild(pageTwoNullbtn);
-} 
+/**
+ * If one or more pages have a skipped question, a warning message is added to 
+ * the review page.
+ * @param {Array} pagesContainSkippedQuestions - Containins whether or not each 
+ *                                               page contains a blank client 
+ *                                               response.
+ */
+function findPagesWithSkippedQuestions(pagesContainSkippedQuestions) {
+    if (pagesContainSkippedQuestions.includes("true")) {
+        var skippedPages = document.createElement('p');
+        skippedPages.innerHTML = "You didn't answer questions on the following page(s): ";
+        skippedPages.className = "review-page-messages";
+        document.querySelector("#reviewMessageResultsDiv").appendChild(skippedPages);
+    }
+}
 
-if (pageThreeHasNull == "true") {
-    var pageThreeNullbtn = document.createElement('button');
-    pageThreeNullbtn.innerHTML = "Page Three";
-    pageThreeNullbtn.className = "null-btns";
-    pageThreeNullbtn.type = "submit";
-    pageThreeNullbtn.name = "btn";
-    pageThreeNullbtn.value = "pageThreeNull";
-    var linebreak = document.createElement('br');
-    document.querySelector("#nullPagesDiv").appendChild(linebreak);
-    document.querySelector("#nullPagesDiv").appendChild(pageThreeNullbtn);
-} 
-
-if (pageFourHasNull == "true") {
-    var pageFourNullbtn = document.createElement('button');
-    pageFourNullbtn.innerHTML = "Page Four";
-    pageFourNullbtn.className = "null-btns";
-    pageFourNullbtn.type = "submit";
-    pageFourNullbtn.name = "btn";
-    pageFourNullbtn.value = "pageFourNull";
-    var linebreak = document.createElement('br');
-    document.querySelector("#nullPagesDiv").appendChild(linebreak);
-    document.querySelector("#nullPagesDiv").appendChild(pageFourNullbtn);
-} 
-
-if (pageFiveHasNull == "true") {
-    var pageFiveNullbtn = document.createElement('button');
-    pageFiveNullbtn.innerHTML = "Page Five";
-    pageFiveNullbtn.className = "null-btns";
-    pageFiveNullbtn.type = "submit";
-    pageFiveNullbtn.name = "btn";
-    pageFiveNullbtn.value = "pageFiveNull";
-    var linebreak = document.createElement('br');
-    document.querySelector("#nullPagesDiv").appendChild(linebreak);
-    document.querySelector("#nullPagesDiv").appendChild(pageFiveNullbtn);
-} 
-
-var nullBtns = document.querySelectorAll('.null-btns');
-var form = document.querySelector("#formDiv");
+/**
+ * Adds nullButton for a page (1-5) if the client skipped an question on that 
+ * page.
+ * @param {Array} pagesContainSkippedQuestions - Containins whether or not each 
+ *                                               page contains a blank client 
+ *                                               response. 
+ */
+function addNullButton(pagesContainSkippedQuestions) {
+    var pages = ["One","Two","Three","Four","Five"];
+    for (var i = 0; i < 5; i++) {
+        if (pagesContainSkippedQuestions[i] == "true") {
+            var pageNullBtn = document.createElement('button');
+            pageNullBtn.innerHTML = "Page " + pages[i];
+            pageNullBtn.className = "null-btns";
+            pageNullBtn.name = "btn";
+            pageNullBtn.value = "page" + pages[i] + "Null";
+            pageNullBtn.type = "submit";
+            var linebreak = document.createElement('br');
+            document.querySelector("#nullPagesDiv").appendChild(linebreak);
+            document.querySelector("#nullPagesDiv").appendChild(pageNullBtn);
+        }
+    }
+}
