@@ -13,8 +13,8 @@ objectInfo = objectInfo.splice(1,objectInfo.length - 2);
 objectTypes = [];
 answerKeys = [ [], [], [], [], [] ];
 
-//      page:   1    2    3    4    5
-answerKeys = [ [] , [] , [] , [] , [] ];
+//      page:   1    2    3    4    5   6  7   8   9   10  11  12  13  14  15  16
+answerKeys = [ [] , [] , [] , [] , [], [], [], [], [], [], [], [], [], [], [], []  ];
 for (var i = 0; i < objectInfo.length; i++) {
     answerKeys[Math.floor(i/10)].push(objectInfo[i][3] == "Cell");
     objectTypes.push(objectInfo[i][4]);
