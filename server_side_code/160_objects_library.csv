@@ -49,3 +49,113 @@ Object47_AF,object46,Cell,Not Cell,White Blood Cell
 Object48_AF,object47,Cell,Not Cell,White Blood Cell
 Object49_AF,object48,Cell,Not Cell,White Blood Cell
 Object50_AF,object49,Cell,Not Cell,White Blood Cell
+Object51_AF,object50,Cell,Cell,CTC
+Object52_AF,object51,Cell,Not Cell,Unidentified Cell
+Object53_AF,object52,Cell,Not Cell,Unidentified Cell
+Object54_AF,object53,Cell,Not Cell,Fluorescent Artifact
+Object55_AF,object54,Cell,Not Cell,CK/EpCAM Foci
+Object56_AF,object55,Cell,Not Cell,CK/EpCAM Foci
+Object57_AF,object56,Cell,Not Cell,Fluorescent Artifact
+Object58_AF,object57,Cell,Not Cell,CK/EpCAM Foci
+Object59_AF,object58,Cell,Not Cell,CK/EpCAM Foci
+Object60_AF,object59,Cell,Not Cell,White Blood Cell
+Object61_AF,object60,Cell,Not Cell,Unidentified Cell
+Object62_AF,object61,Cell,Not Cell,Apoptotic CTC
+Object63_AF,object62,Cell,Not Cell,Fluorescent Artifact
+Object64_AF,object63,Cell,Cell,CTC
+Object65_AF,object64,Cell,Cell,CTC
+Object66_AF,object65,Cell,Not Cell,Apoptotic CTC
+Object67_AF,object66,Cell,Cell,CTC
+Object68_AF,object67,Cell,Not Cell,Apoptotic CTC
+Object69_AF,object68,Cell,Not Cell,Apoptotic CTC
+Object70_AF,object69,Cell,Cell,CTC
+Object71_AF,object70,Cell,Cell,CTC
+Object72_AF,object71,Cell,Not Cell,Apoptotic CTC
+Object73_AF,object72,Cell,Cell,CTC
+Object74_AF,object73,Cell,Not Cell,Apoptotic CTC
+Object75_AF,object74,Cell,Cell,CTC
+Object76_AF,object75,Cell,Not Cell,White Blood Cell
+Object77_AF,object76,Cell,Not Cell,Apoptotic CTC
+Object78_AF,object77,Cell,Not Cell,Apoptotic CTC
+Object79_AF,object78,Cell,Cell,CTC
+Object80_AF,object79,Cell,Cell,CTC
+Object81_AF,object80,Cell,Not Cell,Apoptotic CTC
+Object82_AF,object81,Cell,Not Cell,Apoptotic CTC
+Object83_AF,object82,Cell,Cell,CTC
+Object84_AF,object83,Cell,Cell,CTC
+Object85_AF,object84,Cell,Cell,CTC
+Object86_AF,object85,Cell,Cell,CTC
+Object87_AF,object86,Cell,Not Cell,Apoptotic CTC
+Object88_AF,object87,Cell,Cell,CTC
+Object89_AF,object88,Cell,Cell,CTC
+Object90_AF,object89,Cell,Cell,CTC
+Object91_AF,object90,Cell,Not Cell,Apoptotic CTC
+Object92_AF,object91,Cell,Not Cell,Apoptotic CTC
+Object93_AF,object92,Cell,Not Cell,Apoptotic CTC
+Object94_AF,object93,Cell,Cell,CTC
+Object95_AF,object94,Cell,Not Cell,Apoptotic CTC
+Object96_AF,object95,Cell,Cell,CTC
+Object97_AF,object96,Cell,Not Cell,White Blood Cell
+Object98_AF,object97,Cell,Not Cell,White Blood Cell
+Object99_AF,object98,Cell,Not Cell,White Blood Cell
+Object100_AF,object99,Cell,Not Cell,White Blood Cell
+Object100_AF,object100,Cell,Cell,CTC
+Object102_AF,object101,Cell,Not Cell,Unidentified Cell
+Object103_AF,object102,Cell,Not Cell,Unidentified Cell
+Object104_AF,object103,Cell,Not Cell,Fluorescent Artifact
+Object105_AF,object104,Cell,Not Cell,CK/EpCAM Foci
+Object106_AF,object105,Cell,Not Cell,CK/EpCAM Foci
+Object107_AF,object106,Cell,Not Cell,Fluorescent Artifact
+Object108_AF,object107,Cell,Not Cell,CK/EpCAM Foci
+Object109_AF,object108,Cell,Not Cell,CK/EpCAM Foci
+Object110_AF,object109,Cell,Not Cell,White Blood Cell
+Object111_AF,object110,Cell,Not Cell,Unidentified Cell
+Object112_AF,object111,Cell,Not Cell,Apoptotic CTC
+Object113_AF,object112,Cell,Not Cell,Fluorescent Artifact
+Object114_AF,object113,Cell,Cell,CTC
+Object115_AF,object114,Cell,Cell,CTC
+Object116_AF,object115,Cell,Not Cell,Apoptotic CTC
+Object117_AF,object116,Cell,Cell,CTC
+Object118_AF,object117,Cell,Not Cell,Apoptotic CTC
+Object119_AF,object118,Cell,Not Cell,Apoptotic CTC
+Object120_AF,object119,Cell,Cell,CTC
+Object121_AF,object120,Cell,Cell,CTC
+Object122_AF,object121,Cell,Not Cell,Apoptotic CTC
+Object123_AF,object122,Cell,Cell,CTC
+Object124_AF,object123,Cell,Not Cell,Apoptotic CTC
+Object125_AF,object124,Cell,Cell,CTC
+Object126_AF,object125,Cell,Not Cell,White Blood Cell
+Object127_AF,object126,Cell,Not Cell,Apoptotic CTC
+Object128_AF,object127,Cell,Not Cell,Apoptotic CTC
+Object129_AF,object128,Cell,Cell,CTC
+Object130_AF,object129,Cell,Cell,CTC
+Object131_AF,object130,Cell,Not Cell,Apoptotic CTC
+Object132_AF,object131,Cell,Not Cell,Apoptotic CTC
+Object133_AF,object132,Cell,Cell,CTC
+Object134_AF,object133,Cell,Cell,CTC
+Object135_AF,object134,Cell,Cell,CTC
+Object136_AF,object135,Cell,Cell,CTC
+Object137_AF,object136,Cell,Not Cell,Apoptotic CTC
+Object138_AF,objec137,Cell,Cell,CTC
+Object139_AF,objec138,Cell,Cell,CTC
+Object140_AF,object139,Cell,Cell,CTC
+Object141_AF,object140,Cell,Not Cell,Apoptotic CTC
+Object142_AF,object141,Cell,Not Cell,Apoptotic CTC
+Object143_AF,object142,Cell,Not Cell,Apoptotic CTC
+Object144_AF,object143,Cell,Cell,CTC
+Object145_AF,object144,Cell,Not Cell,Apoptotic CTC
+Object146_AF,object145,Cell,Cell,CTC
+Object147_AF,object146,Cell,Not Cell,White Blood Cell
+Object148_AF,object147,Cell,Not Cell,White Blood Cell
+Object49_AF,object148,Cell,Not Cell,White Blood Cell
+Object150_AF,object149,Cell,Not Cell,White Blood Cell
+Object151_AF,object150,Cell,Cell,CTC
+Object152_AF,object151,Cell,Not Cell,Unidentified Cell
+Object153_AF,object152,Cell,Not Cell,Unidentified Cell
+Object154_AF,object153,Cell,Not Cell,Fluorescent Artifact
+Object155_AF,object154,Cell,Not Cell,CK/EpCAM Foci
+Object156_AF,object155,Cell,Not Cell,CK/EpCAM Foci
+Objec157_AF,object156,Cell,Not Cell,Fluorescent Artifact
+Objec158_AF,object157,Cell,Not Cell,CK/EpCAM Foci
+Object159_AF,object158,Cell,Not Cell,CK/EpCAM Foci
+Object160_AF,object159,Cell,Not Cell,White Blood Cell
