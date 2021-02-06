@@ -238,7 +238,7 @@ function setNumByTypesMap(numByTypeString, numTypesMap) {
  * totalNumTypesMap to add the appropriate user data to the DOM.
  */
 function setResults(numObjTypes, incorrectNumTypesMap, totalNumTypesMap) {
-    var totalCorrect = 50;
+    var totalCorrect = 160;
     var totalNumQuestions = 0;
     var incorrectNumTypesMapKeys = Array.from(incorrectNumTypesMap.keys());
     var totalNumTypesMapKeys = Array.from(totalNumTypesMap.keys());
