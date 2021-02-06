@@ -306,7 +306,7 @@ app.post("/html_pages/review_page", function(request,response) {
             writeResultsFile(request, totalIncorrect, totalWrongByType, 
                 numObjectsByType, wrongObjectsByType);
 
-            // sendEmailWithResults(request);
+            sendEmailWithResults(request);
 
             response.redirect('/html_pages/results_page');
         }
@@ -666,12 +666,17 @@ function writeObjectPaths(objectsByType,fileName) {
  * @return - This object's type.
  */
 function getThisObjectType(allObjectTypes,objectNum) {
-    if (Number(objectNum.charAt(0) == 0)) {
-        var num = Number(objectNum.charAt(1));
-        return allObjectTypes[num];
+    var num;
+    if (Number(objectNum.charAt(0)) == 0) {
+        if (Number(objectNum.charAt(1)) == 0) {
+            num = Number(objectNum.charAt(2));
+        } else {
+            num = Number(objectNum.charAt(1) + objectNum.charAt(2));
+        }
     } else {
-        return allObjectTypes[Number(objectNum)];
+        num = Number(objectNum);
     }
+    return allObjectTypes[num];
 }
 
 /**

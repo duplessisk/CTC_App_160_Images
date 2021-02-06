@@ -1,12 +1,12 @@
 {
     "totalIncorrect": 160
 }{
-    "CTC": 30,
-    "Unidentified Cell": 25,
-    "Fluorescent Artifact": 25,
-    "CK/EpCAM Foci": 48,
-    "White Blood Cell": 17,
-    "Apoptotic CTC": 15
+    "CTC": 58,
+    "Unidentified Cell": 11,
+    "Fluorescent Artifact": 11,
+    "CK/EpCAM Foci": 16,
+    "White Blood Cell": 19,
+    "Apoptotic CTC": 45
 }{
     "CTC": 58,
     "Unidentified Cell": 11,

@@ -1,23 +1,79 @@
 {
     "CTC": "/static/object_answers/object000answer.png"
 }{
-    "CTC": "/static/object_answers/object001answer.png"
+    "CTC": "/static/object_answers/object013answer.png"
 }{
-    "CTC": "/static/object_answers/object002answer.png"
+    "CTC": "/static/object_answers/object014answer.png"
 }{
-    "CTC": "/static/object_answers/object003answer.png"
+    "CTC": "/static/object_answers/object016answer.png"
 }{
-    "CTC": "/static/object_answers/object004answer.png"
+    "CTC": "/static/object_answers/object019answer.png"
 }{
-    "CTC": "/static/object_answers/object005answer.png"
+    "CTC": "/static/object_answers/object020answer.png"
 }{
-    "CTC": "/static/object_answers/object006answer.png"
+    "CTC": "/static/object_answers/object022answer.png"
 }{
-    "CTC": "/static/object_answers/object007answer.png"
+    "CTC": "/static/object_answers/object024answer.png"
 }{
-    "CTC": "/static/object_answers/object008answer.png"
+    "CTC": "/static/object_answers/object028answer.png"
 }{
-    "CTC": "/static/object_answers/object009answer.png"
+    "CTC": "/static/object_answers/object029answer.png"
+}{
+    "CTC": "/static/object_answers/object032answer.png"
+}{
+    "CTC": "/static/object_answers/object033answer.png"
+}{
+    "CTC": "/static/object_answers/object034answer.png"
+}{
+    "CTC": "/static/object_answers/object035answer.png"
+}{
+    "CTC": "/static/object_answers/object037answer.png"
+}{
+    "CTC": "/static/object_answers/object038answer.png"
+}{
+    "CTC": "/static/object_answers/object039answer.png"
+}{
+    "CTC": "/static/object_answers/object043answer.png"
+}{
+    "CTC": "/static/object_answers/object045answer.png"
+}{
+    "CTC": "/static/object_answers/object050answer.png"
+}{
+    "CTC": "/static/object_answers/object063answer.png"
+}{
+    "CTC": "/static/object_answers/object064answer.png"
+}{
+    "CTC": "/static/object_answers/object066answer.png"
+}{
+    "CTC": "/static/object_answers/object069answer.png"
+}{
+    "CTC": "/static/object_answers/object070answer.png"
+}{
+    "CTC": "/static/object_answers/object072answer.png"
+}{
+    "CTC": "/static/object_answers/object074answer.png"
+}{
+    "CTC": "/static/object_answers/object078answer.png"
+}{
+    "CTC": "/static/object_answers/object079answer.png"
+}{
+    "CTC": "/static/object_answers/object082answer.png"
+}{
+    "CTC": "/static/object_answers/object083answer.png"
+}{
+    "CTC": "/static/object_answers/object084answer.png"
+}{
+    "CTC": "/static/object_answers/object085answer.png"
+}{
+    "CTC": "/static/object_answers/object087answer.png"
+}{
+    "CTC": "/static/object_answers/object088answer.png"
+}{
+    "CTC": "/static/object_answers/object089answer.png"
+}{
+    "CTC": "/static/object_answers/object093answer.png"
+}{
+    "CTC": "/static/object_answers/object095answer.png"
 }{
     "CTC": "/static/object_answers/object100answer.png"
 }{
@@ -59,45 +115,17 @@
 }{
     "CTC": "/static/object_answers/object150answer.png"
 }{
+    "Unidentified Cell": "/static/object_answers/object001answer.png"
+}{
+    "Unidentified Cell": "/static/object_answers/object002answer.png"
+}{
     "Unidentified Cell": "/static/object_answers/object010answer.png"
 }{
-    "Unidentified Cell": "/static/object_answers/object011answer.png"
+    "Unidentified Cell": "/static/object_answers/object051answer.png"
 }{
-    "Unidentified Cell": "/static/object_answers/object012answer.png"
+    "Unidentified Cell": "/static/object_answers/object052answer.png"
 }{
-    "Unidentified Cell": "/static/object_answers/object013answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object014answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object015answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object016answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object017answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object018answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object019answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object020answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object021answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object022answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object023answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object024answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object025answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object026answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object027answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object028answer.png"
-}{
-    "Unidentified Cell": "/static/object_answers/object029answer.png"
+    "Unidentified Cell": "/static/object_answers/object060answer.png"
 }{
     "Unidentified Cell": "/static/object_answers/object101answer.png"
 }{
@@ -109,45 +137,17 @@
 }{
     "Unidentified Cell": "/static/object_answers/object152answer.png"
 }{
-    "Fluorescent Artifact": "/static/object_answers/object030answer.png"
+    "Fluorescent Artifact": "/static/object_answers/object003answer.png"
 }{
-    "Fluorescent Artifact": "/static/object_answers/object031answer.png"
+    "Fluorescent Artifact": "/static/object_answers/object006answer.png"
 }{
-    "Fluorescent Artifact": "/static/object_answers/object032answer.png"
+    "Fluorescent Artifact": "/static/object_answers/object012answer.png"
 }{
-    "Fluorescent Artifact": "/static/object_answers/object033answer.png"
+    "Fluorescent Artifact": "/static/object_answers/object053answer.png"
 }{
-    "Fluorescent Artifact": "/static/object_answers/object034answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object035answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object036answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object037answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object038answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object039answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object060answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object061answer.png"
+    "Fluorescent Artifact": "/static/object_answers/object056answer.png"
 }{
     "Fluorescent Artifact": "/static/object_answers/object062answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object063answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object064answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object065answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object066answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object067answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object068answer.png"
-}{
-    "Fluorescent Artifact": "/static/object_answers/object069answer.png"
 }{
     "Fluorescent Artifact": "/static/object_answers/object103answer.png"
 }{
@@ -159,85 +159,21 @@
 }{
     "Fluorescent Artifact": "/static/object_answers/object156answer.png"
 }{
-    "CK/EpCAM Foci": "/static/object_answers/object040answer.png"
+    "CK/EpCAM Foci": "/static/object_answers/object004answer.png"
 }{
-    "CK/EpCAM Foci": "/static/object_answers/object041answer.png"
+    "CK/EpCAM Foci": "/static/object_answers/object005answer.png"
 }{
-    "CK/EpCAM Foci": "/static/object_answers/object042answer.png"
+    "CK/EpCAM Foci": "/static/object_answers/object007answer.png"
 }{
-    "CK/EpCAM Foci": "/static/object_answers/object043answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object044answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object045answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object046answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object047answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object048answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object049answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object050answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object051answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object052answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object053answer.png"
+    "CK/EpCAM Foci": "/static/object_answers/object008answer.png"
 }{
     "CK/EpCAM Foci": "/static/object_answers/object054answer.png"
 }{
     "CK/EpCAM Foci": "/static/object_answers/object055answer.png"
 }{
-    "CK/EpCAM Foci": "/static/object_answers/object056answer.png"
-}{
     "CK/EpCAM Foci": "/static/object_answers/object057answer.png"
 }{
     "CK/EpCAM Foci": "/static/object_answers/object058answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object059answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object070answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object071answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object072answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object073answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object074answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object075answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object076answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object077answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object078answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object079answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object080answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object081answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object082answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object083answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object084answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object085answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object086answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object087answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object088answer.png"
-}{
-    "CK/EpCAM Foci": "/static/object_answers/object089answer.png"
 }{
     "CK/EpCAM Foci": "/static/object_answers/object104answer.png"
 }{
@@ -255,17 +191,21 @@
 }{
     "CK/EpCAM Foci": "/static/object_answers/object158answer.png"
 }{
-    "White Blood Cell": "/static/object_answers/object090answer.png"
+    "White Blood Cell": "/static/object_answers/object009answer.png"
 }{
-    "White Blood Cell": "/static/object_answers/object091answer.png"
+    "White Blood Cell": "/static/object_answers/object025answer.png"
 }{
-    "White Blood Cell": "/static/object_answers/object092answer.png"
+    "White Blood Cell": "/static/object_answers/object046answer.png"
 }{
-    "White Blood Cell": "/static/object_answers/object093answer.png"
+    "White Blood Cell": "/static/object_answers/object047answer.png"
 }{
-    "White Blood Cell": "/static/object_answers/object094answer.png"
+    "White Blood Cell": "/static/object_answers/object048answer.png"
 }{
-    "White Blood Cell": "/static/object_answers/object095answer.png"
+    "White Blood Cell": "/static/object_answers/object049answer.png"
+}{
+    "White Blood Cell": "/static/object_answers/object059answer.png"
+}{
+    "White Blood Cell": "/static/object_answers/object075answer.png"
 }{
     "White Blood Cell": "/static/object_answers/object096answer.png"
 }{
@@ -288,6 +228,66 @@
     "White Blood Cell": "/static/object_answers/object149answer.png"
 }{
     "White Blood Cell": "/static/object_answers/object159answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object011answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object015answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object017answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object018answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object021answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object023answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object026answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object027answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object030answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object031answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object036answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object040answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object041answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object042answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object044answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object061answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object065answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object067answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object068answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object071answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object073answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object076answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object077answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object080answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object081answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object086answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object090answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object091answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object092answer.png"
+}{
+    "Apoptotic CTC": "/static/object_answers/object094answer.png"
 }{
     "Apoptotic CTC": "/static/object_answers/object111answer.png"
 }{
