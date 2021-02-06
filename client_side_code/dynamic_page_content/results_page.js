@@ -388,7 +388,7 @@ function addObjectsToDom(objNum, typesMap, objectType, objTypes) {
             messageDiv.className = "message-div";
             messageDiv.id = "messageDiv";
     
-            var objectNum = objectPaths[i].substring(30,32);
+            var objectNum = objectPaths[i].substring(30,33);
             var objectPath = objectPaths[i];
 
             var newImg = document.createElement('img');

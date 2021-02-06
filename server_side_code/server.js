@@ -306,7 +306,7 @@ app.post("/html_pages/review_page", function(request,response) {
             writeResultsFile(request, totalIncorrect, totalWrongByType, 
                 numObjectsByType, wrongObjectsByType);
 
-            sendEmailWithResults(request);
+            // sendEmailWithResults(request);
 
             response.redirect('/html_pages/results_page');
         }
