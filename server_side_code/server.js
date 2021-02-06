@@ -29,7 +29,7 @@ const schema = new mongoose.Schema({
     wrongObjectsByPage: Object,
 });
 
-const Client = mongoose.model('160ImagesClients', schema);
+const Client = mongoose.model('160imagesclients', schema);
 
 console.log();
 console.log("server starting...");
@@ -48,17 +48,24 @@ app.get("/html_pages/login_page", function(request,response) {
 });
 app.post("/html_pages/login_page", function(request,response) {
     setClientCookie(request, response);
-    initClientDocument(request, response);
     response.redirect('/html_pages/instructions_page');
 });
 
 // instructions page
 app.get("/html_pages/instructions_page", function(request,response) {
-    response.sendFile(path.join(__dirname + 
-        '/html_pages/instructions_page.html'));
+    initClientDocument(request, response);
 });
 app.post("/html_pages/instructions_page", function(request,response) {
     response.redirect('/html_pages/page_1');
+});
+
+// instructions page_2
+app.get("/html_pages/instructions_page_2", function(request,response) {
+    response.sendFile(path.join(__dirname + 
+        '/html_pages/instructions_page_2.html'));
+});
+app.post("/html_pages/instructions_2_page", function(request,response) {
+    response.redirect('/html_pages/page_2');
 });
 
 // page 1
@@ -67,7 +74,7 @@ app.get("/html_pages/page_1", function(request,response) {
 });
 app.post("/html_pages/page_1", function(request,response) {
     processPage(request, 1, true);                      
-    redirectPage(request, response, '/html_pages/instructions_page', 
+    redirectPage(request, response, '/html_pages/instructions_page_2', 
         '/html_pages/page_2', '/html_pages/review_page');
 });
 
@@ -268,7 +275,7 @@ app.post("/html_pages/review_page", function(request,response) {
             writeResultsFile(request,totalWrongByType, numObjectsByType, 
                 wrongObjectsByType);
 
-            // sendEmailWithResults();
+            sendEmailWithResults();
 
             response.redirect('/html_pages/results_page');
         }
@@ -329,9 +336,8 @@ function initClientDocument(request, response) {
                             company: request.body.company}, {upsert: false}, 
                                 function() {});
     
-            // response.sendFile(path.join(__dirname + 
-            //     '/html_pages/instructions_page.html'));
-            // 
+                response.sendFile(path.join(__dirname + 
+                    '/html_pages/instructions_page.html'));
             }
         });
 
@@ -540,7 +546,7 @@ function setWrongObjectPaths(wrongObjectsByPage) {
 
     [wrongObjectsByType, totalWrongByType] = initWrongMaps(allObjectTypes);
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 16; i++) {
         for (var j = 0; j < wrongObjectsByPage[i].length; j++) {
             var objectNum = wrongObjectsByPage[i][j];
             var objectPath = '/static/object_answers/object' + objectNum + 
