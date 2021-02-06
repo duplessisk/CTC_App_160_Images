@@ -65,8 +65,9 @@ function writeReviewMessage() {
  */
 function getNullPages() {
     var pagesContainBlankAnswers = [];
-    var pages = ["One","Two","Three","Four","Five"];
-    for (var i = 0; i < 5; i++) {
+    var pages = ["One","Two","Three","Four","Five","Six","Seven","Eight","Nine",
+        "Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen"];
+    for (var i = 0; i < 16; i++) {
         pagesContainBlankAnswers[i] = localStorage.getItem('page' + 
             pages[i] + 'HasNull');
     }
@@ -90,15 +91,16 @@ function findPagesWithSkippedQuestions(pagesContainSkippedQuestions) {
 }
 
 /**
- * Adds nullButton for a page (1-5) if the client skipped an question on that 
+ * Adds nullButton for a page (1-16) if the client skipped an question on that 
  * page.
  * @param {Array} pagesContainSkippedQuestions - Containins whether or not each 
  *                                               page contains a blank client 
  *                                               response. 
  */
 function addNullButton(pagesContainSkippedQuestions) {
-    var pages = ["One","Two","Three","Four","Five"];
-    for (var i = 0; i < 5; i++) {
+    var pages = ["One","Two","Three","Four","Five","Six","Seven","Eight","Nine",
+        "Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen"];    
+    for (var i = 0; i < 16; i++) {
         if (pagesContainSkippedQuestions[i] == "true") {
             var pageNullBtn = document.createElement('button');
             pageNullBtn.innerHTML = "Page " + pages[i];

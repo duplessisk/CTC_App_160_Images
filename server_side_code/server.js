@@ -23,9 +23,6 @@ mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true,
 const schema = new mongoose.Schema({   
     clientId: String, 
     previouslySubmitted: Boolean,
-    firstName: String,
-    lastName: String,
-    company: String,
     wrongObjectsByPage: Object,
 });
 
@@ -64,8 +61,8 @@ app.get("/html_pages/instructions_page_2", function(request,response) {
     response.sendFile(path.join(__dirname + 
         '/html_pages/instructions_page_2.html'));
 });
-app.post("/html_pages/instructions_2_page", function(request,response) {
-    response.redirect('/html_pages/page_2');
+app.post("/html_pages/instructions_page_2", function(request,response) {
+    response.redirect('/html_pages/page_1');
 });
 
 // page 1
@@ -214,7 +211,7 @@ app.get("/html_pages/page_15", function(request,response) {
 });
 app.post("/html_pages/page_15", function(request,response) {
     processPage(request, 15, true);
-    redirectPage(request, response, '/html_pages/page_14', '/html_pages/page_1',
+    redirectPage(request, response, '/html_pages/page_14', '/html_pages/page_16',
         '/html_pages/review_page');
 });
 
@@ -237,7 +234,9 @@ app.post("/html_pages/review_page", function(request,response) {
     var id = request.cookies['session_id'];
 
     Client.findOne({clientId: id}, function(e, clientData) {
+     
         var btnClicked = request.body.btn;
+
         if (btnClicked == "Previous") {
             processPage(request,5,false);
             redirectPage(request, response, '/html_pages/page_5','','');
@@ -256,10 +255,42 @@ app.post("/html_pages/review_page", function(request,response) {
         } else if (btnClicked == "pageFiveNull") {
             processPage(request,5,false);
             redirectPage(request, response,'','','/html_pages/page_5');
+        } else if (btnClicked == "pageSixNull") {
+            processPage(request, 6,false);
+            redirectPage(request, response,'','','/html_pages/page_6');
+        } else if (btnClicked == "pageSevenNull") {
+            processPage(request,7,false);
+            redirectPage(request, response,'','','/html_pages/page_7');
+        } else if (btnClicked == "pageEightNull") {
+            processPage(request,8,false);
+            redirectPage(request, response,'','','/html_pages/page_8');
+        } else if (btnClicked == "pageNineNull") {
+            processPage(request,9,false);
+            redirectPage(request, response,'','','/html_pages/page_9');
+        } else if (btnClicked == "pageTenNull") {
+            processPage(request,10,false);
+            redirectPage(request, response,'','','/html_pages/page_10');
+        } else if (btnClicked == "pageElevenNull") {
+            processPage(request, 11,false);
+            redirectPage(request, response,'','','/html_pages/page_11');
+        } else if (btnClicked == "pageTwelveNull") {
+            processPage(request,12,false);
+            redirectPage(request, response,'','','/html_pages/page_12');
+        } else if (btnClicked == "pageThirteenNull") {
+            processPage(request,13,false);
+            redirectPage(request, response,'','','/html_pages/page_13');
+        } else if (btnClicked == "pageFourteenNull") {
+            processPage(request,14,false);
+            redirectPage(request, response,'','','/html_pages/page_14');
+        } else if (btnClicked == "pageFifteenNull") {
+            processPage(request,15,false);
+            redirectPage(request, response,'','','/html_pages/page_15');
+        } else if (btnClicked == "pageSixteenNull") {
+            processPage(request,16,false);
+            redirectPage(request, response,'','','/html_pages/page_16');
         } else if (clientData.previouslySubmitted) {
             response.redirect('/html_pages/form_already_submitted_page');
         } else {
-
             Client.findOneAndUpdate({clientId: id}, 
                 {previouslySubmitted: true}, {upsert: false}, 
                     function() {});
@@ -272,10 +303,10 @@ app.post("/html_pages/review_page", function(request,response) {
 
             writeResultsData(numObjectsByType, totalWrongByType, 
                 totalIncorrect);
-            writeResultsFile(request,totalWrongByType, numObjectsByType, 
-                wrongObjectsByType);
+            writeResultsFile(request, totalIncorrect, totalWrongByType, 
+                numObjectsByType, wrongObjectsByType);
 
-            sendEmailWithResults();
+            sendEmailWithResults(request);
 
             response.redirect('/html_pages/results_page');
         }
@@ -326,15 +357,13 @@ function initClientDocument(request, response) {
                 const newClient = new Client({ 
                     clientId: id,
                     previouslySubmitted: false,
-                    wrongObjectsByPage: [ [], [], [], [], [] ]
+                    //                    1   2   3   4   5   6   7   8   9
+                    wrongObjectsByPage: [ [], [], [], [], [], [], [], [], [],
+                    //  10  11  12  13  14  15  16
+                        [], [], [], [], [], [], []]
                 });
                 
                 newClient.save();
-                Client.findOneAndUpdate({clientId: id}, 
-                    {firstName: request.body.firstName, 
-                        lastName: request.body.lastName,
-                            company: request.body.company}, {upsert: false}, 
-                                function() {});
     
                 response.sendFile(path.join(__dirname + 
                     '/html_pages/instructions_page.html'));
@@ -447,8 +476,13 @@ function setWrongObjectsByPage(request,answerKey,clientResponses,pageNumber) {
         for (var i = 0; i < 10; i++) {
             if (answerKey[i] != clientResponses[i] || 
                 clientResponses[i] == null) {  
-                var objectNumber = String(pageNumber) + String(i);
-                updatedWrongObjectsByPage[pageNumber].push(objectNumber);
+                if (pageNumber < 10) {
+                    var objectNumber = '0' + String(pageNumber) + String(i);
+                    updatedWrongObjectsByPage[pageNumber].push(objectNumber);
+                } else {
+                    var objectNumber = String(pageNumber) + String(i);
+                    updatedWrongObjectsByPage[pageNumber].push(objectNumber);
+                }
             }
         }
 
@@ -502,7 +536,12 @@ function setAllObjectPaths() {
 
     for (var i = 0; i < allObjectTypes.length/10; i++) {
         for (var j = 0; j < 10; j++) {
-            var objectNum = String(i) + String(j);
+            var objectNum;
+            if (i < 10) {
+                objectNum = '0' + String(i) + String(j);
+            } else {
+                objectNum = String(i) + String(j);
+            }
             var objectPath = '/static/object_answers/object' + objectNum 
                 + 'answer.png';
             var thisObjectType = allObjectTypes[Number(objectNum)];
@@ -590,7 +629,7 @@ function getTotalIncorrect(totalWrongByType) {
     var totalIncorrect = 0;
     var keys = Array.from(totalWrongByType.keys());
     for (var i = 0; i < keys.length; i++) {
-        totalIncorrect += totalWrongByType.get(keys[i]).length;
+        totalIncorrect += totalWrongByType.get(keys[i]);
     }
     return totalIncorrect;
 }
@@ -716,7 +755,7 @@ function setTotalWrongByType(totalWrongByType) {
  * @param {Map} wrongObjectsByType - Contains incorrectly answered objects 
  *                                   by type. 
  */
-function writeResultsFile(request, totalWrongByType, numObjectsByType, 
+function writeResultsFile(request, totalIncorrect, totalWrongByType, numObjectsByType, 
                           wrongObjectsByType) {
 
     var clientInfo = request.cookies['session_id'].split(".");
@@ -730,6 +769,9 @@ function writeResultsFile(request, totalWrongByType, numObjectsByType,
             function() {
         fs.appendFileSync("./final_results.txt", "Breakdown: " + "\n", 
         function() {});
+        fs.appendFileSync("./final_results.txt", 160 - totalIncorrect + 
+            " out of " + 160 + " (" + Math.round(100*((160-totalIncorrect)/160))
+                + "%)" + "\n", function() {});
         var keys = Array.from(totalWrongByType.keys());
         for (var i = 0; i < keys.length; i++) {
             fs.appendFileSync("./final_results.txt", "\n" + 
@@ -773,7 +815,7 @@ function fileContents(objectType, numObjectsByType, totalWrongByType,
             granularMessage += ", ";
         }
         granularMessage += wrongObjectsByType.get(objectType)[i]
-            .substring(29,31);
+            .substring(29,32);
     }
     granularMessage += "\n";
     return globalMessage + granularMessage;
@@ -782,7 +824,13 @@ function fileContents(objectType, numObjectsByType, totalWrongByType,
 /**
  * Sends email containing final_results.text (client performance) to the admin.
  */
-function sendEmailWithResults() {
+function sendEmailWithResults(request) {
+
+    var clientInfo = request.cookies['session_id'].split(".");
+
+    firstName = clientInfo[0];
+    lastName = clientInfo[1];
+
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -794,8 +842,8 @@ function sendEmailWithResults() {
     let mailOptions = {
         from: process.env.EMAIL_SENDER_ACC,
         to: process.env.EMAIL_RECIEVER_ACC,
-        subject: 'CTC Test results_page',
-        text: 'It works',
+        subject: firstName + " " + lastName + ' CTC App Results',
+        text: "50 images no AF",
         attachments: [{
             filename: 'final_results.txt',
             path: './final_results.txt'
