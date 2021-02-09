@@ -141,88 +141,8 @@ app.get("/html_pages/page_8", function(request,response) {
 });
 app.post("/html_pages/page_8", function(request,response) {
     processPage(request, 8, true);
-    redirectPage(request, response, '/html_pages/page_7', '/html_pages/page_9',
+    redirectPage(request, response, '/html_pages/page_7', '/html_pages/review_page',
         '/html_pages/review_page');
-});
-
-// page 9
-app.get("/html_pages/page_9", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/page_9.html'));
-});
-app.post("/html_pages/page_9", function(request,response) {
-    processPage(request, 9, true);
-    redirectPage(request, response, '/html_pages/page_8', '/html_pages/page_10',
-        '/html_pages/review_page');
-});
-
-// page 10
-app.get("/html_pages/page_10", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/page_10.html'));
-});
-app.post("/html_pages/page_10", function(request,response) {
-    processPage(request, 10, true);
-    redirectPage(request, response, '/html_pages/page_9', '/html_pages/page_11',
-        '/html_pages/review_page');
-});
-
-// page 11
-app.get("/html_pages/page_11", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/page_11.html'));
-});
-app.post("/html_pages/page_11", function(request,response) {
-    processPage(request, 11, true);
-    redirectPage(request, response, '/html_pages/page_10', 
-        '/html_pages/page_12', '/html_pages/review_page');
-});
-
-// page 12
-app.get("/html_pages/page_12", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/page_12.html'));
-});
-app.post("/html_pages/page_12", function(request,response) {
-    processPage(request, 12, true);
-    redirectPage(request, response, '/html_pages/page_11', 
-        '/html_pages/page_13', '/html_pages/review_page');
-});
-
-// page 13
-app.get("/html_pages/page_13", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/page_13.html'));
-});
-app.post("/html_pages/page_13", function(request,response) {
-    processPage(request, 13, true);
-    redirectPage(request, response, '/html_pages/page_12', 
-        '/html_pages/page_14', '/html_pages/review_page');
-});
-
-// page 14
-app.get("/html_pages/page_14", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/page_14.html'));
-});
-app.post("/html_pages/page_14", function(request,response) {
-    processPage(request, 14, true);
-    redirectPage(request, response, '/html_pages/page_13', '/html_pages/page_15',
-        '/html_pages/review_page');
-});
-
-// page 15
-app.get("/html_pages/page_15", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/page_15.html'));
-});
-app.post("/html_pages/page_15", function(request,response) {
-    processPage(request, 15, true);
-    redirectPage(request, response, '/html_pages/page_14', '/html_pages/page_16',
-        '/html_pages/review_page');
-});
-
-// page 16
-app.get("/html_pages/page_16", function(request,response) {
-    response.sendFile(path.join(__dirname + '/html_pages/page_16.html'));
-});
-app.post("/html_pages/page_16", function(request,response) {
-    processPage(request, 16, true);
-    redirectPage(request, response, '/html_pages/page_15', 
-        '/html_pages/review_page', '/html_pages/review_page');
 });
 
 // review page
